@@ -9,4 +9,11 @@ public class Battle
 {
 	Player p1;
 	Player p2;
+	GameData gd;
+	
+	public Battle(GameData gd)
+	{
+		this.p1 = new Player();
+		this.p2 = new Player();
+	}
 }

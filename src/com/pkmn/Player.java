@@ -8,4 +8,8 @@ public class Player
 {
 	Pokemon[] team;
 	Pokemon currentPkmn;
+	public Player()
+	{
+		
+	}
 }
