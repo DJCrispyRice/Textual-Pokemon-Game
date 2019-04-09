@@ -18,14 +18,14 @@ public class Window extends JFrame
 	{
 		this.setLayout(null);
 		this.setJl(new JLabel("<html>Loading...<br>"));
-		this.jl.setBounds(15,15,450,700);
+		this.jl.setBounds(15,15,450,600);
 		this.setJtf(new JTextField(2));
-		this.jtf.setBounds(15,725,450,30);
+		this.jtf.setBounds(15,625,450,30);
 		this.add(this.jtf);
 		this.add(jl);
 		jtf.addKeyListener(new KbListener());
 		this.setTitle("Textual Pokémon game");
-		this.setSize(500, 800);
+		this.setSize(500, 700);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
