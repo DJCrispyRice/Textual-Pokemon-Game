@@ -32,8 +32,18 @@ public class Window extends JFrame
 		this.jl = jl;
 	}
 	
+	public void setJl(String s)
+	{
+		this.jl.setText(s);
+	}
+	
 	private void setJtf(JTextField jtf)
 	{
 		this.jtf = jtf;
+	}
+	
+	public void clear()
+	{
+		this.setJl("");
 	}
 }
