@@ -3,7 +3,7 @@ package com.pkmn;
 import java.util.ArrayList;
 
 /* 
- * This class contains our favorite little monsters. They have a name, an Id (basically number in Pokédex), at least one type (the second may be null), attacks
+ * This class contains our favorite little monsters. They have a name, an Id (basically number in Pokï¿½dex), at least one type (the second may be null), attacks
  * (at least 1, max 4). Every stat is covered by "base" and "current" since attacks may occur that alter stats. Accuracy is 100 by default but can be lowered
  * by sand attack for example. 
  * Status 0 : Normal (no status)
@@ -22,7 +22,7 @@ public class Pokemon
 {
 	String name;
 	int id;
-	int level = 50; //Since it's battling only, all Pokémon will be level 50. Useful only for damage calculation.
+	int level = 50; //Since it's battling only, all PokÃ©mon will be level 50. Useful only for damage calculation.
 	Type type1;
 	Type type2;
 	ArrayList <Attack> attacks;
@@ -40,13 +40,13 @@ public class Pokemon
 	int baseAccu = 100;
 	int currentAccu = 100;
 	
-	//Empty constructor only for the fake index 0 Pokémon
+	//Empty constructor only for the fake index 0 Pokï¿½mon
 	public Pokemon()
 	{
 		this.setName("MissingNo");
 		this.setId(0);
 	}
-	//Constructor to instantiate a pokémon through the GameData class. Since current stats are the same as base's initially and status is always 0 at the beginning, those variables are not in the constructor.
+	//Constructor to instantiate a pokÃ©mon through the GameData class. Since current stats are the same as base's initially and status is always 0 at the beginning, those variables are not in the constructor.
 	//Also Accuracy is 100 by default as stated in the descriptor.
 	public Pokemon(String name, int id, Type type1, Type type2, int baseHp, int baseAtk,  int baseDef,  int baseSpd, int baseSpe)
 	{
@@ -54,7 +54,7 @@ public class Pokemon
 		this.setId(id);
 		this.setType1(type1);
 		this.setType2(type2);
-		this.attacks = new ArrayList<Attack>(); // We will add attacks after the Pokémon is created
+		this.attacks = new ArrayList<Attack>(); // We will add attacks after the Pokï¿½mon is created
 		this.setBaseHp(baseHp);
 		this.setCurrentHp(baseHp);
 		this.setBaseAtk(baseAtk);
