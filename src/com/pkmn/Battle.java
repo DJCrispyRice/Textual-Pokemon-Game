@@ -11,9 +11,10 @@ public class Battle
 	Player p2;
 	GameData gd;
 	
-	public Battle(GameData gd)
+	public Battle(GameData gd, Window win)
 	{
 		this.p1 = new Player();
 		this.p2 = new Player();
 	}
+	
 }

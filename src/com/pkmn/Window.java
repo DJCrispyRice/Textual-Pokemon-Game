@@ -10,6 +10,7 @@ public class Window extends JFrame
 	private static final long serialVersionUID = 1L;
 	public JLabel jl;
 	public JTextField jtf;
+	String whatToChoose = "start";
 	public Window()
 	{
 		this.setLayout(null);

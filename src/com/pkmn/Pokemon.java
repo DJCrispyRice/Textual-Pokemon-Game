@@ -54,7 +54,7 @@ public class Pokemon
 		this.setId(id);
 		this.setType1(type1);
 		this.setType2(type2);
-		this.attacks = new ArrayList<Attack>(); // We will add attacks after the Pok�mon is created
+		this.attacks = new ArrayList<Attack>(); // We will add attacks after the Pokémon is created
 		this.setBaseHp(baseHp);
 		this.setCurrentHp(baseHp);
 		this.setBaseAtk(baseAtk);
