@@ -29,7 +29,7 @@ public class Player
 		else
 			return false;
 	}
-	private Pokemon getCurrentPkmn() 
+	public Pokemon getCurrentPkmn() 
 	{
 		return currentPkmn;
 	}

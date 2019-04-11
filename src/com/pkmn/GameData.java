@@ -11,14 +11,14 @@ public final class GameData
 	Pokemon[] allPkmn;
 	Attack[] allAtks;
 	Type[] allTypes;
-	public GameData(Window win)
+	public GameData(Window win) throws InterruptedException
 	{
 		this.createTypes(win);
 		this.createAttacks(win);
 		this.createPkmn(win);
 	}
 	
-	private void createTypes(Window win)
+	private void createTypes(Window win) throws InterruptedException
 	{
 		this.allTypes = new Type[15];
 		//Creating all types
@@ -148,10 +148,11 @@ public final class GameData
 		
 		//Tracing that loading is OK
 		win.jl.setText(win.jl.getText()+"Types loaded.<br>");
+		Thread.sleep(500);
 	}
 	
 	//Creating all 164 attacks in Pokémon gen 1. Yay. Bind is excluded because it sucks, one-hit K-O attacks are excluded.
-	private void createAttacks(Window win)
+	private void createAttacks(Window win) throws InterruptedException
 	{
 		this.allAtks = new Attack[158];
 		int i = 0;
@@ -317,9 +318,10 @@ public final class GameData
 		
 		//Tracing that loading is OK
 		win.jl.setText(win.jl.getText()+"Attacks loaded.<br>");
+		Thread.sleep(500);
 	}
 	
-	private void createPkmn(Window win)
+	private void createPkmn(Window win) throws InterruptedException
 	{
 		this.allPkmn = new Pokemon[152]; //Pokémon at index 0 will be null to simplify further researches in the array (index will be exactly the pokédex's number)
 		int i = 0;
@@ -487,5 +489,6 @@ public final class GameData
 		
 		//Tracing that loading is OK
 		win.jl.setText(win.jl.getText()+"Pokémons loaded.<br>");
+		Thread.sleep(500);
 	}
 }
