@@ -28,28 +28,54 @@ public class Battle
 		}
 		return s;
 	}
-	//i : i=0 -> player, i=1 -> opponent (IA). iAtt is the id of the attack (refers to ArrayList Attacks
+	//i : i=0 -> player, i=1 -> opponent (IA). iAtt is the id of the attack (refers to ArrayList Attacks)
 	public String useAttack(int iAtt, int i)
 	{
 		String s = new String();
 		if (i == 0)
 		{
 			s = this.p1.getCurrentPkmn().getName()+" used "+this.p1.getCurrentPkmn().getAttacks().get(i).getName()+".";
-			s = s + "\n"+this.p2.getCurrentPkmn().getName()+" lost "+this.doDamages()+" HP.";
+			s = s + "\n"+this.doDamages(iAtt, 0);
 		}
 		else
 		{
 			s = this.p2.getCurrentPkmn().getName()+" used "+this.p2.getCurrentPkmn().getAttacks().get(i).getName()+".";
-			s = s + "\n"+this.p1.getCurrentPkmn().getName()+" lost "+this.doDamages()+" HP.";
+			s = s + "\n"+this.doDamages(iAtt, 1);
 		}
 		return s;
 	}
 	
-	//Will calculate damages resulting the attack.
-	private String doDamages()
+	//i : i=0 -> player, i=1 -> opponent (IA). iAtt is the id of the attack (refers to ArrayList Attacks)
+	private String doDamages(int iAtt, int i)
 	{
 		String s = new String();
-		s = "1";
+		int damage = 0;
+		if (i == 0)
+		{
+			//Checking the type of the attack to see what will happen next
+			//0 = standard attack, do nothing more than damages
+			if (this.p1.getCurrentPkmn().getAttacks().get(i).getStatus() == 0)
+			{
+				damage = (((2*25)/5)+2*this.p1.getCurrentPkmn().getAttacks().get(i).getPower());
+				if (this.p1.getCurrentPkmn().getAttacks().get(i).getPhy())
+					damage = (damage * (this.p1.getCurrentPkmn().getCurrentAtk()/this.p2.getCurrentPkmn().getCurrentDef()/50))+2;
+				else
+					damage = (damage * (this.p1.getCurrentPkmn().getCurrentSpe()/this.p2.getCurrentPkmn().getCurrentSpe()/50))+2;
+				s = this.p2.getCurrentPkmn().getName()+" took "+Integer.toString(damage)+" HP.";
+			}
+		}
+		else
+		{
+			if (this.p2.getCurrentPkmn().getAttacks().get(i).getStatus() == 0)
+			{
+				damage = (((2*25)/5)+2*this.p2.getCurrentPkmn().getAttacks().get(i).getPower());
+				if (this.p2.getCurrentPkmn().getAttacks().get(i).getPhy())
+					damage = (damage * (this.p2.getCurrentPkmn().getCurrentAtk()/this.p1.getCurrentPkmn().getCurrentDef()/50))+2;
+				else
+					damage = (damage * (this.p2.getCurrentPkmn().getCurrentSpe()/this.p1.getCurrentPkmn().getCurrentSpe()/50))+2;
+				s = this.p1.getCurrentPkmn().getName()+" took "+Integer.toString(damage)+" HP.";
+			}
+		}
 		return s;
 	}
 }
