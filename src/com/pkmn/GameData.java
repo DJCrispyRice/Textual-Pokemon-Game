@@ -147,7 +147,7 @@ public final class GameData
 		this.allTypes[14].getStrength().add(this.allTypes[14]);
 		
 		//Tracing that loading is OK
-		win.jl.setText(win.jl.getText()+"Types loaded.\n");
+		win.logTrace("Types loaded.");
 		Thread.sleep(500);
 	}
 	
@@ -317,7 +317,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Wrap","Traps opponent, damaging them for 4-5 turns.",157,15,20,true,this.allTypes[0],55,0,90); i++;
 		
 		//Tracing that loading is OK
-		win.jl.setText(win.jl.getText()+"Attacks loaded.\n");
+		win.logTrace("Attacks loaded.");
 		Thread.sleep(500);
 	}
 	
@@ -362,7 +362,7 @@ public final class GameData
 		this.allPkmn[i] = new Pokemon("Nidoran♂",i,this.allTypes[3],null,46,57,40,50,40);i++;
 		this.allPkmn[i] = new Pokemon("Nidorino",i,this.allTypes[3],null,61,72,57,65,55);i++;
 		this.allPkmn[i] = new Pokemon("Nidoking",i,this.allTypes[3],this.allTypes[4],81,92,77,85,75);i++;
-		this.allPkmn[i] = new Pokemon("CleNormal",i,this.allTypes[0],null,70,45,48,35,60);i++;
+		this.allPkmn[i] = new Pokemon("Clefairy",i,this.allTypes[0],null,70,45,48,35,60);i++;
 		this.allPkmn[i] = new Pokemon("Clefable",i,this.allTypes[0],null,95,70,73,60,85);i++;
 		this.allPkmn[i] = new Pokemon("Vulpix",i,this.allTypes[8],null,38,41,40,65,65);i++;
 		this.allPkmn[i] = new Pokemon("Ninetales",i,this.allTypes[8],null,73,76,75,100,100);i++;
@@ -488,7 +488,7 @@ public final class GameData
 		}
 		
 		//Tracing that loading is OK
-		win.jl.setText(win.jl.getText()+"Pokémons loaded.\n");
+		win.logTrace("Pokémons loaded.");
 		Thread.sleep(500);
 	}
 }

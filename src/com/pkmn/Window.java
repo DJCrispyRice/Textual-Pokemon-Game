@@ -1,6 +1,4 @@
 package com.pkmn;
-import java.awt.ScrollPane;
-
 import javax.swing.*;
 
 /* 
@@ -12,14 +10,13 @@ public class Window extends JFrame
 	private static final long serialVersionUID = 1L;
 	public JTextArea jl;
 	public JTextField jtf;
-	public ScrollPane sp;
+	public JScrollPane sp;
 	String whatToChoose = "start";
 	public Window()
 	{
 		this.setLayout(null);
-		this.setJl(new JTextArea("Loading...\n"));
-		this.sp = new ScrollPane();
-		sp.add(jl);
+		this.setJl(new JTextArea("Loading..."));
+		this.sp = new JScrollPane(jl);
 		this.sp.setBounds(15,15,450,600);
 		this.setJtf(new JTextField(2));
 		this.jtf.setBounds(15,625,450,30);
@@ -58,6 +55,7 @@ public class Window extends JFrame
 	
 	public void logTrace(String s)
 	{
+		this.jl.setText(this.jl.getText() + "\n"+s);
 		this.jl.setCaretPosition(this.jl.getDocument().getLength());
 	}
 }

@@ -34,12 +34,13 @@ public class Battle
 		String s = new String();
 		if (i == 0)
 		{
-			s = "\n"+this.p1.getCurrentPkmn().getName()+" used "+this.p1.getCurrentPkmn().getAttacks().get(i).getName()+".";
-			s = "\n"+this.p2.getCurrentPkmn().getName()+" lost "+this.doDamages()+" HP.";
+			s = this.p1.getCurrentPkmn().getName()+" used "+this.p1.getCurrentPkmn().getAttacks().get(i).getName()+".";
+			s = s + "\n"+this.p2.getCurrentPkmn().getName()+" lost "+this.doDamages()+" HP.";
 		}
 		else
 		{
-			s = "\n"+this.p2.getCurrentPkmn().getName()+" used "+this.p2.getCurrentPkmn().getAttacks().get(i).getName()+".";
+			s = this.p2.getCurrentPkmn().getName()+" used "+this.p2.getCurrentPkmn().getAttacks().get(i).getName()+".";
+			s = s + "\n"+this.p1.getCurrentPkmn().getName()+" lost "+this.doDamages()+" HP.";
 		}
 		return s;
 	}
@@ -48,7 +49,7 @@ public class Battle
 	private String doDamages()
 	{
 		String s = new String();
-		
+		s = "1";
 		return s;
 	}
 }
