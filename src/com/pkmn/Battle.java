@@ -35,11 +35,20 @@ public class Battle
 		if (i == 0)
 		{
 			s = "<br>"+this.p1.getCurrentPkmn().getName()+" used "+this.p1.getCurrentPkmn().getAttacks().get(i).getName()+".";
+			s = "<br>"+this.p2.getCurrentPkmn().getName()+" lost "+this.doDamages()+" HP.";
 		}
 		else
 		{
 			s = "<br>"+this.p2.getCurrentPkmn().getName()+" used "+this.p2.getCurrentPkmn().getAttacks().get(i).getName()+".";
 		}
+		return s;
+	}
+	
+	//Will calculate damages resulting the attack.
+	private String doDamages()
+	{
+		String s = new String();
+		
 		return s;
 	}
 }
