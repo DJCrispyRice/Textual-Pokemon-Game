@@ -21,10 +21,10 @@ public class Battle
 	public String showAttacks()
 	{
 		String s = new String();
-		s = "<br>Please choose an attack.";
+		s = "\nPlease choose an attack.";
 		for (int i=0;i<this.p1.getCurrentPkmn().getAttacks().size();i++)
 		{
-			s = s + "<br> "+Integer.toString(i+1)+". "+this.p1.currentPkmn.getAttacks().get(i).getName()+" - "+this.p1.currentPkmn.getAttacks().get(i).getDescription();
+			s = s + "\n "+Integer.toString(i+1)+". "+this.p1.currentPkmn.getAttacks().get(i).getName()+" - "+this.p1.currentPkmn.getAttacks().get(i).getDescription();
 		}
 		return s;
 	}
@@ -34,12 +34,12 @@ public class Battle
 		String s = new String();
 		if (i == 0)
 		{
-			s = "<br>"+this.p1.getCurrentPkmn().getName()+" used "+this.p1.getCurrentPkmn().getAttacks().get(i).getName()+".";
-			s = "<br>"+this.p2.getCurrentPkmn().getName()+" lost "+this.doDamages()+" HP.";
+			s = "\n"+this.p1.getCurrentPkmn().getName()+" used "+this.p1.getCurrentPkmn().getAttacks().get(i).getName()+".";
+			s = "\n"+this.p2.getCurrentPkmn().getName()+" lost "+this.doDamages()+" HP.";
 		}
 		else
 		{
-			s = "<br>"+this.p2.getCurrentPkmn().getName()+" used "+this.p2.getCurrentPkmn().getAttacks().get(i).getName()+".";
+			s = "\n"+this.p2.getCurrentPkmn().getName()+" used "+this.p2.getCurrentPkmn().getAttacks().get(i).getName()+".";
 		}
 		return s;
 	}

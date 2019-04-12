@@ -147,7 +147,7 @@ public final class GameData
 		this.allTypes[14].getStrength().add(this.allTypes[14]);
 		
 		//Tracing that loading is OK
-		win.jl.setText(win.jl.getText()+"Types loaded.<br>");
+		win.jl.setText(win.jl.getText()+"Types loaded.\n");
 		Thread.sleep(500);
 	}
 	
@@ -317,7 +317,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Wrap","Traps opponent, damaging them for 4-5 turns.",157,15,20,true,this.allTypes[0],55,0,90); i++;
 		
 		//Tracing that loading is OK
-		win.jl.setText(win.jl.getText()+"Attacks loaded.<br>");
+		win.jl.setText(win.jl.getText()+"Attacks loaded.\n");
 		Thread.sleep(500);
 	}
 	
@@ -488,7 +488,7 @@ public final class GameData
 		}
 		
 		//Tracing that loading is OK
-		win.jl.setText(win.jl.getText()+"Pokémons loaded.<br>");
+		win.jl.setText(win.jl.getText()+"Pokémons loaded.\n");
 		Thread.sleep(500);
 	}
 }

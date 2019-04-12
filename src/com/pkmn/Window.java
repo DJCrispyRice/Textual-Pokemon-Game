@@ -8,13 +8,13 @@ import javax.swing.*;
 public class Window extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	public JLabel jl;
+	public JTextArea jl;
 	public JTextField jtf;
 	String whatToChoose = "start";
 	public Window()
 	{
 		this.setLayout(null);
-		this.setJl(new JLabel("<html>Loading...<br>"));
+		this.setJl(new JTextArea("Loading...\n"));
 		this.jl.setBounds(15,15,450,600);
 		this.setJtf(new JTextField(2));
 		this.jtf.setBounds(15,625,450,30);
@@ -28,9 +28,12 @@ public class Window extends JFrame
 		this.setVisible(true);
 	}
 	
-	private void setJl(JLabel jl)
+	private void setJl(JTextArea jl)
 	{
 		this.jl = jl;
+		this.jl.setLineWrap(true);
+		this.jl.setWrapStyleWord(true);
+		this.jl.setEditable(false);
 	}
 	
 	public void setJl(String s)
