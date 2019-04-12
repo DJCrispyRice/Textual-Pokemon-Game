@@ -1,4 +1,6 @@
 package com.pkmn;
+import java.awt.ScrollPane;
+
 import javax.swing.*;
 
 /* 
@@ -10,16 +12,19 @@ public class Window extends JFrame
 	private static final long serialVersionUID = 1L;
 	public JTextArea jl;
 	public JTextField jtf;
+	public ScrollPane sp;
 	String whatToChoose = "start";
 	public Window()
 	{
 		this.setLayout(null);
 		this.setJl(new JTextArea("Loading...\n"));
-		this.jl.setBounds(15,15,450,600);
+		this.sp = new ScrollPane();
+		sp.add(jl);
+		this.sp.setBounds(15,15,450,600);
 		this.setJtf(new JTextField(2));
 		this.jtf.setBounds(15,625,450,30);
 		this.add(this.jtf);
-		this.add(jl);
+		this.add(sp);
 		this.setTitle("Textual Pokémon game");
 		this.setSize(500, 700);
 		this.setLocationRelativeTo(null);
@@ -49,6 +54,11 @@ public class Window extends JFrame
 	public void clear()
 	{
 		this.setJl("");
+	}
+	
+	public void logTrace(String s)
+	{
+		this.jl.setCaretPosition(this.jl.getDocument().getLength());
 	}
 }
 
