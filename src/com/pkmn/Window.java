@@ -15,7 +15,7 @@ public class Window extends JFrame
 	public Window()
 	{
 		this.setLayout(null);
-		this.setJl(new JTextArea("Loading..."));
+		this.setJl(new JTextArea("Loading...\n"));
 		this.sp = new JScrollPane(jl);
 		this.sp.setBounds(15,15,450,600);
 		this.setJtf(new JTextField(2));
@@ -55,7 +55,7 @@ public class Window extends JFrame
 	
 	public void logTrace(String s)
 	{
-		this.jl.setText(this.jl.getText() + "\n"+s);
+		this.jl.setText(this.jl.getText()+s+"\n");
 		this.jl.setCaretPosition(this.jl.getDocument().getLength());
 	}
 }

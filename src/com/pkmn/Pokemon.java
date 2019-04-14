@@ -137,8 +137,15 @@ public class Pokemon
 		return currentHp;
 	}
 
-	public void setCurrentHp(int currentHp) {
-		this.currentHp = currentHp;
+	public void setCurrentHp(int currentHp) 
+	{
+		if (currentHp >= 0)
+			this.currentHp = currentHp;
+		else
+		{
+			this.currentHp = 0;
+			this.setStatus(9);
+		}
 	}
 
 	public int getBaseAtk() {

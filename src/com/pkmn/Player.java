@@ -33,7 +33,7 @@ public class Player
 	{
 		return currentPkmn;
 	}
-	private void setCurrentPkmn(Pokemon currentPkmn) 
+	public void setCurrentPkmn(Pokemon currentPkmn) 
 	{
 		this.currentPkmn = currentPkmn;
 	}
