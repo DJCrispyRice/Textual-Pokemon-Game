@@ -1,5 +1,7 @@
 package com.pkmn;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /* 
  * This class will contain all the battle's logic such as attacking, calculating damages, accuracy, etc. All it will contain is two players 
  * since every thing else comes from it.
@@ -37,12 +39,18 @@ public class Battle
 		if (i == 0)
 		{
 			s = this.getp1pkmn().getName()+" used "+this.getp1attack(iAtt).getName()+".";
-			s = s + "\n"+this.doDamages(iAtt, 0);
+			if (checkHit(this.getp1attack(iAtt),this.getp1pkmn()))
+				s = s + "\n"+this.doDamages(iAtt, 0);
+			else
+				s = s + "\n"+this.getp1pkmn().getName() + " missed !";
 		}
 		else
 		{
 			s = this.getp2pkmn().getName()+" used "+this.getp2attack(iAtt).getName()+".";
-			s = s + "\n"+this.doDamages(iAtt, 1);
+			if (checkHit(this.getp2attack(iAtt),this.getp2pkmn()))
+				s = s + "\n"+this.doDamages(iAtt, 1);
+			else
+				s = s + "\n"+this.getp2pkmn().getName() + " missed !";
 		}
 		return s;
 	}
@@ -54,13 +62,19 @@ public class Battle
 	{
 		String s = new String();
 		int damage = 0;
+		int power;
 		if (i == 0)
 		{
 			//Checking the status of the attack to see what will happen next
 			//0 = standard attack, do nothing more than damages
 			if (this.getp1attack(iAtt).getStatus() == 0)
 			{
-				damage = ((2*20)/2 + 2)*this.getp1attack(iAtt).getPower();
+				power = this.getp1attack(iAtt).getPower();
+				//Verify if STAB
+				if (this.getp1attack(iAtt).getType().equals(this.getp1pkmn().getType1()) || this.getp1attack(iAtt).getType().equals(this.getp1pkmn().getType2()))
+					power = (int) (power * 1.5);
+				//Mathematical calculation for damages
+				damage = ((2*20)/2 + 2)*power;
 				if (this.getp1attack(iAtt).getPhy())
 					damage = damage * (this.getp1pkmn().getCurrentAtk()/this.getp2pkmn().getCurrentDef());
 				else
@@ -75,7 +89,12 @@ public class Battle
 		{
 			if (this.getp2attack(iAtt).getStatus() == 0)
 			{
-				damage = ((2*20)/2 + 2)*this.getp2attack(iAtt).getPower();
+				power = this.getp2attack(iAtt).getPower();
+				//Verify if STAB
+				if (this.getp2attack(iAtt).getType().equals(this.getp2pkmn().getType1()) || this.getp2attack(iAtt).getType().equals(this.getp2pkmn().getType2()))
+					power = (int) (power * 1.5);
+				//Mathematical calculation for damages
+				damage = ((2*20)/2 + 2)*power;
 				if (this.getp2attack(iAtt).getPhy())
 					damage = damage * (this.getp2pkmn().getCurrentAtk()/this.getp1pkmn().getCurrentDef());
 				else
@@ -129,5 +148,18 @@ public class Battle
 		else
 			s = s +"\n"+pk.getName()+" has "+pk.getCurrentHp()+" HP left.";
 		return s;
+	}
+	
+	private boolean checkHit(Attack att, Pokemon pk)
+	{
+		int accurate = 100;
+		accurate = accurate - (100 - att.getAccuracy()) - (100 - pk.getCurrentAccu());
+		if (accurate < 0)
+			accurate = 0;
+		int random = ThreadLocalRandom.current().nextInt(0,100);
+		if (random > accurate)
+			return false;
+		else
+			return true;
 	}
 }
