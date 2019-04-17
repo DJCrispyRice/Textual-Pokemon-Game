@@ -43,7 +43,7 @@ public class Main implements ActionListener
 			try
 			{
 				//To avoid MissingNo being a choice
-				if (choice.equals("0"))
+				if (choice.equals("0") || Integer.parseInt(choice) == 0)
 					throw  new NullPointerException();
 				b.p1.setTeam(gd.allPkmn[Integer.parseInt(choice)]);
 				win.logTrace("You chose "+gd.allPkmn[Integer.parseInt(choice)].getName()+" !");
@@ -205,20 +205,12 @@ public class Main implements ActionListener
 				//Throws a NPE if the number is not a valid choice
 				if (Integer.parseInt(choice) > b.p1.getTeam().size() || Integer.parseInt(choice) == 0)
 					throw  new NullPointerException();
-				System.out.println(Integer.toString(b.p1.getTeam().size()));
-				if (b.p1.getTeam().size()!=0)
-				{
-					b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
-					b.p1.setCurrentStats();
-					win.logTrace("You sent "+b.getp1pkmn().getName()+" !");
-					win.whatToChoose = "attack";
-					choice = null;
-					win.logTrace(b.showAttacks());
-				}
-				else
-				{
-					
-				}
+				b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
+				b.p1.setCurrentStats();
+				win.logTrace("You sent "+b.getp1pkmn().getName()+" !");
+				win.whatToChoose = "attack";
+				choice = null;
+				win.logTrace(b.showAttacks());
 			}
 			catch (Exception e10)
 			{
@@ -237,6 +229,8 @@ public class Main implements ActionListener
 					win.logTrace("Okay, let's play again. Good luck !");
 					Thread.sleep(1000);
 					win.clear();
+					win.logTrace("A new battle will begin ! Please choose your team.");
+					win.logTrace("To do so, type the number of your Pokémon and Enter. You can refer to the Pokédex if needed.");
 					win.whatToChoose = "team";
 					b = new Battle(gd);
 				}
