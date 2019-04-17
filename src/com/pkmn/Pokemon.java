@@ -139,7 +139,7 @@ public class Pokemon
 
 	public void setCurrentHp(int currentHp) 
 	{
-		if (currentHp >= 0)
+		if (currentHp > 0)
 			this.currentHp = currentHp;
 		else
 		{

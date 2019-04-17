@@ -26,6 +26,7 @@ public class Battle
 		{
 			s = s + "\n "+Integer.toString(i+1)+". "+this.getp1attack(i).getName()+" - "+this.getp1attack(i).getDescription();
 		}
+		s = s + "\n*********************** ";
 		return s;
 	}
 	//i : i=0 -> player, i=1 -> opponent (IA). iAtt is the id of the attack (refers to ArrayList Attacks).
@@ -114,8 +115,8 @@ public class Battle
 	{
 		if (pk.getStatus() == 9)
 		{
-			s = s + "\n"+pk.getName()+" fainted !";
-			if (i==0)
+			s = s + "\n***********************\n"+pk.getName()+" fainted !";
+			if (i == 0)
 			{
 				this.p1.getTeam().remove(pk);
 				s = s + "\nYou have "+this.p1.getTeam().size()+" pokémons left.";

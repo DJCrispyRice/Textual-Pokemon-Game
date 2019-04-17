@@ -12,12 +12,12 @@ public class Main implements ActionListener
 	Battle b = new Battle(this.gd);
 	public Main() throws InterruptedException
 	{
-		this.win = new Window();
-		this.gd = new GameData(win);
-		this.win.clear();
+		win = new Window();
+		gd = new GameData(win);
+		win.clear();
 		Thread.sleep(700);
-		this.win.jtf.addActionListener(this);
-		this.win.logTrace("Welcome in the Pokémon Textual Game !\nType 1 and Enter to start.");
+		win.jtf.addActionListener(this);
+		win.logTrace("Welcome in the Pokémon Textual Game !\nType 1 and Enter to start.");
 	}
 	
 	public static void main(String[] args) throws InterruptedException
@@ -85,6 +85,8 @@ public class Main implements ActionListener
 				if (Integer.parseInt(choice) > b.getp1pkmn().getAttacks().size())
 					throw  new NullPointerException();
 				//Speed checking to choose the first Pokémon that hits. If tie, the player moves first
+				
+				//Case : player faster
 				if (b.getp1pkmn().getCurrentSpd() >= b.getp2pkmn().getCurrentSpd())
 				{
 					//Calls the useAttack function for index 0 which is the player
@@ -97,29 +99,109 @@ public class Main implements ActionListener
 						win.logTrace("Your opponent sent "+b.getp2pkmn().getName()+" !");
 					}
 					else
+					{
 						//The opponent randomly selects an attack and use it.
 						win.logTrace(b.useAttack(ThreadLocalRandom.current().nextInt(0,b.getp2pkmn().getAttacks().size()),1));
+						//Checks if the player fainted
+						if (b.p1.getCurrentPkmn().getStatus()==9)
+						{
+							//Randomly selects a new pokémon if the previous one fainted
+							b.p1.setCurrentPkmn(b.p1.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p1.getTeam().size())));
+							win.logTrace("Please choose another Pokémon from your team.");
+							for (int i = 0; i < b.p1.getTeam().size(); i++)
+							{
+								win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
+							}
+							win.whatToChoose = "swap";
+							choice = null;
+						}
+						else
+						{
+							win.logTrace(b.useAttack(Integer.parseInt(choice)-1,0));
+							win.logTrace(b.showAttacks());
+						}
+					}
 				}
+				
+				//Case : opponent faster
 				else
 				{
-					//The opponent ramdomly selects an attack and use it (case he is faster than player)
+					//The opponent randomly selects an attack and use it (case he is faster than player)
 					win.logTrace(b.useAttack(ThreadLocalRandom.current().nextInt(0,b.getp2pkmn().getAttacks().size()),1));
 					//Checks if the player fainted
 					if (b.p1.getCurrentPkmn().getStatus()==9)
 					{
-						//Randomly selects a new pokémon if the previous one fainted
-						b.p1.setCurrentPkmn(b.p1.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p1.getTeam().size())));
-						win.logTrace("You sent "+b.getp1pkmn().getName()+" !");
+						win.logTrace("Please choose another Pokémon from your team.");
+						for (int i = 0; i < b.p1.getTeam().size(); i++)
+						{
+							win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
+						}
+						win.logTrace("*********************** ");
+						choice = null;
+						win.whatToChoose = "swap";
 					}
 					else
+					{
 						win.logTrace(b.useAttack(Integer.parseInt(choice)-1,0));
+						win.logTrace(b.showAttacks());
+					}
 				}
 			}
 			catch (Exception e1)
 			{
 				win.logTrace("Woops ! That doesn't look like a valid attack !");
 			}
-			win.logTrace(b.showAttacks());
+		}
+		else if (win.whatToChoose.equals("swap"))
+		{
+			try
+			{
+				//Throws a NPE if the number is not a valid choice
+				if (Integer.parseInt(choice) > b.p1.getTeam().size() || Integer.parseInt(choice) == 0)
+					throw  new NullPointerException();
+				if (b.p1.getTeam().size()>0)
+				{
+					b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
+					win.logTrace("You sent "+b.getp1pkmn().getName()+" !");
+					win.whatToChoose = "attack";
+					win.logTrace(b.showAttacks());
+				}
+				else
+				{
+					win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
+					win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+					win.whatToChoose = "continue";
+				}
+			}
+			catch (Exception e10)
+			{
+				win.logTrace("Woops ! That doesn't look like a valid Pokémon in your team !");
+			}
+		}
+		else if (win.whatToChoose.equals("continue"))
+		{
+			//Throws a NPE if the number is not a valid choice
+			try
+			{
+				if (Integer.parseInt(choice) != 1 || Integer.parseInt(choice) != 2)
+					throw  new NullPointerException();
+				if (Integer.parseInt(choice) == 1)
+				{
+					win.logTrace("Okay ! Let's play again. Good luck !");
+					win.whatToChoose = "team";
+					b = new Battle(gd);
+				}
+				else
+				{
+					win.logTrace("Ok then. See you later.");
+					Thread.sleep(1000);
+					System.exit(0);
+				}
+			}
+			catch (Exception e54)
+			{
+				win.logTrace("Woops ! That choice is not valid.");
+			}
 		}
 	}
 }
