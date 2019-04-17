@@ -11,6 +11,7 @@ public class Battle
 {
 	Player p1;
 	Player p2;
+	String s;
 	GameData gd;
 	
 	public Battle(GameData gd)
@@ -22,7 +23,7 @@ public class Battle
 	//Shows attacks that can be used by your pokémon
 	public String showAttacks()
 	{
-		String s = new String();
+		this.s = new String();
 		s = "***********************\nPlease choose an attack.";
 		for (int i=0;i<this.getp1pkmn().getAttacks().size();i++)
 		{
@@ -35,7 +36,7 @@ public class Battle
 	//Return s which will be printed as a log trace.
 	public String useAttack(int iAtt, int i)
 	{
-		String s = new String();
+		this.s = new String();
 		if (i == 0)
 		{
 			s = this.getp1pkmn().getName()+" used "+this.getp1attack(iAtt).getName()+".";
@@ -60,7 +61,7 @@ public class Battle
 	//Return s which will be printed as a log trace.
 	private String doDamages(int iAtt, int i)
 	{
-		String s = new String();
+		this.s = new String();
 		int damage = 0;
 		int power;
 		if (i == 0)
@@ -80,6 +81,8 @@ public class Battle
 				else
 					damage = damage * (this.getp1pkmn().getCurrentSpe()/this.getp2pkmn().getCurrentSpe());
 				damage = damage/50 + 2;
+				//Checks strength/weakness
+				damage = this.checkStrWeak(damage, this.getp1attack(iAtt),this.getp2pkmn());
 				s = this.getp2pkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
 				this.getp2pkmn().setCurrentHp(this.getp2pkmn().getCurrentHp() - damage);
 				s = this.checkHpLeft(s,this.getp2pkmn(),1);
@@ -100,6 +103,8 @@ public class Battle
 				else
 					damage = damage * (this.getp2pkmn().getCurrentSpe()/this.getp1pkmn().getCurrentSpe());
 				damage = damage/50 + 2;
+				//Check strength/weakness
+				damage = this.checkStrWeak(damage, this.getp2attack(iAtt),this.getp1pkmn());
 				s = this.getp1pkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
 				this.getp1pkmn().setCurrentHp(this.getp1pkmn().getCurrentHp() - damage);
 				s = this.checkHpLeft(s,this.getp1pkmn(),0);
@@ -161,5 +166,37 @@ public class Battle
 			return false;
 		else
 			return true;
+	}
+	
+	private int checkStrWeak(int dmg, Attack att, Pokemon pk)
+	{
+		//Checking Strength first
+		for (int i = 0;i<pk.getType1().getStrength().size();i++)
+		{
+			if (att.getType().equals(pk.getType1().getStrength().get(i)))
+			{
+				s = "It's super effective !\n";
+				return dmg*2;
+			}
+		}
+		//Checking weakness then
+		for (int i = 0;i<pk.getType1().getWeak().size();i++)
+		{
+			if (att.getType().equals(pk.getType1().getWeak().get(i)))
+			{
+				this.s = "It's not very effective...\n";
+				return dmg/2;
+			}
+		}
+		//Checking uselessness
+		for (int i = 0;i<pk.getType1().getUseless().size();i++)
+		{
+			if (att.getType().equals(pk.getType1().getUseless().get(i)))
+			{
+				this.s = "It did nothing at all !\n";
+				return 0;
+			}
+		}
+		return dmg;
 	}
 }

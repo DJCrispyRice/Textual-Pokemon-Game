@@ -193,7 +193,7 @@ public class Main implements ActionListener
 					}
 				}
 			}
-			catch (Exception e1)
+			catch (NullPointerException e1)
 			{
 				win.logTrace("Woops ! That doesn't look like a valid attack !");
 			}
