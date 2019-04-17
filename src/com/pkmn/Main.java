@@ -94,9 +94,20 @@ public class Main implements ActionListener
 					//Checks if the opponent fainted
 					if (b.p2.getCurrentPkmn().getStatus()==9)
 					{
-						//Randomly selects a new pokémon if the previous one fainted
-						b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size())));
-						win.logTrace("Your opponent sent "+b.getp2pkmn().getName()+" !");
+						//Randomly selects a new pokémon if the previous one fainted, if any available
+						if (b.p2.getTeam().size()>0)
+						{
+							b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size())));
+							b.p2.setCurrentStats();
+							win.logTrace("Your opponent sent "+b.getp2pkmn().getName()+" !");
+							win.logTrace(b.showAttacks());
+						}
+						else
+						{
+							win.logTrace("You won ! :-D");
+							win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+							win.whatToChoose = "continue";
+						}
 					}
 					else
 					{
@@ -105,21 +116,27 @@ public class Main implements ActionListener
 						//Checks if the player fainted
 						if (b.p1.getCurrentPkmn().getStatus()==9)
 						{
-							//Randomly selects a new pokémon if the previous one fainted
-							b.p1.setCurrentPkmn(b.p1.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p1.getTeam().size())));
-							win.logTrace("Please choose another Pokémon from your team.");
-							for (int i = 0; i < b.p1.getTeam().size(); i++)
+							//Checking if the battle is over
+							if (b.p1.getTeam().size()>0)
 							{
-								win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
+								win.logTrace("Please choose another Pokémon from your team.");
+								for (int i = 0; i < b.p1.getTeam().size(); i++)
+								{
+									win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
+								}
+								win.logTrace("*********************** ");
+								win.whatToChoose = "swap";
 							}
-							win.whatToChoose = "swap";
-							choice = null;
+							else
+							{
+								win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
+								win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+								choice = null;
+								win.whatToChoose = "continue";
+							}
 						}
 						else
-						{
-							win.logTrace(b.useAttack(Integer.parseInt(choice)-1,0));
 							win.logTrace(b.showAttacks());
-						}
 					}
 				}
 				
@@ -131,19 +148,48 @@ public class Main implements ActionListener
 					//Checks if the player fainted
 					if (b.p1.getCurrentPkmn().getStatus()==9)
 					{
-						win.logTrace("Please choose another Pokémon from your team.");
-						for (int i = 0; i < b.p1.getTeam().size(); i++)
+						//Checking if the battle is over
+						if (b.p1.getTeam().size()>0)
 						{
-							win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
+							win.logTrace("Please choose another Pokémon from your team.");
+							for (int i = 0; i < b.p1.getTeam().size(); i++)
+							{
+								win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
+							}
+							win.logTrace("*********************** ");
+							win.whatToChoose = "swap";
 						}
-						win.logTrace("*********************** ");
-						choice = null;
-						win.whatToChoose = "swap";
+						else
+						{
+							win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
+							win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+							choice = null;
+							win.whatToChoose = "continue";
+						}
 					}
 					else
 					{
 						win.logTrace(b.useAttack(Integer.parseInt(choice)-1,0));
-						win.logTrace(b.showAttacks());
+						//Checks if the opponent fainted
+						if (b.p2.getCurrentPkmn().getStatus()==9)
+						{
+							//Randomly selects a new pokémon if the previous one fainted, if any available
+							if (b.p2.getTeam().size()>0)
+							{
+								b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size())));
+								b.p2.setCurrentStats();
+								win.logTrace("Your opponent sent "+b.getp2pkmn().getName()+" !");
+								win.logTrace(b.showAttacks());
+							}
+							else
+							{
+								win.logTrace("You won ! :-D");
+								win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+								win.whatToChoose = "continue";
+							}
+						}
+						else
+							win.logTrace(b.showAttacks());
 					}
 				}
 			}
@@ -159,18 +205,19 @@ public class Main implements ActionListener
 				//Throws a NPE if the number is not a valid choice
 				if (Integer.parseInt(choice) > b.p1.getTeam().size() || Integer.parseInt(choice) == 0)
 					throw  new NullPointerException();
-				if (b.p1.getTeam().size()>0)
+				System.out.println(Integer.toString(b.p1.getTeam().size()));
+				if (b.p1.getTeam().size()!=0)
 				{
 					b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
+					b.p1.setCurrentStats();
 					win.logTrace("You sent "+b.getp1pkmn().getName()+" !");
 					win.whatToChoose = "attack";
+					choice = null;
 					win.logTrace(b.showAttacks());
 				}
 				else
 				{
-					win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
-					win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
-					win.whatToChoose = "continue";
+					
 				}
 			}
 			catch (Exception e10)
@@ -183,11 +230,13 @@ public class Main implements ActionListener
 			//Throws a NPE if the number is not a valid choice
 			try
 			{
-				if (Integer.parseInt(choice) != 1 || Integer.parseInt(choice) != 2)
+				if (!choice.equals("1") && !choice.equals("2"))
 					throw  new NullPointerException();
-				if (Integer.parseInt(choice) == 1)
+				if (choice.equals("1"))
 				{
-					win.logTrace("Okay ! Let's play again. Good luck !");
+					win.logTrace("Okay, let's play again. Good luck !");
+					Thread.sleep(1000);
+					win.clear();
 					win.whatToChoose = "team";
 					b = new Battle(gd);
 				}

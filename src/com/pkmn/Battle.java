@@ -76,7 +76,6 @@ public class Battle
 			if (this.getp2attack(iAtt).getStatus() == 0)
 			{
 				damage = ((2*20)/2 + 2)*this.getp2attack(iAtt).getPower();
-				System.out.println(Integer.toString(damage));
 				if (this.getp2attack(iAtt).getPhy())
 					damage = damage * (this.getp2pkmn().getCurrentAtk()/this.getp1pkmn().getCurrentDef());
 				else

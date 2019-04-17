@@ -37,4 +37,15 @@ public class Player
 	{
 		this.currentPkmn = currentPkmn;
 	}
+	
+	public void setCurrentStats()
+	{
+		currentPkmn.setCurrentHp(currentPkmn.getBaseHp());
+		currentPkmn.setCurrentAtk(currentPkmn.getBaseAtk());
+		currentPkmn.setCurrentDef(currentPkmn.getBaseDef());
+		currentPkmn.setCurrentAccu(currentPkmn.getBaseAccu());
+		currentPkmn.setCurrentSpe(currentPkmn.getBaseSpe());
+		currentPkmn.setCurrentSpd(currentPkmn.getBaseSpd());
+		currentPkmn.setStatus(0);
+	}
 }

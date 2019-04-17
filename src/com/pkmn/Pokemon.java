@@ -121,7 +121,7 @@ public class Pokemon
 		return status;
 	}
 
-	private void setStatus(int status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 
