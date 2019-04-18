@@ -83,9 +83,9 @@ public class Battle
 				damage = damage/50 + 2;
 				//Checks strength/weakness
 				damage = this.checkStrWeak(damage, this.getp1attack(iAtt),this.getp2pkmn());
-				s = this.getp2pkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
+				this.s = this.s + this.getp2pkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
 				this.getp2pkmn().setCurrentHp(this.getp2pkmn().getCurrentHp() - damage);
-				s = this.checkHpLeft(s,this.getp2pkmn(),1);
+				this.checkHpLeft(this.getp2pkmn(),1);
 			}
 		}
 		else
@@ -105,9 +105,9 @@ public class Battle
 				damage = damage/50 + 2;
 				//Check strength/weakness
 				damage = this.checkStrWeak(damage, this.getp2attack(iAtt),this.getp1pkmn());
-				s = this.getp1pkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
+				this.s = s + this.getp1pkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
 				this.getp1pkmn().setCurrentHp(this.getp1pkmn().getCurrentHp() - damage);
-				s = this.checkHpLeft(s,this.getp1pkmn(),0);
+				this.checkHpLeft(this.getp1pkmn(),0);
 			}
 		}
 		return s;
@@ -134,25 +134,24 @@ public class Battle
 	}
 	
 	//To write how many hp left the pokémon has
-	public String checkHpLeft(String s, Pokemon pk, int i)
+	public void checkHpLeft(Pokemon pk, int i)
 	{
 		if (pk.getStatus() == 9)
 		{
-			s = s + "\n***********************\n"+pk.getName()+" fainted !";
+			this.s = this.s + "\n***********************\n"+pk.getName()+" fainted !";
 			if (i == 0)
 			{
 				this.p1.getTeam().remove(pk);
-				s = s + "\nYou have "+this.p1.getTeam().size()+" pokémons left.";
+				this.s = this.s + "\nYou have "+this.p1.getTeam().size()+" pokémons left.";
 			}
 			else
 			{
 				this.p2.getTeam().remove(pk);
-				s = s + "\nYour opponent has "+this.p2.getTeam().size()+" pokémons left.";
+				this.s = this.s + "\nYour opponent has "+this.p2.getTeam().size()+" pokémons left.";
 			}
 		}
 		else
-			s = s +"\n"+pk.getName()+" has "+pk.getCurrentHp()+" HP left.";
-		return s;
+			this.s = this.s +"\n"+pk.getName()+" has "+pk.getCurrentHp()+" HP left.";
 	}
 	
 	private boolean checkHit(Attack att, Pokemon pk)
