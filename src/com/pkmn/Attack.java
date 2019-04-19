@@ -5,7 +5,7 @@ package com.pkmn;
  * and its accuracy to hit.
  * 
  * Causes = causes to foe
- * Applies = applies to your pokémon.
+ * Applies = applies to your pokÃ©mon.
  * 
  * Status 0 : Normal (no status)
  * Status 1 : Paralysis

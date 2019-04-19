@@ -11,7 +11,7 @@ public class Battle
 {
 	Player p1;
 	Player p2;
-	String s;
+	String s = new String();
 	GameData gd;
 	
 	public Battle(GameData gd)
@@ -25,9 +25,9 @@ public class Battle
 	{
 		this.s = new String();
 		s = "***********************\nPlease choose an attack.";
-		for (int i=0;i<this.getp1pkmn().getAttacks().size();i++)
+		for (int i=0;i<this.getpPkmn(p1).getAttacks().size();i++)
 		{
-			s = s + "\n "+Integer.toString(i+1)+". "+this.getp1attack(i).getName()+" - "+this.getp1attack(i).getDescription();
+			s = s + "\n "+Integer.toString(i+1)+". "+this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
 		}
 		s = s + "\n*********************** ";
 		return s;
@@ -39,19 +39,19 @@ public class Battle
 		this.s = new String();
 		if (i == 0)
 		{
-			s = this.getp1pkmn().getName()+" used "+this.getp1attack(iAtt).getName()+".";
-			if (checkHit(this.getp1attack(iAtt),this.getp1pkmn()))
-				s = s + "\n"+this.doDamages(iAtt, 0);
+			this.s = this.getpPkmn(p1).getName()+" used "+this.getpattack(this.p1,iAtt).getName()+". ";
+			if (checkHit(this.getpattack(this.p1,iAtt),this.getpPkmn(this.p1)))
+				this.s = this.doDamages(iAtt, 0);
 			else
-				s = s + "\n"+this.getp1pkmn().getName() + " missed !";
+				this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " missed !";
 		}
 		else
 		{
-			s = this.getp2pkmn().getName()+" used "+this.getp2attack(iAtt).getName()+".";
-			if (checkHit(this.getp2attack(iAtt),this.getp2pkmn()))
-				s = s + "\n"+this.doDamages(iAtt, 1);
+			this.s = this.getpPkmn(p2).getName()+" used "+this.getpattack(this.p2,iAtt).getName()+". ";
+			if (checkHit(this.getpattack(this.p2,iAtt),this.getpPkmn(this.p2)))
+				this.s = this.doDamages(iAtt, 1);
 			else
-				s = s + "\n"+this.getp2pkmn().getName() + " missed !";
+				this.s = this.s + "\n"+this.getpPkmn(this.p2).getName() + " missed !";
 		}
 		return s;
 	}
@@ -61,76 +61,33 @@ public class Battle
 	//Return s which will be printed as a log trace.
 	private String doDamages(int iAtt, int i)
 	{
-		this.s = new String();
-		int damage = 0;
-		int power;
 		if (i == 0)
 		{
 			//Checking the status of the attack to see what will happen next
 			//0 = standard attack, do nothing more than damages
-			if (this.getp1attack(iAtt).getStatus() == 0)
+			if (this.getpattack(this.p1, iAtt).getStatus() == 0)
 			{
-				power = this.getp1attack(iAtt).getPower();
-				//Verify if STAB
-				if (this.getp1attack(iAtt).getType().equals(this.getp1pkmn().getType1()) || this.getp1attack(iAtt).getType().equals(this.getp1pkmn().getType2()))
-					power = (int) (power * 1.5);
-				//Mathematical calculation for damages
-				damage = ((2*20)/2 + 2)*power;
-				if (this.getp1attack(iAtt).getPhy())
-					damage = damage * (this.getp1pkmn().getCurrentAtk()/this.getp2pkmn().getCurrentDef());
-				else
-					damage = damage * (this.getp1pkmn().getCurrentSpe()/this.getp2pkmn().getCurrentSpe());
-				damage = damage/50 + 2;
-				//Checks strength/weakness
-				damage = this.checkStrWeak(damage, this.getp1attack(iAtt),this.getp2pkmn());
-				this.s = this.s + this.getp2pkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
-				this.getp2pkmn().setCurrentHp(this.getp2pkmn().getCurrentHp() - damage);
-				this.checkHpLeft(this.getp2pkmn(),1);
+				atk0(this.p1, this.p2, iAtt);
 			}
 		}
 		else
 		{
-			if (this.getp2attack(iAtt).getStatus() == 0)
+			if (this.getpattack(this.p2, iAtt).getStatus() == 0)
 			{
-				power = this.getp2attack(iAtt).getPower();
-				//Verify if STAB
-				if (this.getp2attack(iAtt).getType().equals(this.getp2pkmn().getType1()) || this.getp2attack(iAtt).getType().equals(this.getp2pkmn().getType2()))
-					power = (int) (power * 1.5);
-				//Mathematical calculation for damages
-				damage = ((2*20)/2 + 2)*power;
-				if (this.getp2attack(iAtt).getPhy())
-					damage = damage * (this.getp2pkmn().getCurrentAtk()/this.getp1pkmn().getCurrentDef());
-				else
-					damage = damage * (this.getp2pkmn().getCurrentSpe()/this.getp1pkmn().getCurrentSpe());
-				damage = damage/50 + 2;
-				//Check strength/weakness
-				damage = this.checkStrWeak(damage, this.getp2attack(iAtt),this.getp1pkmn());
-				this.s = s + this.getp1pkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
-				this.getp1pkmn().setCurrentHp(this.getp1pkmn().getCurrentHp() - damage);
-				this.checkHpLeft(this.getp1pkmn(),0);
+				atk0(this.p2, this.p1, iAtt);
 			}
 		}
-		return s;
+		return this.s;
 	}
 	
-	public Pokemon getp1pkmn()
+	public Pokemon getpPkmn(Player p)
 	{
-		return this.p1.getCurrentPkmn();
+		return p.getCurrentPkmn();
 	}
 	
-	public Pokemon getp2pkmn()
+	public Attack getpattack(Player p, int i)
 	{
-		return this.p2.getCurrentPkmn();
-	}
-	
-	public Attack getp1attack(int i)
-	{
-		return this.getp1pkmn().getAttacks().get(i);
-	}
-	
-	public Attack getp2attack(int i)
-	{
-		return this.getp2pkmn().getAttacks().get(i);
+		return p.getCurrentPkmn().getAttacks().get(i);
 	}
 	
 	//To write how many hp left the pokémon has
@@ -151,7 +108,7 @@ public class Battle
 			}
 		}
 		else
-			this.s = this.s +"\n"+pk.getName()+" has "+pk.getCurrentHp()+" HP left.";
+			this.s = this.s +"\n"+pk.getName()+" has "+pk.getCurrentHp()+"/"+pk.getBaseHp()+" HP.";
 	}
 	
 	private boolean checkHit(Attack att, Pokemon pk)
@@ -174,7 +131,7 @@ public class Battle
 		{
 			if (att.getType().equals(pk.getType1().getStrength().get(i)))
 			{
-				s = "It's super effective !\n";
+				this.s = "It's super effective !\n";
 				return dmg*2;
 			}
 		}
@@ -197,5 +154,71 @@ public class Battle
 			}
 		}
 		return dmg;
+	}
+	
+	private boolean checkCrit(Attack att, Pokemon pk)
+	{
+		//Check if the attack has high critical ratio
+		if (att.getStatus() == 47)
+		{
+			int T = pk.getBaseSpd() * 4;
+			int P = ThreadLocalRandom.current().nextInt(0,256);
+			if (T > P)
+			{
+				this.s = s + "\n A critical hit !";
+				return true;
+			}
+			else
+				return false;
+		}
+		else
+		{
+			int T = pk.getBaseSpd() / 2;
+			int P = ThreadLocalRandom.current().nextInt(0,256);
+			if (T > P)
+			{
+				this.s = s + "\n A critical hit ! ";
+				return true;
+			}
+			else
+				return false;
+		}
+	}
+	//Mechanics for status 0 attack.
+	//atk is attacker, def is defender
+	private void atk0(Player atk, Player def, int iAtt)
+	{
+		int damage = 0;
+		int power;
+		power = this.getpattack(atk,iAtt).getPower();
+		//Verify if STAB
+		if (this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType1()) || this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType2()))
+			power = (int) (power * 1.5);
+		//Mathematical calculation for damages
+		damage = ((2*20)/2 + 2)*power;
+		//Checking crit to see if we use base or current stats
+		if (checkCrit(this.getpattack(atk,iAtt), atk.getCurrentPkmn()))
+		{
+			if (this.getpattack(atk,iAtt).getPhy())
+				damage = damage * (atk.getCurrentPkmn().getBaseAtk()/def.getCurrentPkmn().getBaseDef());
+			else
+				damage = damage * (atk.getCurrentPkmn().getBaseSpe()/def.getCurrentPkmn().getBaseSpe());
+			damage = damage/50 + 2;
+			damage = (int) (damage * 1.5);
+		}
+		else
+		{
+			if (this.getpattack(atk,iAtt).getPhy())
+				damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/def.getCurrentPkmn().getCurrentDef());
+			else
+				damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/def.getCurrentPkmn().getCurrentSpe());
+			damage = damage/50 + 2;
+		}
+		//Checks strength/weakness
+		damage = this.checkStrWeak(damage, this.getpattack(atk,iAtt),def.getCurrentPkmn());
+		if (damage != 0)
+			this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
+		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
+		this.checkHpLeft(def.getCurrentPkmn(),1);
 	}
 }
