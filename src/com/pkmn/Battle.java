@@ -65,16 +65,26 @@ public class Battle
 		{
 			//Checking the status of the attack to see what will happen next
 			//0 = standard attack, do nothing more than damages
-			if (this.getpattack(this.p1, iAtt).getStatus() == 0)
+			switch (this.getpattack(this.p1, iAtt).getStatus())
 			{
-				atk0(this.p1, this.p2, iAtt);
+				case 0 :
+					atk0(this.p1, this.p2, iAtt, 1);
+					break;
+				case 16:
+					atk16(this.p2);
+					break;
 			}
 		}
 		else
 		{
-			if (this.getpattack(this.p2, iAtt).getStatus() == 0)
+			switch (this.getpattack(this.p2, iAtt).getStatus())
 			{
-				atk0(this.p2, this.p1, iAtt);
+				case 0 :
+					atk0(this.p2, this.p1, iAtt, 0);
+					break;
+				case 16 :
+					atk16(this.p1);
+					break;
 			}
 		}
 		return this.s;
@@ -90,7 +100,7 @@ public class Battle
 		return p.getCurrentPkmn().getAttacks().get(i);
 	}
 	
-	//To write how many hp left the pokémon has
+	//To write how many hp left the pokémon has. i -> 0 = player, 1 = IA
 	public void checkHpLeft(Pokemon pk, int i)
 	{
 		if (pk.getStatus() == 9)
@@ -127,20 +137,21 @@ public class Battle
 	private int checkStrWeak(int dmg, Attack att, Pokemon pk)
 	{
 		//Checking Strength first
-		for (int i = 0;i<pk.getType1().getStrength().size();i++)
+		for (int i = 0;i<att.getType().getStrength().size();i++)
 		{
-			if (att.getType().equals(pk.getType1().getStrength().get(i)))
+			if (att.getType().getStrength().get(i).equals(pk.getType1()))
 			{
-				this.s = "It's super effective !\n";
+				this.s = this.s + "\nIt's super effective ! ";
 				return dmg*2;
 			}
 		}
 		//Checking weakness then
-		for (int i = 0;i<pk.getType1().getWeak().size();i++)
+		for (int i = 0;i<att.getType().getWeak().size();i++)
 		{
-			if (att.getType().equals(pk.getType1().getWeak().get(i)))
+			
+			if (att.getType().getWeak().get(i).equals(pk.getType1()))
 			{
-				this.s = "It's not very effective...\n";
+				this.s = this.s + "\nIt's not very effective... ";
 				return dmg/2;
 			}
 		}
@@ -149,7 +160,7 @@ public class Battle
 		{
 			if (att.getType().equals(pk.getType1().getUseless().get(i)))
 			{
-				this.s = "It did nothing at all !\n";
+				this.s = this.s+"\nIt did nothing at all ! ";
 				return 0;
 			}
 		}
@@ -165,7 +176,7 @@ public class Battle
 			int P = ThreadLocalRandom.current().nextInt(0,256);
 			if (T > P)
 			{
-				this.s = s + "\n A critical hit !";
+				this.s = s + "\nA critical hit !";
 				return true;
 			}
 			else
@@ -177,7 +188,7 @@ public class Battle
 			int P = ThreadLocalRandom.current().nextInt(0,256);
 			if (T > P)
 			{
-				this.s = s + "\n A critical hit ! ";
+				this.s = s + "\nA critical hit ! ";
 				return true;
 			}
 			else
@@ -186,14 +197,17 @@ public class Battle
 	}
 	//Mechanics for status 0 attack.
 	//atk is attacker, def is defender
-	private void atk0(Player atk, Player def, int iAtt)
+	private void atk0(Player atk, Player def, int iAtt, int i)
 	{
 		int damage = 0;
 		int power;
 		power = this.getpattack(atk,iAtt).getPower();
 		//Verify if STAB
 		if (this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType1()) || this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType2()))
+		{	
 			power = (int) (power * 1.5);
+			System.out.println("STAB : " +power);
+		}
 		//Mathematical calculation for damages
 		damage = ((2*20)/2 + 2)*power;
 		//Checking crit to see if we use base or current stats
@@ -215,10 +229,55 @@ public class Battle
 			damage = damage/50 + 2;
 		}
 		//Checks strength/weakness
-		damage = this.checkStrWeak(damage, this.getpattack(atk,iAtt),def.getCurrentPkmn());
+		damage = this.checkStrWeak(damage, this.getpattack(atk,iAtt), def.getCurrentPkmn());
 		if (damage != 0)
 			this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
 		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
-		this.checkHpLeft(def.getCurrentPkmn(),1);
+		this.checkHpLeft(def.getCurrentPkmn(),i);
+	}
+	
+	private void atk16(Player def)
+	{
+		if (def.getCurrentPkmn().getStageDef()==6)
+			this.s = this.s + def.getCurrentPkmn().getName()+"'s defense won't drop anymore !";
+		else
+		{
+			def.getCurrentPkmn().setStageDef(def.getCurrentPkmn().getStageDef() - 1);
+			this.s = this.s + def.getCurrentPkmn().getName()+"'s defense fell !";
+			calculateCurrentDef(def.getCurrentPkmn());
+		}
+	}
+	
+	private void calculateCurrentDef(Pokemon pk)
+	{
+		switch (pk.getStageDef())
+		{
+			case 6 :
+				pk.setCurrentDef(pk.getBaseDef() * 4);
+			case 5 : 
+				pk.setCurrentDef((int) (pk.getBaseDef() * 3.5));
+			case 4 : 
+				pk.setCurrentDef(pk.getBaseDef() * 3);
+			case 3 : 
+				pk.setCurrentDef((int) (pk.getBaseDef() * 2.5));
+			case 2 : 
+				pk.setCurrentDef(pk.getBaseDef() * 2);
+			case 1 :
+				pk.setCurrentDef((int) (pk.getBaseDef() * 1.5));
+			case 0 :
+				pk.setCurrentDef(pk.getBaseDef());
+			case -1 :
+				pk.setCurrentDef((int) (pk.getBaseDef() * 0.66));
+			case -2 :
+				pk.setCurrentDef((int) (pk.getBaseDef() * 0.5));
+			case -3 :
+				pk.setCurrentDef((int) (pk.getBaseDef() * 0.4));
+			case -4 :
+				pk.setCurrentDef((int) (pk.getBaseDef() * 0.33));
+			case -5 :
+				pk.setCurrentDef((int) (pk.getBaseDef() * 0.28));
+			case -6 :
+				pk.setCurrentDef((int) (pk.getBaseDef() * 0.25));
+		}
 	}
 }

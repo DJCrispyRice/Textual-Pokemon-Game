@@ -483,8 +483,8 @@ public final class GameData
 		//Assigning attacks to Pokémons. Currently assigning only tackle and tail whip for testing purposes
 		for (i=1;i<=151;i++)
 		{
-			this.allPkmn[i].getAttacks().add(this.allAtks[137]);
-			this.allPkmn[i].getAttacks().add(this.allAtks[138]);
+			this.allPkmn[i].getAttacks().add(this.allAtks[155]);
+			this.allPkmn[i].getAttacks().add(this.allAtks[152]);
 		}
 		
 		//Tracing that loading is OK

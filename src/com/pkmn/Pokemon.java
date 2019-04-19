@@ -31,15 +31,50 @@ public class Pokemon
 	int currentHp;
 	int baseAtk;
 	int currentAtk;
+	int stageAtk = 0;
 	int baseDef;
 	int currentDef;
+	int stageDef = 0;
 	int baseSpd;
 	int currentSpd;
+	int stageSpd = 0;
 	int baseSpe;
 	int currentSpe;
+	int stageSpe = 0;
 	int baseAccu = 100;
 	int currentAccu = 100;
+	int stageAccu = 0;
 	
+	public int getStageAtk() {
+		return stageAtk;
+	}
+	public void setStageAtk(int stageAtk) {
+		this.stageAtk = stageAtk;
+	}
+	public int getStageDef() {
+		return stageDef;
+	}
+	public void setStageDef(int stageDef) {
+		this.stageDef = stageDef;
+	}
+	public int getStageSpd() {
+		return stageSpd;
+	}
+	public void setStageSpd(int stageSpd) {
+		this.stageSpd = stageSpd;
+	}
+	public int getStageSpe() {
+		return stageSpe;
+	}
+	public void setStageSpe(int stageSpe) {
+		this.stageSpe = stageSpe;
+	}
+	public int getStageAccu() {
+		return stageAccu;
+	}
+	public void setStageAccu(int stageAccu) {
+		this.stageAccu = stageAccu;
+	}
 	//Empty constructor only for the fake index 0 Pok�mon
 	public Pokemon()
 	{
