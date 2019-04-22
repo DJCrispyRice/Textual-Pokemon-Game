@@ -14,7 +14,7 @@ package com.pkmn;
  * Status 4 : Burn
  * Status 5 : Frozen
  * Status 6 : Confused
- * Status 7 : Causes attack boost
+ * Status 7 : Causes attack boost > never used
  * Status 8 : Causes attack drop
  * Status 9 : Applies attack boost
  * Status 10 : Applies attack drop

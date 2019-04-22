@@ -1,7 +1,7 @@
 package com.pkmn;
 /* 
  * This class regroups every game data. It is created at the opening of the game and contains all assets such as the 151 Pokémons, all attacks and all types.
- * It will be instantiated under the name "gd" and should be accessed from everywhere. Everything is contained in its array and will get and will get an Id
+ * It will be instantiated under the name "gd" and should be accessed from everywhere. Everything is contained in its array and will get an Id
  * which corresponds to its place in the array.
  * It will also contains some logic of the game. 
  */
@@ -41,7 +41,7 @@ public final class GameData
 		//Assign types their strength/weakness/uselessness
 		//Normal : no strength, weak against rock, useless against ghost.
 		this.allTypes[0].getWeak().add(this.allTypes[5]);
-		this.allTypes[0].getUseless().add(this.allTypes[5]);
+		this.allTypes[0].getUseless().add(this.allTypes[7]);
 		
 		//Fight : strong against normal and rock, weak against flying, poison, bug and psychic
 		this.allTypes[1].getStrength().add(this.allTypes[0]);
@@ -156,7 +156,7 @@ public final class GameData
 	{
 		this.allAtks = new Attack[158];
 		int i = 0;
-		//Name - Description - Id - Power - PP - Physical/Special - Type - Status (refer to attack class) - accuracy for status change, accuracy
+		//Name - Description - Id - Power - PP - Physical/Special - Type - ID - Status (refer to attack class) - accuracy for status change, accuracy
 		this.allAtks[i] = new Attack("Absorb", "User recovers half the HP inflicted on opponent.", 0, 20, 25, false, this.allTypes[10],44,100,100); i++;
 		this.allAtks[i] = new Attack("Acid", "May lower opponent's Special.", 1, 40, 30, false, this.allTypes[3],32,10,100); i++;
 		this.allAtks[i] = new Attack("Acid Armor", "Sharply raises user's Defense.", 2, 0, 20, false, this.allTypes[3],21,100,100); i++;
@@ -458,7 +458,7 @@ public final class GameData
 		this.allPkmn[i] = new Pokemon("Tauros",i,this.allTypes[0],null,75,100,95,110,70);i++;
 		this.allPkmn[i] = new Pokemon("Magikarp",i,this.allTypes[9],null,20,10,55,80,20);i++;
 		this.allPkmn[i] = new Pokemon("Gyarados",i,this.allTypes[9],this.allTypes[2],95,125,79,81,100);i++;
-		this.allPkmn[i] = new Pokemon("Lapras",i,this.allTypes[13],null,130,85,80,60,95);i++;
+		this.allPkmn[i] = new Pokemon("Lapras",i,this.allTypes[9],this.allTypes[13],130,85,80,60,95);i++;
 		this.allPkmn[i] = new Pokemon("Ditto",i,this.allTypes[0],null,48,48,48,48,48);i++;
 		this.allPkmn[i] = new Pokemon("Eevee",i,this.allTypes[0],null,55,55,50,55,65);i++;
 		this.allPkmn[i] = new Pokemon("Vaporeon",i,this.allTypes[9],null,130,65,60,65,110);i++;
@@ -480,11 +480,11 @@ public final class GameData
 		this.allPkmn[i] = new Pokemon("Mewtwo",i,this.allTypes[12],null,106,110,90,130,154);i++;
 		this.allPkmn[i] = new Pokemon("Mew",i,this.allTypes[12],null,100,100,100,100,100);
 		
-		//Assigning attacks to Pokémons. Currently assigning only tackle and tail whip for testing purposes
+		//Assigning attacks to Pokémons. Currently assigning fixed attacks for testing purposes.
 		for (i=1;i<=151;i++)
 		{
-			this.allPkmn[i].getAttacks().add(this.allAtks[155]);
-			this.allPkmn[i].getAttacks().add(this.allAtks[152]);
+			this.allPkmn[i].getAttacks().add(this.allAtks[137]);
+			this.allPkmn[i].getAttacks().add(this.allAtks[143]);
 		}
 		
 		//Tracing that loading is OK

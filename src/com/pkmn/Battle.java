@@ -64,27 +64,46 @@ public class Battle
 		if (i == 0)
 		{
 			//Checking the status of the attack to see what will happen next
-			//0 = standard attack, do nothing more than damages
-			switch (this.getpattack(this.p1, iAtt).getStatus())
+			//If move's power is higher than 0, do damages. Then check status change
+			if (this.getpattack(this.p1,iAtt).getPower()>0)
+				atk0(this.p1, this.p2, iAtt, 1);
+			int randomstat = ThreadLocalRandom.current().nextInt(0,100);
+			if (randomstat >= 100 - this.getpattack(this.p1, iAtt).getAccu_status())
 			{
-				case 0 :
-					atk0(this.p1, this.p2, iAtt, 1);
-					break;
-				case 16:
-					atk16(this.p2);
-					break;
+				switch (this.getpattack(this.p1, iAtt).getStatus())
+				{			
+					//Can cause paralysis
+					case 1 : 
+						atk1(this.p2);
+						break;
+					//Attack boost for user
+					case 9 :
+						atk9(this.p1);
+						break;
+					//Def drop for opponent
+					case 16:
+						atk16(this.p2);
+						break;
+				}
 			}
 		}
 		else
 		{
-			switch (this.getpattack(this.p2, iAtt).getStatus())
+			//If moves power is higher than 0, do damages. Then check status change
+			if (this.getpattack(this.p2,iAtt).getPower()>0)
+				atk0(this.p2, this.p1, iAtt, 0);
+			int randomstat = ThreadLocalRandom.current().nextInt(0,100);
+			if (randomstat >= 100 - this.getpattack(this.p2, iAtt).getAccu_status())
 			{
-				case 0 :
-					atk0(this.p2, this.p1, iAtt, 0);
-					break;
-				case 16 :
-					atk16(this.p1);
-					break;
+				switch (this.getpattack(this.p2, iAtt).getStatus())
+				{
+					case 9 : 
+						atk9(this.p2);
+						break;
+					case 16 :
+						atk16(this.p1);
+						break;
+				}
 			}
 		}
 		return this.s;
@@ -195,6 +214,7 @@ public class Battle
 				return false;
 		}
 	}
+	
 	//Mechanics for status 0 attack.
 	//atk is attacker, def is defender
 	private void atk0(Player atk, Player def, int iAtt, int i)
@@ -206,7 +226,6 @@ public class Battle
 		if (this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType1()) || this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType2()))
 		{	
 			power = (int) (power * 1.5);
-			System.out.println("STAB : " +power);
 		}
 		//Mathematical calculation for damages
 		damage = ((2*20)/2 + 2)*power;
@@ -236,48 +255,71 @@ public class Battle
 		this.checkHpLeft(def.getCurrentPkmn(),i);
 	}
 	
+	private void atk1(Player def)
+	{
+		def.getCurrentPkmn().setStatus(1);
+		this.s = this.s + "\n" + def.getCurrentPkmn().getName() + " is paralysed ! It may not be able to attack !";
+		def.getCurrentPkmn().setCurrentSpd((int) (def.getCurrentPkmn().getBaseSpd()*0.25));
+	}
+	
+	//Mechanics for atk9 which is single atk boost for the user
+	private void atk9(Player atk)
+	{
+		System.out.println(atk.getCurrentPkmn().getStageAtk());
+		if (atk.getCurrentPkmn().getStageAtk()>=6)
+			this.s = this.s + atk.getCurrentPkmn().getName()+"'s attack won't go higher !";
+		else
+		{
+			atk.getCurrentPkmn().setStageAtk(atk.getCurrentPkmn().getStageAtk() + 1);
+			this.s = this.s + atk.getCurrentPkmn().getName()+"'s attack rose !";
+			atk.getCurrentPkmn().setCurrentAtk(calculateStat(atk.getCurrentPkmn().getStageAtk(),atk.getCurrentPkmn().getBaseAtk()));
+		}
+	}
+	
+	//Mechanics for atk16 which is single def drop
 	private void atk16(Player def)
 	{
 		if (def.getCurrentPkmn().getStageDef()==6)
-			this.s = this.s + def.getCurrentPkmn().getName()+"'s defense won't drop anymore !";
+			this.s = this.s + def.getCurrentPkmn().getName()+"'s defense won't go lower !";
 		else
 		{
 			def.getCurrentPkmn().setStageDef(def.getCurrentPkmn().getStageDef() - 1);
 			this.s = this.s + def.getCurrentPkmn().getName()+"'s defense fell !";
-			calculateCurrentDef(def.getCurrentPkmn());
+			def.getCurrentPkmn().setCurrentDef(calculateStat(def.getCurrentPkmn().getStageDef(),def.getCurrentPkmn().getBaseDef()));
 		}
 	}
 	
-	private void calculateCurrentDef(Pokemon pk)
+	private int calculateStat(int stage,int stat)
 	{
-		switch (pk.getStageDef())
+		switch (stage)
 		{
 			case 6 :
-				pk.setCurrentDef(pk.getBaseDef() * 4);
+				return stat * 4;
 			case 5 : 
-				pk.setCurrentDef((int) (pk.getBaseDef() * 3.5));
+				return (int) (stat * 3.5);
 			case 4 : 
-				pk.setCurrentDef(pk.getBaseDef() * 3);
+				return (int) (stat * 3);
 			case 3 : 
-				pk.setCurrentDef((int) (pk.getBaseDef() * 2.5));
+				return (int) (stat * 2.5);
 			case 2 : 
-				pk.setCurrentDef(pk.getBaseDef() * 2);
+				return (int) (stat * 2);
 			case 1 :
-				pk.setCurrentDef((int) (pk.getBaseDef() * 1.5));
+				return (int) (stat * 1.5);
 			case 0 :
-				pk.setCurrentDef(pk.getBaseDef());
+				return stat;
 			case -1 :
-				pk.setCurrentDef((int) (pk.getBaseDef() * 0.66));
+				return (int) (stat * 0.66);
 			case -2 :
-				pk.setCurrentDef((int) (pk.getBaseDef() * 0.5));
+				return (int) (stat * 0.5);
 			case -3 :
-				pk.setCurrentDef((int) (pk.getBaseDef() * 0.4));
+				return (int) (stat * 0.4);
 			case -4 :
-				pk.setCurrentDef((int) (pk.getBaseDef() * 0.33));
+				return (int) (stat * 0.33);
 			case -5 :
-				pk.setCurrentDef((int) (pk.getBaseDef() * 0.28));
+				return (int) (stat * 0.28);
 			case -6 :
-				pk.setCurrentDef((int) (pk.getBaseDef() * 0.25));
+				return (int) (stat * 0.25);
 		}
+		return stat;
 	}
 }
