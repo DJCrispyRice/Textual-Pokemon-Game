@@ -180,35 +180,105 @@ public class Battle
 	
 	private int checkStrWeak(int dmg, Attack att, Pokemon pk)
 	{
+		int rt=dmg;
+		int type=0; // 0 = neutral, 1 = super effective, 2 = not very effective, 3 = useless
 		//Checking Strength first
 		for (int i = 0;i<att.getType().getStrength().size();i++)
 		{
 			if (att.getType().getStrength().get(i).equals(pk.getType1()))
 			{
-				this.s = this.s + "\nIt's super effective ! ";
-				return dmg*2;
+				type = 1;
+				rt = dmg*2;
+			}
+		}
+		//Checking Strength for type 2
+		for (int i = 0;i<att.getType().getStrength().size();i++)
+		{
+			if (att.getType().getStrength().get(i).equals(pk.getType2()))
+			{
+				if (type == 1)
+					rt = dmg*4;
+				else
+				{
+					type = 1;
+					rt = dmg*2;
+				}
 			}
 		}
 		//Checking weakness then
 		for (int i = 0;i<att.getType().getWeak().size();i++)
 		{
-			
 			if (att.getType().getWeak().get(i).equals(pk.getType1()))
 			{
-				this.s = this.s + "\nIt's not very effective... ";
-				return dmg/2;
+				type = 2;
+				rt = dmg/2;
+			}
+		}
+		//Checking weakness for type 2
+		for (int i = 0;i<att.getType().getWeak().size();i++)
+		{
+			if (att.getType().getWeak().get(i).equals(pk.getType2()))
+			{
+				if (type == 2)
+					rt = dmg/4;
+				else if (type == 1)
+					rt = dmg;
+				else
+				{
+					type = 2;
+					rt = dmg/2;
+				}
 			}
 		}
 		//Checking uselessness
-		for (int i = 0;i<pk.getType1().getUseless().size();i++)
+		for (int i = 0;i<att.getType().getUseless().size();i++)
 		{
-			if (att.getType().equals(pk.getType1().getUseless().get(i)))
+			if (att.getType().getUseless().get(i).equals(pk.getType1()))
 			{
-				this.s = this.s+"\nIt did nothing at all ! ";
-				return 0;
+				rt = 0;
+				type = 3;
 			}
 		}
-		return dmg;
+		//Checking uselessness for type 2
+		for (int i = 0;i<att.getType().getUseless().size();i++)
+		{
+			if (att.getType().getUseless().get(i).equals(pk.getType2()))
+			{
+				if (type == 0)
+				{
+					rt = dmg/2;
+					type = 2;
+				}
+				else if (type == 1)
+				{
+					rt = dmg;
+					type = 0;
+				}
+				else if (type == 2)
+				{
+					rt = dmg/4;
+					type = 2;
+				}
+				else
+				{
+					type = 3;
+					rt = 0;
+				}
+			}
+		}
+		switch (type)
+		{
+			case 1 : 
+				this.s = this.s + "It's super effective !\n";
+				break;
+			case 2 : 
+				this.s = this.s + "It's not very effective...\n";
+				break;
+			case 3 :
+				this.s = this.s + "It did nothing at all !\n";
+				break;
+		}
+		return rt;
 	}
 	
 	private boolean checkCrit(Attack att, Pokemon pk)

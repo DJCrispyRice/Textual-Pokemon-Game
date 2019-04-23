@@ -122,11 +122,11 @@ public final class GameData
 		this.allTypes[10].getWeak().add(this.allTypes[10]);
 		this.allTypes[10].getWeak().add(this.allTypes[14]);
 		
-		//Eletric : Strong against flying and water, weak against grass, electric and dragon, useless against ground
+		//Eletric : Strong against flying and water, weak against grass, rock, electric and dragon, useless against ground
 		this.allTypes[11].getStrength().add(this.allTypes[2]);
 		this.allTypes[11].getStrength().add(this.allTypes[9]);
-		this.allTypes[11].getWeak().add(this.allTypes[14]);
-		this.allTypes[11].getWeak().add(this.allTypes[14]);
+		this.allTypes[11].getWeak().add(this.allTypes[10]);
+		this.allTypes[11].getWeak().add(this.allTypes[11]);
 		this.allTypes[11].getWeak().add(this.allTypes[14]);
 		this.allTypes[11].getUseless().add(this.allTypes[4]);
 		
