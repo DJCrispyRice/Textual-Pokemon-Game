@@ -36,22 +36,47 @@ public class Battle
 	//Return s which will be printed as a log trace.
 	public String useAttack(int iAtt, int i)
 	{
+		Boolean atkok = true;
 		this.s = new String();
 		if (i == 0)
 		{
-			this.s = this.getpPkmn(p1).getName()+" used "+this.getpattack(this.p1,iAtt).getName()+". ";
-			if (checkHit(this.getpattack(this.p1,iAtt),this.getpPkmn(this.p1)))
-				this.s = this.doDamages(iAtt, 0);
-			else
-				this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " missed !";
+			if (this.getpPkmn(p1).getStatus()==1)
+			{
+				int ckatk = ThreadLocalRandom.current().nextInt(0,100);
+				if (ckatk<25)
+				{
+					atkok = false;
+					this.s = this.getpPkmn(p1).getName() + " is fully paralysed !";
+				}
+			}
+			if (atkok)
+			{
+				this.s = this.getpPkmn(p1).getName()+" used "+this.getpattack(this.p1,iAtt).getName()+". ";
+				if (checkHit(this.getpattack(this.p1,iAtt),this.getpPkmn(this.p1)))
+					this.s = this.doDamages(iAtt, 0);
+				else
+					this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " missed !";
+			}
 		}
 		else
 		{
-			this.s = this.getpPkmn(p2).getName()+" used "+this.getpattack(this.p2,iAtt).getName()+". ";
-			if (checkHit(this.getpattack(this.p2,iAtt),this.getpPkmn(this.p2)))
-				this.s = this.doDamages(iAtt, 1);
-			else
-				this.s = this.s + "\n"+this.getpPkmn(this.p2).getName() + " missed !";
+			if (this.getpPkmn(p2).getStatus()==1)
+			{
+				int ckatk = ThreadLocalRandom.current().nextInt(0,100);
+				if (ckatk<25)
+				{
+					atkok = false;
+					this.s = this.getpPkmn(p2).getName() + " is fully paralysed !";
+				}
+			}
+			if (atkok)
+			{
+				this.s = this.getpPkmn(p2).getName()+" used "+this.getpattack(this.p2,iAtt).getName()+". ";
+				if (checkHit(this.getpattack(this.p2,iAtt),this.getpPkmn(this.p2)))
+					this.s = this.doDamages(iAtt, 1);
+				else
+					this.s = this.s + "\n"+this.getpPkmn(this.p2).getName() + " missed !";
+			}
 		}
 		return s;
 	}
