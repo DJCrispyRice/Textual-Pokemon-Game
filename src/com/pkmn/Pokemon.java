@@ -44,7 +44,21 @@ public class Pokemon
 	int baseAccu = 100;
 	int currentAccu = 100;
 	int stageAccu = 0;
+	int countStatus = 0;
+	int countDot = 0; //Count Damage Over Time
 	
+	public int getCountStatus() {
+		return countStatus;
+	}
+	public void setCountStatus(int countStatus) {
+		this.countStatus = countStatus;
+	}
+	public int getCountDot() {
+		return countDot;
+	}
+	public void setCountDot(int countDot) {
+		this.countDot = countDot;
+	}
 	public int getStageAtk() {
 		return stageAtk;
 	}

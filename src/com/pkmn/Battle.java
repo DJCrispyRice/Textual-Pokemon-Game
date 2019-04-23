@@ -49,6 +49,17 @@ public class Battle
 					this.s = this.getpPkmn(p1).getName() + " is fully paralysed !";
 				}
 			}
+			else if (this.getpPkmn(p1).getStatus()==2)
+			{
+				this.getpPkmn(p1).setCountStatus(this.getpPkmn(p1).getCountStatus() - 1);
+				if (this.getpPkmn(p1).getCountStatus()>0)
+				{
+					atkok = false;
+					this.s = this.getpPkmn(p1).getName() + " is fast asleep !";
+				}
+				else
+					this.s = this.getpPkmn(p1).getName() + "woke up !";
+			}
 			if (atkok)
 			{
 				this.s = this.getpPkmn(p1).getName()+" used "+this.getpattack(this.p1,iAtt).getName()+". ";
@@ -68,6 +79,17 @@ public class Battle
 					atkok = false;
 					this.s = this.getpPkmn(p2).getName() + " is fully paralysed !";
 				}
+			}
+			else if (this.getpPkmn(p2).getStatus()==2)
+			{
+				this.getpPkmn(p2).setCountStatus(this.getpPkmn(p2).getCountStatus() - 1);
+				if (this.getpPkmn(p2).getCountStatus()>0)
+				{
+					atkok = false;
+					this.s = this.getpPkmn(p2).getName() + " is fast asleep !";
+				}
+				else
+					this.s = this.getpPkmn(p2).getName() + "woke up !";
 			}
 			if (atkok)
 			{
@@ -101,6 +123,10 @@ public class Battle
 					case 1 : 
 						atk1(this.p2);
 						break;
+					//Can cause sleeping
+					case 2 : 
+						atk2(this.p2);
+						break;
 					//Attack boost for user
 					case 9 :
 						atk9(this.p1);
@@ -122,6 +148,14 @@ public class Battle
 			{
 				switch (this.getpattack(this.p2, iAtt).getStatus())
 				{
+					//Can cause paralysis
+					case 1 : 
+						atk1(this.p1);
+						break;	
+					//Can cause sleeping
+					case 2 : 
+						atk2(this.p1);
+						break;
 					case 9 : 
 						atk9(this.p2);
 						break;
@@ -355,6 +389,13 @@ public class Battle
 		def.getCurrentPkmn().setStatus(1);
 		this.s = this.s + "\n" + def.getCurrentPkmn().getName() + " is paralysed ! It may not be able to attack !";
 		def.getCurrentPkmn().setCurrentSpd((int) (def.getCurrentPkmn().getBaseSpd()*0.25));
+	}
+	
+	private void atk2(Player def)
+	{
+		def.getCurrentPkmn().setStatus(2);
+		this.s = this.s + "\n" + def.getCurrentPkmn().getName() + " felt asleep !";
+		def.getCurrentPkmn().setCountStatus(ThreadLocalRandom.current().nextInt(1,7));
 	}
 	
 	//Mechanics for atk9 which is single atk boost for the user
