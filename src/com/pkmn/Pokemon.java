@@ -26,7 +26,7 @@ public class Pokemon
 	Type type1;
 	Type type2;
 	ArrayList <Attack> attacks;
-	int status = 0;
+	int status = 6;
 	int baseHp;
 	int currentHp;
 	int baseAtk;
@@ -45,16 +45,15 @@ public class Pokemon
 	int currentAccu = 100;
 	int stageAccu = 0;
 	int countSleep = 0;
-	int countConfusion = 0;
+	int countConfusion = 1;
+	int countDot = 0; //Count Damage Over Time
+	
 	public int getCountConfusion() {
 		return countConfusion;
 	}
 	public void setCountConfusion(int countConfusion) {
 		this.countConfusion = countConfusion;
-	}
-
-	int countDot = 0; //Count Damage Over Time
-	
+	}	
 	public int getCountSleep() {
 		return countSleep;
 	}

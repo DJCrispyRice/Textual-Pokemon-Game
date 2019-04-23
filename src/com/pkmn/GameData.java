@@ -484,7 +484,7 @@ public final class GameData
 		for (i=1;i<=151;i++)
 		{
 			this.allPkmn[i].getAttacks().add(this.allAtks[137]);
-			this.allPkmn[i].getAttacks().add(this.allAtks[143]);
+			this.allPkmn[i].getAttacks().add(this.allAtks[144]);
 		}
 		
 		//Tracing that loading is OK

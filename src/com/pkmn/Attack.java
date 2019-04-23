@@ -64,7 +64,6 @@ package com.pkmn;
  * Status 54 : Special attacks with unique mechanic
  * Status 55 : Trapped
  * 
- * Drops and boost will be 10% of the current stat.
  */
 public class Attack 
 {
