@@ -44,14 +44,22 @@ public class Pokemon
 	int baseAccu = 100;
 	int currentAccu = 100;
 	int stageAccu = 0;
-	int countStatus = 0;
+	int countSleep = 0;
+	int countConfusion = 0;
+	public int getCountConfusion() {
+		return countConfusion;
+	}
+	public void setCountConfusion(int countConfusion) {
+		this.countConfusion = countConfusion;
+	}
+
 	int countDot = 0; //Count Damage Over Time
 	
-	public int getCountStatus() {
-		return countStatus;
+	public int getCountSleep() {
+		return countSleep;
 	}
-	public void setCountStatus(int countStatus) {
-		this.countStatus = countStatus;
+	public void setCountSleep(int countStatus) {
+		this.countSleep = countStatus;
 	}
 	public int getCountDot() {
 		return countDot;
