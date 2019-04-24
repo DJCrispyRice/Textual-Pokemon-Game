@@ -4,8 +4,8 @@ package com.pkmn;
  * the power of the attack (used to calculate damages), the number of PP, a type, if it can trigger a status (paralysis, sleep...) with which accuracy 
  * and its accuracy to hit.
  * 
- * Causes = causes to foe
- * Applies = applies to your pokémon.
+ * Causes = causes to opponent
+ * Applies = applies to the pokémon that used the move
  * 
  * Status 0 : Normal (no status)
  * Status 1 : Paralysis
@@ -18,10 +18,10 @@ package com.pkmn;
  * Status 8 : Causes attack drop
  * Status 9 : Applies attack boost
  * Status 10 : Applies attack drop
- * Status 11 : Causes double attack boost
+ * Status 11 : Causes double attack boost > never used
  * Status 12 : Causes double attack drop
  * Status 13 : Applies double attack boost
- * Status 14 : Applies double attack drop
+ * Status 14 : Applies double attack drop > never used
  * Status 15 : Causes defense boost
  * Status 16 : Causes defense drop
  * Status 17 : Applies defense boost
@@ -46,10 +46,10 @@ package com.pkmn;
  * Status 36 : Causes double special drop
  * Status 37 : Applies double special boost
  * Status 38 : Applies double special drop
- * Status 39 : Causes accuracy boost (shouldn't be used since no attack does increase the foes accuracy as far as I know)
+ * Status 39 : Causes accuracy boost > never used
  * Status 40 : Causes accuracy drop (hi sand attack)
  * Status 41 : Applies accuracy boost (shouldn't be used since no attack does increase your accuracy as far as I know)
- * Status 42 : Applies accuracy drop
+ * Status 42 : Applies accuracy drop > never used
  * Status 43 : Flinch
  * Status 44 : Steal HP
  * Status 45 : Heal HP/status

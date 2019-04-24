@@ -27,7 +27,7 @@ public class Battle
 		s = "***********************\nPlease choose an attack.";
 		for (int i=0;i<this.getpPkmn(p1).getAttacks().size();i++)
 		{
-			s = s + "\n "+Integer.toString(i+1)+". "+this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
+			s = s + "\n "+Integer.toString(i+1)+". " + this.getpattack(this.p1, i).getType().getName() + " - " + this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
 		}
 		s = s + "\n*********************** ";
 		return s;
@@ -243,10 +243,29 @@ public class Battle
 						case 6 : 
 							atk6(this.p2);
 							break;
+						//Case 7 is never used
+						//Attack drop for opponent
+						case 8 : 
+							atk8(this.p2);
+							break;
 						//Attack boost for user
 						case 9 :
 							atk9(this.p1);
 							break;
+						//Attack drop for user - same as atk8 but with the other player in parameter
+						case 10 :
+							atk8(this.p1);
+							break;
+						//Case 11 is never used
+						//Double attack drop for opponent
+						case 12 :
+							atk12(this.p2);
+							break;
+						//Double attack boost for user
+						case 13 :
+							atk13(this.p1);
+							break;
+						//Case 14 is never used
 						//Def drop for opponent
 						case 16:
 							atk16(this.p2);
@@ -289,17 +308,36 @@ public class Battle
 							break;
 						//Can cause freeze
 						case 5 : 
-							atk4(this.p2);
+							atk4(this.p1);
 							break;
 						//Can cause confusion
 						case 6 : 
-							atk6(this.p2);
+							atk6(this.p1);
 							break;
-						//Cause atk boost
+						//Case 7 is never used
+						//Attack drop for opponent
+						case 8 : 
+							atk8(this.p1);
+							break;
+						//Attack boost for user
 						case 9 : 
 							atk9(this.p2);
 							break;
-						//Cause def drop
+						//Attack drop for user - same as atk8 but with the other player in parameter
+						case 10 :
+							atk8(this.p2);
+							break;
+						//Case 11 is never used
+						//Double attack drop for opponent
+						case 12 :
+							atk12(this.p1);
+							break;
+						//Double attack boost for user
+						case 13 :
+							atk13(this.p2);
+							break;
+						//Case 14 is never used
+						//Def drop for opponent
 						case 16 :
 							atk16(this.p1);
 							break;
@@ -576,7 +614,20 @@ public class Battle
 		def.getCurrentPkmn().setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
 	}
 	
-	//Mechanics for atk9 which is single atk boost for the user
+	//Mechanics for atk8 which is single atk drop
+	private void atk8(Player def)
+	{
+		if (def.getCurrentPkmn().getStageAtk()==6)
+			this.s = this.s + def.getCurrentPkmn().getName()+"'s attack won't go lower !";
+		else
+		{
+			def.getCurrentPkmn().setStageAtk(def.getCurrentPkmn().getStageAtk() - 1);
+			this.s = this.s + def.getCurrentPkmn().getName()+"'s attack fell !";
+			def.getCurrentPkmn().setCurrentAtk(calculateStat(def.getCurrentPkmn().getStageAtk(),def.getCurrentPkmn().getBaseAtk()));
+		}
+	}
+	
+	//Mechanics for atk9 which is single atk boost
 	private void atk9(Player atk)
 	{
 		System.out.println(atk.getCurrentPkmn().getStageAtk());
@@ -586,6 +637,37 @@ public class Battle
 		{
 			atk.getCurrentPkmn().setStageAtk(atk.getCurrentPkmn().getStageAtk() + 1);
 			this.s = this.s + atk.getCurrentPkmn().getName()+"'s attack rose !";
+			atk.getCurrentPkmn().setCurrentAtk(calculateStat(atk.getCurrentPkmn().getStageAtk(),atk.getCurrentPkmn().getBaseAtk()));
+		}
+	}
+	
+	//Mechanics for atk12 which is double atk drop
+	private void atk12(Player def)
+	{
+		if (def.getCurrentPkmn().getStageAtk()==6)
+			this.s = this.s + def.getCurrentPkmn().getName()+"'s attack won't go lower !";
+		else
+		{
+			def.getCurrentPkmn().setStageAtk(def.getCurrentPkmn().getStageAtk() - 2);
+			if (def.getCurrentPkmn().getStageAtk()<-6)
+				def.getCurrentPkmn().setStageAtk(-6);
+			this.s = this.s + def.getCurrentPkmn().getName()+"'s attack sharply fell !";
+			def.getCurrentPkmn().setCurrentAtk(calculateStat(def.getCurrentPkmn().getStageAtk(),def.getCurrentPkmn().getBaseAtk()));
+		}
+	}
+	
+	//Mechanics for atk13 which is double atk boost
+	private void atk13(Player atk)
+	{
+		System.out.println(atk.getCurrentPkmn().getStageAtk());
+		if (atk.getCurrentPkmn().getStageAtk()>=6)
+			this.s = this.s + atk.getCurrentPkmn().getName()+"'s attack won't go higher !";
+		else
+		{
+			atk.getCurrentPkmn().setStageAtk(atk.getCurrentPkmn().getStageAtk() + 2);
+			if (atk.getCurrentPkmn().getStageAtk()>6)
+				atk.getCurrentPkmn().setStageAtk(6);
+			this.s = this.s + atk.getCurrentPkmn().getName()+"'s attack sharply rose !";
 			atk.getCurrentPkmn().setCurrentAtk(calculateStat(atk.getCurrentPkmn().getStageAtk(),atk.getCurrentPkmn().getBaseAtk()));
 		}
 	}
