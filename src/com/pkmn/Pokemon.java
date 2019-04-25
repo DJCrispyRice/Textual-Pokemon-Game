@@ -44,6 +44,8 @@ public class Pokemon
 	int baseAccu = 100;
 	int currentAccu = 100;
 	int stageAccu = 0;
+	int baseEvasion= 100;
+	int currentEvasion = 100;
 	int countSleep = 0;
 	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
@@ -360,6 +362,26 @@ public class Pokemon
 			this.stageAccu = -6;
 		else
 			this.stageAccu = stageAccu;
+	}
+	
+	public int getBaseEvasion() 
+	{
+		return baseEvasion;
+	}
+	
+	public void setBaseEvasion(int baseEvasion) 
+	{
+		this.baseEvasion = baseEvasion;
+	}
+	
+	public int getCurrentEvasion() 
+	{
+		return currentEvasion;
+	}
+	
+	public void setCurrentEvasion(int currentEvasion) 
+	{
+		this.currentEvasion = currentEvasion;
 	}
 	
 }

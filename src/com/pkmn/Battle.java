@@ -592,6 +592,20 @@ public class Battle
 				p.getCurrentPkmn().setStageSpd(p.getCurrentPkmn().getStageSpd() + modifier);
 				p.getCurrentPkmn().setCurrentSpe(calculateStat(p.getCurrentPkmn().getStageSpe(),p.getCurrentPkmn().getBaseSpe()));
 				break;
+			case "accuracy" :
+				if (p.getCurrentPkmn().getStageAccu()>6)
+				{
+					max = true;
+					break;
+				}
+				else if (p.getCurrentPkmn().getStageAccu()<-6)
+				{
+					min = true;
+					break;
+				}
+				p.getCurrentPkmn().setStageAccu(p.getCurrentPkmn().getStageAccu() + modifier);
+				p.getCurrentPkmn().setCurrentAccu(calculateStat(p.getCurrentPkmn().getStageAccu(),p.getCurrentPkmn().getBaseAccu()));
+				break;
 			
 		}
 		this.s = this.s + p.getCurrentPkmn().getName()+"'s " + stat;
