@@ -22,7 +22,7 @@ package com.pkmn;
  * Status 12 : Causes double attack drop
  * Status 13 : Applies double attack boost
  * Status 14 : Applies double attack drop > never used
- * Status 15 : Causes defense boost
+ * Status 15 : Causes defense boost > never used
  * Status 16 : Causes defense drop
  * Status 17 : Applies defense boost
  * Status 18 : Applies defense drop

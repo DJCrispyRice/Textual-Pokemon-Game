@@ -144,72 +144,140 @@ public class Battle
 			{
 				//Attack drop for opponent
 				case 8 : 
-					atk8(def);
+					statModifier(def,"attack",-1);
 					break;
 				//Attack boost for user
 				case 9 :
-					atk9(att);
+					statModifier(att,"attack",1);
 					break;
-				//Attack drop for user - same as atk8 but with the other player in parameter
+				//Attack drop for user
 				case 10 :
-					atk8(def);
+					statModifier(def,"attack",-1);
 					break;
-				//Case 11 is never used
+				//Double attack boost for opponent
+				case 11 :
+					statModifier(def,"attack",2);
+					break;
 				//Double attack drop for opponent
 				case 12 :
-					atk12(def);
+					statModifier(def,"attack",-2);
 					break;
 				//Double attack boost for user
 				case 13 :
-					atk13(att);
+					statModifier(att,"attack",2);
 					break;
-				//Case 14 is never used
+				//Defense boost for opponent
+				case 15:
+					statModifier(def,"defense",1);
+					break;
 				//Defense drop for opponent
 				case 16:
-					atk16(def);
+					statModifier(def,"defense",-1);
+					break;
+				//Defense boost for user
+				case 17:
+					statModifier(att,"defense",1);
+					break;
+				//Defense drop for user
+				case 18:
+					statModifier(att,"defense",-1);
+					break;
+				//Double defense boost for opponent
+				case 19:
+					statModifier(def,"defense",2);
+					break;
+				//Double defense drop for opponent
+				case 20:
+					statModifier(def,"defense",-2);
+					break;
+				//Double defense drop for user
+				case 21:
+					statModifier(att,"defense",2);
+					break;
+				//Double defense drop for user
+				case 22:
+					statModifier(att,"defense",-2);
+					break;
+				//speed boost for opponent
+				case 23:
+					statModifier(def,"speed",1);
+					break;
+				//speed drop for opponent
+				case 24:
+					statModifier(def,"speed",-1);
+					break;
+				//speed boost for user
+				case 25:
+					statModifier(att,"speed",1);
+					break;
+				//speed drop for user
+				case 26:
+					statModifier(att,"speed",-1);
+					break;
+				//Double speed boost for opponent
+				case 27:
+					statModifier(def,"speed",2);
+					break;
+				//Double speed drop for opponent
+				case 28:
+					statModifier(def,"speed",-2);
+					break;
+				//Double speed drop for user
+				case 29:
+					statModifier(att,"speed",2);
+					break;
+				//Double speed drop for user
+				case 30:
+					statModifier(att,"speed",-2);
+					break;
+					//speed boost for opponent
+				case 31:
+					statModifier(def,"special",1);
+					break;
+				//special drop for opponent
+				case 32:
+					statModifier(def,"special",-1);
+					break;
+				//special boost for user
+				case 33:
+					statModifier(att,"special",1);
+					break;
+				//special drop for user
+				case 34:
+					statModifier(att,"special",-1);
+					break;
+				//Double special boost for opponent
+				case 35:
+					statModifier(def,"special",2);
+					break;
+				//Double special drop for opponent
+				case 36:
+					statModifier(def,"special",-2);
+					break;
+				//Double special drop for user
+				case 37:
+					statModifier(att,"special",2);
+					break;
+				//Double special drop for user
+				case 38:
+					statModifier(att,"special",-2);
 					break;
 			}
 		}
 		//Status change can only occur if the Pokémon is not already altered by another status.
-		if (this.getpPkmn(def).getStatus()==0)
+		if (this.getpPkmn(def).getStatus()==0 && (this.getpattack(att,iAtt).getStatus()>=1 && this.getpattack(att,iAtt).getStatus()<=6))
 		{
 			//Checks if the status alteration hits using the accu_status.
 			int randomstat2 = ThreadLocalRandom.current().nextInt(0,100);
 			if (randomstat2 >= 100 - this.getpattack(att, iAtt).getAccu_status())
 			{
-				switch (this.getpattack(att, iAtt).getStatus())
-				{			
-					//Can cause paralysis
-					case 1 : 
-						atk1(def);
-						break;
-					//Can cause sleeping
-					case 2 : 
-						atk2(def);
-						break;
-					//Can cause poison
-					case 3 : 
-						atk3(def);
-						break;
-					//Can cause burn
-					case 4 : 
-						atk4(def);
-						break;
-					//Can cause freeze
-					case 5 : 
-						atk5(def);
-						break;
-					//Can cause confusion
-					case 6 : 
-						atk6(def);
-						break;
-				}
+				statusModifier(def,this.getpattack(att,iAtt).getStatus());
 			}
 		}
 		//Shows the "avoid attack" message if the purpose of the move is only status alteration
 		else if (this.getpattack(att,iAtt).getPower()==0)
 		{
-			this.s = this.s + this.getpPkmn(this.p2).getName()+" avoid the attack !";
+			this.s = this.s + this.getpPkmn(def).getName()+" avoid the attack !";
 		}
 		return s;
 	}
@@ -431,120 +499,113 @@ public class Battle
 		this.checkHpLeft(def);
 	}
 	
-	//Mechanics for atk2 which is causing paralysis
-	private void atk1(Player def)
+	//Applies status alteration and prints the result
+	private void statusModifier(Player p, int status)
 	{
-		def.getCurrentPkmn().setStatus(1);
-		this.s = this.s + "\n" + def.getCurrentPkmn().getName() + " is paralysed ! It may not be able to attack !";
-		def.getCurrentPkmn().setCurrentSpd((int) (def.getCurrentPkmn().getBaseSpd()*0.25));
-	}
-	
-	//Mechanics for atk2 which is causing sleep
-	private void atk2(Player def)
-	{
-		def.getCurrentPkmn().setStatus(2);
-		this.s = this.s + "\n" + def.getCurrentPkmn().getName() + " felt asleep !";
-		def.getCurrentPkmn().setCountSleep(ThreadLocalRandom.current().nextInt(1,7));
-	}
-	
-	//Mechanics for atk3 which is get poisoned
-	private void atk3(Player def)
-	{
-		def.getCurrentPkmn().setStatus(3);
-		this.s = this.s + "\n" + def.getCurrentPkmn().getName() + " is poisoned !";
-	}
-	
-	//Mechanics for atk3 which is get poisoned
-	private void atk4(Player def)
-	{
-		def.getCurrentPkmn().setStatus(4);
-		def.getCurrentPkmn().setCurrentAtk(def.getCurrentPkmn().getBaseAtk()/2);
-		this.s = this.s + "\n" + def.getCurrentPkmn().getName() + " got burnt !";
-	}
-	
-	//Mechanics for atk5 which is get frozen
-	private void atk5(Player def)
-	{
-		def.getCurrentPkmn().setStatus(5);
-		this.s = this.s + "\n" + def.getCurrentPkmn().getName() + " was frozen solid !";
-	}
-	
-	//Mechanics for atk5 which is confusion
-	private void atk6(Player def)
-	{
-		def.getCurrentPkmn().setStatus(6);
-		this.s = this.s + "\n" + def.getCurrentPkmn().getName() + " became confused !";
-		def.getCurrentPkmn().setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
-	}
-	
-	//Mechanics for atk8 which is single atk drop
-	private void atk8(Player def)
-	{
-		if (def.getCurrentPkmn().getStageAtk()==6)
-			this.s = this.s + def.getCurrentPkmn().getName()+"'s attack won't go lower !";
-		else
+		p.getCurrentPkmn().setStatus(status);
+		switch (status)
 		{
-			def.getCurrentPkmn().setStageAtk(def.getCurrentPkmn().getStageAtk() - 1);
-			this.s = this.s + def.getCurrentPkmn().getName()+"'s attack fell !";
-			def.getCurrentPkmn().setCurrentAtk(calculateStat(def.getCurrentPkmn().getStageAtk(),def.getCurrentPkmn().getBaseAtk()));
+			case 1 :
+				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " is paralysed ! It may not be able to attack !";
+				p.getCurrentPkmn().setCurrentSpd((int) (p.getCurrentPkmn().getBaseSpd()*0.25));
+				break;
+			case 2 :
+				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " felt asleep !";
+				p.getCurrentPkmn().setCountSleep(ThreadLocalRandom.current().nextInt(1,7));
+				break;
+			case 3 :
+				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " is poisonned !";
+				break;
+			case 4 :
+				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " got burnt !";
+				break;
+			case 5 :
+				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " was frozen solid !";
+				break;
+			case 6 :
+				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " became confused !";
+				p.getCurrentPkmn().setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
+				break;
 		}
 	}
 	
-	//Mechanics for atk9 which is single atk boost
-	private void atk9(Player atk)
+	//Applies stats alteration and prints the result
+	private void statModifier(Player p, String stat, int modifier)
 	{
-		System.out.println(atk.getCurrentPkmn().getStageAtk());
-		if (atk.getCurrentPkmn().getStageAtk()>=6)
-			this.s = this.s + atk.getCurrentPkmn().getName()+"'s attack won't go higher !";
-		else
+		boolean min = false;
+		boolean max = false;
+		switch (stat)
 		{
-			atk.getCurrentPkmn().setStageAtk(atk.getCurrentPkmn().getStageAtk() + 1);
-			this.s = this.s + atk.getCurrentPkmn().getName()+"'s attack rose !";
-			atk.getCurrentPkmn().setCurrentAtk(calculateStat(atk.getCurrentPkmn().getStageAtk(),atk.getCurrentPkmn().getBaseAtk()));
+			case "attack" :
+				p.getCurrentPkmn().setStageAtk(p.getCurrentPkmn().getStageAtk() + modifier);
+				if (p.getCurrentPkmn().getStageAtk()>6)
+				{
+					max = true;
+					break;
+				}
+				else if (p.getCurrentPkmn().getStageAtk()<-6)
+				{
+					min = true;
+					break;
+				}
+				p.getCurrentPkmn().setStageAtk(p.getCurrentPkmn().getStageAtk() + modifier);
+				p.getCurrentPkmn().setCurrentAtk(calculateStat(p.getCurrentPkmn().getStageAtk(),p.getCurrentPkmn().getBaseAtk()));
+				break;
+			case "defense" :
+				if (p.getCurrentPkmn().getStageDef()>6)
+				{
+					max = true;
+					break;
+				}
+				else if (p.getCurrentPkmn().getStageDef()<-6)
+				{
+					min = true;
+					break;
+				}
+				p.getCurrentPkmn().setStageDef(p.getCurrentPkmn().getStageDef() + modifier);
+				p.getCurrentPkmn().setCurrentDef(calculateStat(p.getCurrentPkmn().getStageDef(),p.getCurrentPkmn().getBaseDef()));
+				break;
+			case "speed" :
+				if (p.getCurrentPkmn().getStageSpd()>6)
+				{
+					max = true;
+					break;
+				}
+				else if (p.getCurrentPkmn().getStageSpd()<-6)
+				{
+					min = true;
+					break;
+				}
+				p.getCurrentPkmn().setStageSpd(p.getCurrentPkmn().getStageSpd() + modifier);
+				p.getCurrentPkmn().setCurrentSpd(calculateStat(p.getCurrentPkmn().getStageSpd(),p.getCurrentPkmn().getBaseSpd()));
+				break;
+			case "special" :
+				if (p.getCurrentPkmn().getStageSpd()>6)
+				{
+					max = true;
+					break;
+				}
+				else if (p.getCurrentPkmn().getStageSpd()<-6)
+				{
+					min = true;
+					break;
+				}
+				p.getCurrentPkmn().setStageSpd(p.getCurrentPkmn().getStageSpd() + modifier);
+				p.getCurrentPkmn().setCurrentSpe(calculateStat(p.getCurrentPkmn().getStageSpe(),p.getCurrentPkmn().getBaseSpe()));
+				break;
+			
 		}
-	}
-	
-	//Mechanics for atk12 which is double atk drop
-	private void atk12(Player def)
-	{
-		if (def.getCurrentPkmn().getStageAtk()==6)
-			this.s = this.s + def.getCurrentPkmn().getName()+"'s attack won't go lower !";
+		this.s = this.s + p.getCurrentPkmn().getName()+"'s " + stat;
+		if (max)
+			this.s = this.s + "won't go higher !";
+		else if (min)
+			this.s = this.s + "won't go lower !";
 		else
 		{
-			def.getCurrentPkmn().setStageAtk(def.getCurrentPkmn().getStageAtk() - 2);
-			if (def.getCurrentPkmn().getStageAtk()<-6)
-				def.getCurrentPkmn().setStageAtk(-6);
-			this.s = this.s + def.getCurrentPkmn().getName()+"'s attack sharply fell !";
-			def.getCurrentPkmn().setCurrentAtk(calculateStat(def.getCurrentPkmn().getStageAtk(),def.getCurrentPkmn().getBaseAtk()));
-		}
-	}
-	
-	//Mechanics for atk13 which is double atk boost
-	private void atk13(Player atk)
-	{
-		System.out.println(atk.getCurrentPkmn().getStageAtk());
-		if (atk.getCurrentPkmn().getStageAtk()>=6)
-			this.s = this.s + atk.getCurrentPkmn().getName()+"'s attack won't go higher !";
-		else
-		{
-			atk.getCurrentPkmn().setStageAtk(atk.getCurrentPkmn().getStageAtk() + 2);
-			if (atk.getCurrentPkmn().getStageAtk()>6)
-				atk.getCurrentPkmn().setStageAtk(6);
-			this.s = this.s + atk.getCurrentPkmn().getName()+"'s attack sharply rose !";
-			atk.getCurrentPkmn().setCurrentAtk(calculateStat(atk.getCurrentPkmn().getStageAtk(),atk.getCurrentPkmn().getBaseAtk()));
-		}
-	}
-	
-	//Mechanics for atk16 which is single def drop
-	private void atk16(Player def)
-	{
-		if (def.getCurrentPkmn().getStageDef()==6)
-			this.s = this.s + def.getCurrentPkmn().getName()+"'s defense won't go lower !";
-		else
-		{
-			def.getCurrentPkmn().setStageDef(def.getCurrentPkmn().getStageDef() - 1);
-			this.s = this.s + def.getCurrentPkmn().getName()+"'s defense fell !";
-			def.getCurrentPkmn().setCurrentDef(calculateStat(def.getCurrentPkmn().getStageDef(),def.getCurrentPkmn().getBaseDef()));
+			if (modifier > 0)
+				this.s = this.s + " rose !";
+			else
+				this.s = this.s + " fell !";
 		}
 	}
 	

@@ -66,37 +66,72 @@ public class Pokemon
 	public void setCountDot(int countDot) {
 		this.countDot = countDot;
 	}
-	public int getStageAtk() {
+	public int getStageAtk() 
+	{
 		return stageAtk;
 	}
-	public void setStageAtk(int stageAtk) {
-		this.stageAtk = stageAtk;
+	public void setStageAtk(int stageAtk) 
+	{
+		if (stageAtk > 6)
+			this.stageAtk = 6;
+		else if (stageAtk < - 6)
+			this.stageAtk = -6;
+		else
+			this.stageAtk = stageAtk;
 	}
-	public int getStageDef() {
+	public int getStageDef() 
+	{
 		return stageDef;
 	}
-	public void setStageDef(int stageDef) {
-		this.stageDef = stageDef;
+	public void setStageDef(int stageDef) 
+	{
+		if (stageDef > 6)
+			this.stageDef = 6;
+		else if (stageDef < - 6)
+			this.stageDef = -6;
+		else
+			this.stageDef = stageDef;
 	}
-	public int getStageSpd() {
+	public int getStageSpd() 
+	{
 		return stageSpd;
 	}
-	public void setStageSpd(int stageSpd) {
-		this.stageSpd = stageSpd;
+	public void setStageSpd(int stageSpd) 
+	{
+		if (stageSpd > 6)
+			this.stageSpd = 6;
+		else if (stageSpd < - 6)
+			this.stageSpd = -6;
+		else
+			this.stageSpd = stageSpd;
 	}
-	public int getStageSpe() {
+	public int getStageSpe() 
+	{
 		return stageSpe;
 	}
-	public void setStageSpe(int stageSpe) {
-		this.stageSpe = stageSpe;
+	public void setStageSpe(int stageSpe) 
+	{
+		if (stageSpe > 6)
+			this.stageSpe = 6;
+		else if (stageSpe < - 6)
+			this.stageSpe = -6;
+		else
+			this.stageSpe = stageSpe;
 	}
-	public int getStageAccu() {
+	public int getStageAccu() 
+	{
 		return stageAccu;
 	}
-	public void setStageAccu(int stageAccu) {
-		this.stageAccu = stageAccu;
+	public void setStageAccu(int stageAccu) 
+	{
+		if (stageAccu > 6)
+			this.stageAccu = 6;
+		else if (stageAccu < - 6)
+			this.stageAccu = -6;
+		else
+			this.stageAccu = stageAccu;
 	}
-	//Empty constructor only for the fake index 0 Pok�mon
+	//Empty constructor only for the fake index 0 Pokémon
 	public Pokemon()
 	{
 		this.setName("MissingNo");
