@@ -48,89 +48,8 @@ public class Pokemon
 	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
 	
-	public int getCountConfusion() {
-		return countConfusion;
-	}
-	public void setCountConfusion(int countConfusion) {
-		this.countConfusion = countConfusion;
-	}	
-	public int getCountSleep() {
-		return countSleep;
-	}
-	public void setCountSleep(int countStatus) {
-		this.countSleep = countStatus;
-	}
-	public int getCountDot() {
-		return countDot;
-	}
-	public void setCountDot(int countDot) {
-		this.countDot = countDot;
-	}
-	public int getStageAtk() 
-	{
-		return stageAtk;
-	}
-	public void setStageAtk(int stageAtk) 
-	{
-		if (stageAtk > 6)
-			this.stageAtk = 6;
-		else if (stageAtk < - 6)
-			this.stageAtk = -6;
-		else
-			this.stageAtk = stageAtk;
-	}
-	public int getStageDef() 
-	{
-		return stageDef;
-	}
-	public void setStageDef(int stageDef) 
-	{
-		if (stageDef > 6)
-			this.stageDef = 6;
-		else if (stageDef < - 6)
-			this.stageDef = -6;
-		else
-			this.stageDef = stageDef;
-	}
-	public int getStageSpd() 
-	{
-		return stageSpd;
-	}
-	public void setStageSpd(int stageSpd) 
-	{
-		if (stageSpd > 6)
-			this.stageSpd = 6;
-		else if (stageSpd < - 6)
-			this.stageSpd = -6;
-		else
-			this.stageSpd = stageSpd;
-	}
-	public int getStageSpe() 
-	{
-		return stageSpe;
-	}
-	public void setStageSpe(int stageSpe) 
-	{
-		if (stageSpe > 6)
-			this.stageSpe = 6;
-		else if (stageSpe < - 6)
-			this.stageSpe = -6;
-		else
-			this.stageSpe = stageSpe;
-	}
-	public int getStageAccu() 
-	{
-		return stageAccu;
-	}
-	public void setStageAccu(int stageAccu) 
-	{
-		if (stageAccu > 6)
-			this.stageAccu = 6;
-		else if (stageAccu < - 6)
-			this.stageAccu = -6;
-		else
-			this.stageAccu = stageAccu;
-	}
+	
+	
 	//Empty constructor only for the fake index 0 Pokémon
 	public Pokemon()
 	{
@@ -239,85 +158,208 @@ public class Pokemon
 		}
 	}
 
-	public int getBaseAtk() {
+	public int getBaseAtk() 
+	{
 		return baseAtk;
 	}
 
-	private void setBaseAtk(int baseAtk) {
+	private void setBaseAtk(int baseAtk) 
+	{
 		this.baseAtk = baseAtk;
 	}
 
-	public int getCurrentAtk() {
+	public int getCurrentAtk() 
+	{
 		return currentAtk;
 	}
 
-	public void setCurrentAtk(int currentAtk) {
+	public void setCurrentAtk(int currentAtk) 
+	{
 		this.currentAtk = currentAtk;
 	}
 
-	public int getBaseDef() {
+	public int getBaseDef() 
+	{
 		return baseDef;
 	}
 
-	private void setBaseDef(int baseDef) {
+	private void setBaseDef(int baseDef) 
+	{
 		this.baseDef = baseDef;
 	}
 
-	public int getCurrentDef() {
+	public int getCurrentDef() 
+	{
 		return currentDef;
 	}
 
-	public void setCurrentDef(int currentDef) {
+	public void setCurrentDef(int currentDef) 
+	{
 		this.currentDef = currentDef;
 	}
 
-	public int getBaseSpd() {
+	public int getBaseSpd() 
+	{
 		return baseSpd;
 	}
 
-	private void setBaseSpd(int baseSpd) {
+	private void setBaseSpd(int baseSpd) 
+	{
 		this.baseSpd = baseSpd;
 	}
 
-	public int getCurrentSpd() {
+	public int getCurrentSpd() 
+	{
 		return currentSpd;
 	}
 
-	public void setCurrentSpd(int currentSpd) {
+	public void setCurrentSpd(int currentSpd) 
+	{
 		this.currentSpd = currentSpd;
 	}
 
-	public int getBaseSpe() {
+	public int getBaseSpe() 
+	{
 		return baseSpe;
 	}
 
-	private void setBaseSpe(int baseSpe) {
+	private void setBaseSpe(int baseSpe) 
+	{
 		this.baseSpe = baseSpe;
 	}
 
-	public int getCurrentSpe() {
+	public int getCurrentSpe() 
+	{
 		return currentSpe;
 	}
 
-	public void setCurrentSpe(int currentSpe) {
+	public void setCurrentSpe(int currentSpe) 
+	{
 		this.currentSpe = currentSpe;
 	}
 
-	public int getBaseAccu() {
+	public int getBaseAccu() 
+	{
 		return baseAccu;
 	}
 
-	private void setBaseAccu(int baseAccu) {
+	private void setBaseAccu(int baseAccu) 
+	{
 		this.baseAccu = baseAccu;
 	}
 
-	public int getCurrentAccu() {
+	public int getCurrentAccu() 
+	{
 		return currentAccu;
 	}
 
-	public void setCurrentAccu(int currentAccu) {
+	public void setCurrentAccu(int currentAccu) 
+	{
 		this.currentAccu = currentAccu;
 	}
 	
+	public int getCountConfusion() 
+	{
+		return countConfusion;
+	}
+	
+	public void setCountConfusion(int countConfusion) 
+	{
+		this.countConfusion = countConfusion;
+	}	
+	
+	public int getCountSleep() 
+	{
+		return countSleep;
+	}
+	
+	public void setCountSleep(int countStatus) 
+	{
+		this.countSleep = countStatus;
+	}
+	
+	public int getCountDot() 
+	{
+		return countDot;
+	}
+	
+	public void setCountDot(int countDot) 
+	{
+		this.countDot = countDot;
+	}
+	
+	public int getStageAtk() 
+	{
+		return stageAtk;
+	}
+	public void setStageAtk(int stageAtk) 
+	{
+		if (stageAtk > 6)
+			this.stageAtk = 6;
+		else if (stageAtk < - 6)
+			this.stageAtk = -6;
+		else
+			this.stageAtk = stageAtk;
+	}
+	
+	public int getStageDef() 
+	{
+		return stageDef;
+	}
+	
+	public void setStageDef(int stageDef) 
+	{
+		if (stageDef > 6)
+			this.stageDef = 6;
+		else if (stageDef < - 6)
+			this.stageDef = -6;
+		else
+			this.stageDef = stageDef;
+	}
+	
+	public int getStageSpd() 
+	{
+		return stageSpd;
+	}
+	
+	public void setStageSpd(int stageSpd) 
+	{
+		if (stageSpd > 6)
+			this.stageSpd = 6;
+		else if (stageSpd < - 6)
+			this.stageSpd = -6;
+		else
+			this.stageSpd = stageSpd;
+	}
+	
+	public int getStageSpe() 
+	{
+		return stageSpe;
+	}
+	
+	public void setStageSpe(int stageSpe) 
+	{
+		if (stageSpe > 6)
+			this.stageSpe = 6;
+		else if (stageSpe < - 6)
+			this.stageSpe = -6;
+		else
+			this.stageSpe = stageSpe;
+	}
+	
+	public int getStageAccu() 
+	{
+		return stageAccu;
+	}
+	
+	public void setStageAccu(int stageAccu) 
+	{
+		if (stageAccu > 6)
+			this.stageAccu = 6;
+		else if (stageAccu < - 6)
+			this.stageAccu = -6;
+		else
+			this.stageAccu = stageAccu;
+	}
 	
 }

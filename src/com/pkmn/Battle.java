@@ -20,6 +20,16 @@ public class Battle
 		this.p2 = new Player("Opponent");
 	}
 	
+	public Pokemon getpPkmn(Player p)
+	{
+		return p.getCurrentPkmn();
+	}
+	
+	public Attack getpattack(Player p, int i)
+	{
+		return p.getCurrentPkmn().getAttacks().get(i);
+	}
+	
 	//Shows attacks that can be used by your pokémon
 	public String showAttacks()
 	{
@@ -133,8 +143,7 @@ public class Battle
 		//Checking the status of the attack to see what will happen next
 		//If move's power is higher than 0, do damages. Then check status change
 		if (this.getpattack(att,iAtt).getPower()>0)
-			atk0(att, def, iAtt, 1);
-		
+			deal(att, def, iAtt, 1);
 		//Checking if the attack does anything but statut alteration
 		//Checks if the status alteration hits using the accu_status.
 		int randomstat1 = ThreadLocalRandom.current().nextInt(0,100);
@@ -282,38 +291,6 @@ public class Battle
 		return s;
 	}
 	
-	public Pokemon getpPkmn(Player p)
-	{
-		return p.getCurrentPkmn();
-	}
-	
-	public Attack getpattack(Player p, int i)
-	{
-		return p.getCurrentPkmn().getAttacks().get(i);
-	}
-	
-	//To write how many hp left the pokémon has. def is the player who is being checked.
-	public void checkHpLeft(Player def)
-	{
-		//Checks if the pokemon is dead
-		if (def.getCurrentPkmn().getStatus() == 9)
-		{
-			this.s = this.s + "\n***********************\n"+def.getCurrentPkmn().getName()+" fainted !";
-			if (def.getName().equals("Player"))
-			{
-				this.p1.getTeam().remove(def.getCurrentPkmn());
-				this.s = this.s + "\nYou have "+this.p1.getTeam().size()+" pokémons left.";
-			}
-			else
-			{
-				this.p2.getTeam().remove(def.getCurrentPkmn());
-				this.s = this.s + "\nYour opponent has "+this.p2.getTeam().size()+" pokémons left.";
-			}
-		}
-		else
-			this.s = this.s +"\n"+def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP.";
-	}
-	
 	private boolean checkHit(Attack att, Pokemon pk)
 	{
 		int accurate = 100;
@@ -430,6 +407,28 @@ public class Battle
 		return rt;
 	}
 	
+	//To write how many hp left the pokémon has. def is the player who is being checked.
+	public void checkHpLeft(Player def)
+	{
+		//Checks if the pokemon is dead
+		if (def.getCurrentPkmn().getStatus() == 9)
+		{
+			this.s = this.s + "\n***********************\n"+def.getCurrentPkmn().getName()+" fainted !";
+			if (def.getName().equals("Player"))
+			{
+				this.p1.getTeam().remove(def.getCurrentPkmn());
+				this.s = this.s + "\nYou have "+this.p1.getTeam().size()+" pokémons left.";
+			}
+			else
+			{
+				this.p2.getTeam().remove(def.getCurrentPkmn());
+				this.s = this.s + "\nYour opponent has "+this.p2.getTeam().size()+" pokémons left.";
+			}
+		}
+		else
+			this.s = this.s +"\n"+def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP.";
+	}
+
 	private boolean checkCrit(Attack att, Pokemon pk)
 	{
 		//Check if the attack has high critical ratio
@@ -459,9 +458,9 @@ public class Battle
 		}
 	}
 	
-	//Mechanics for status 0 attack which is basically dealing damage.
+	//Dealing damages
 	//atk is attacker, def is defender
-	private void atk0(Player atk, Player def, int iAtt, int i)
+	private void deal(Player atk, Player def, int iAtt, int i)
 	{
 		int damage = 0;
 		int power;

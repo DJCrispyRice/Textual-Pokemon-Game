@@ -8,25 +8,31 @@ import java.util.ArrayList;
 
 public class Player 
 {
+	String name;
 	ArrayList <Pokemon> team;
 	Pokemon currentPkmn;
-	String name;
+	
 	public Player(String name)
 	{
 		this.team = new ArrayList <Pokemon>();
 		this.currentPkmn = new Pokemon();
 		this.name = new String(name);
 	}
-	public String getName() {
+	public String getName() 
+	{
 		return name;
 	}
-	public void setName(String name) {
+	
+	public void setName(String name) 
+	{
 		this.name = name;
 	}
+	
 	public ArrayList<Pokemon> getTeam() 
 	{
 		return team;
 	}
+	
 	public boolean setTeam(Pokemon pkmn) 
 	{
 		if (team.size()<6)
@@ -37,6 +43,7 @@ public class Player
 		else
 			return false;
 	}
+	
 	public Pokemon getCurrentPkmn() 
 	{
 		return currentPkmn;
@@ -51,9 +58,9 @@ public class Player
 		currentPkmn.setCurrentHp(currentPkmn.getBaseHp());
 		currentPkmn.setCurrentAtk(currentPkmn.getBaseAtk());
 		currentPkmn.setCurrentDef(currentPkmn.getBaseDef());
-		currentPkmn.setCurrentAccu(currentPkmn.getBaseAccu());
 		currentPkmn.setCurrentSpe(currentPkmn.getBaseSpe());
 		currentPkmn.setCurrentSpd(currentPkmn.getBaseSpd());
+		currentPkmn.setCurrentAccu(currentPkmn.getBaseAccu());
 		currentPkmn.setStatus(0);
 	}
 }
