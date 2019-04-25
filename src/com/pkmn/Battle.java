@@ -113,7 +113,7 @@ public class Battle
 		if (atkok)
 		{
 			this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
-			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att)))
+			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
 				this.s = this.doDamages(iAtt, att, def);
 			else
 				this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " missed !";
@@ -271,6 +271,22 @@ public class Battle
 				case 38:
 					statModifier(att,"special",-2);
 					break;
+				//Accuracy boost for opponent
+				case 39:
+					statModifier(def,"accuracy",1);
+					break;
+				//Accuracy drop for opponent
+				case 40:
+					statModifier(def,"accuracy",-1);
+					break;
+				//Evasion boost for user
+				case 41:
+					statModifier(att,"evasion",1);
+					break;
+				//Evasion drop for user
+				case 42:
+					statModifier(att,"evasion",-1);
+					break;
 			}
 		}
 		//Status change can only occur if the Pokémon is not already altered by another status.
@@ -291,10 +307,10 @@ public class Battle
 		return s;
 	}
 	
-	private boolean checkHit(Attack att, Pokemon pk)
+	private boolean checkHit(Attack atk, Pokemon att, Pokemon def)
 	{
 		int accurate = 100;
-		accurate = accurate - (100 - att.getAccuracy()) - (100 - pk.getCurrentAccu());
+		accurate = accurate - (100 - atk.getAccuracy()) - (100 - att.getCurrentAccu() - (def.getCurrentEvasion() - 100));
 		if (accurate < 0)
 			accurate = 0;
 		int random = ThreadLocalRandom.current().nextInt(0,100);
@@ -605,6 +621,20 @@ public class Battle
 				}
 				p.getCurrentPkmn().setStageAccu(p.getCurrentPkmn().getStageAccu() + modifier);
 				p.getCurrentPkmn().setCurrentAccu(calculateStat(p.getCurrentPkmn().getStageAccu(),p.getCurrentPkmn().getBaseAccu()));
+				break;
+			case "evasion" :
+				if (p.getCurrentPkmn().getStageEvasion()>6)
+				{
+					max = true;
+					break;
+				}
+				else if (p.getCurrentPkmn().getStageEvasion()<-6)
+				{
+					min = true;
+					break;
+				}
+				p.getCurrentPkmn().setStageEvasion(p.getCurrentPkmn().getStageEvasion() + modifier);
+				p.getCurrentPkmn().setCurrentEvasion(calculateStat(p.getCurrentPkmn().getStageEvasion(),p.getCurrentPkmn().getBaseEvasion()));
 				break;
 			
 		}

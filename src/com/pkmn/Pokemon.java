@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * Status 7 : In the air
  * Status 8 : Underground
  * Status 9 : Dead
+ * Status 10 : afraid
  */
 
 public class Pokemon 
@@ -46,6 +47,7 @@ public class Pokemon
 	int stageAccu = 0;
 	int baseEvasion= 100;
 	int currentEvasion = 100;
+	int stageEvasion = 0;
 	int countSleep = 0;
 	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
@@ -382,6 +384,21 @@ public class Pokemon
 	public void setCurrentEvasion(int currentEvasion) 
 	{
 		this.currentEvasion = currentEvasion;
+	}
+	
+	public int getStageEvasion() 
+	{
+		return stageEvasion;
+	}
+	
+	public void setStageEvasion(int stageEvasion) 
+	{
+		if (stageEvasion > 6)
+			this.stageEvasion = 6;
+		else if (stageEvasion < - 6)
+			this.stageEvasion = -6;
+		else
+			this.stageEvasion = stageEvasion;
 	}
 	
 }

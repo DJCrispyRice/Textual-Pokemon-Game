@@ -188,7 +188,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Dizzy Punch","May confuse opponent.",28,70,10,true,this.allTypes[0],6,20,100); i++;
 		this.allAtks[i] = new Attack ("Double Kick","Hits twice in one turn.",29,30,30,true,this.allTypes[1],46,0,100); i++;
 		this.allAtks[i] = new Attack ("Double Slap","Hits 2-5 times in one turn.",30,15,10,true,this.allTypes[0],46,0,85); i++;
-		this.allAtks[i] = new Attack ("Double Team","Raises user's Evasiveness.",31,0,15,false,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Double Team","Raises user's Evasiveness.",31,0,15,false,this.allTypes[0],41,0,100); i++;
 		this.allAtks[i] = new Attack ("Double-Edge","User receives recoil damage.",32,100,15,true,this.allTypes[0],49,0,100); i++;
 		this.allAtks[i] = new Attack ("Dragon Rage","Always inflicts 40 HP.",33,0,10,false,this.allTypes[14],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Dream Eater","User recovers half the HP inflicted on a sleeping opponent.",34,100,15,false,this.allTypes[12],54,0,100); i++;
@@ -236,7 +236,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Mega Punch","Standard attack",76,80,20,true,this.allTypes[0],0,0,85); i++;
 		this.allAtks[i] = new Attack ("Metronome","User performs almost any move in the game at random.",77,0,10,false,this.allTypes[0],54,0,100); i++;
 		this.allAtks[i] = new Attack ("Mimic","Copies the opponent's last move.",78,0,10,false,this.allTypes[0],54,0,100); i++;
-		this.allAtks[i] = new Attack ("Minimize","Sharply raises user's Evasiveness.",79,0,10,false,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Minimize","Sharply raises user's Evasiveness.",79,0,10,false,this.allTypes[0],41,0,100); i++;
 		this.allAtks[i] = new Attack ("Mirror Move","User performs the opponent's last move.",80,0,20,false,this.allTypes[2],54,0,100); i++;
 		this.allAtks[i] = new Attack ("Night Shade","Inflicts damage equal to user's level.",81,0,15,false,this.allTypes[7],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Pay Day","Standard attack",82,40,20,true,this.allTypes[0],0,0,100); i++;
