@@ -10,10 +10,18 @@ public class Player
 {
 	ArrayList <Pokemon> team;
 	Pokemon currentPkmn;
-	public Player()
+	String name;
+	public Player(String name)
 	{
 		this.team = new ArrayList <Pokemon>();
 		this.currentPkmn = new Pokemon();
+		this.name = new String(name);
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public ArrayList<Pokemon> getTeam() 
 	{

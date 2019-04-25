@@ -16,8 +16,8 @@ public class Battle
 	
 	public Battle(GameData gd)
 	{
-		this.p1 = new Player();
-		this.p2 = new Player();
+		this.p1 = new Player("Player");
+		this.p2 = new Player("Opponent");
 	}
 	
 	//Shows attacks that can be used by your pokémon
@@ -32,324 +32,186 @@ public class Battle
 		s = s + "\n*********************** ";
 		return s;
 	}
-	//i : i=0 -> player, i=1 -> opponent (IA). iAtt is the id of the attack (refers to ArrayList Attacks).
-	//Return s which will be printed as a log trace.
-	public String useAttack(int iAtt, int i)
+	
+	//Is used whatever an attack is launched by a pokemon. att is the attacker, def is the defender
+	public String useAttack (int iAtt, Player att, Player def)
 	{
+		//By default, the attack should occur
 		Boolean atkok = true;
 		this.s = new String();
-		if (i == 0)
+		//If the pokemon is paralysed, it has 25% chance not to attack
+		if (this.getpPkmn(att).getStatus()==1)
 		{
-			if (this.getpPkmn(p1).getStatus()==1)
+			int ckatk = ThreadLocalRandom.current().nextInt(0,100);
+			if (ckatk<25)
 			{
-				int ckatk = ThreadLocalRandom.current().nextInt(0,100);
-				if (ckatk<25)
-				{
-					atkok = false;
-					this.s = this.getpPkmn(p1).getName() + " is fully paralysed !";
-				}
-			}
-			else if (this.getpPkmn(p1).getStatus()==2)
-			{
-				this.getpPkmn(p1).setCountSleep(this.getpPkmn(p1).getCountSleep() - 1);
-				if (this.getpPkmn(p1).getCountSleep()>0)
-				{
-					atkok = false;
-					this.s = this.getpPkmn(p1).getName() + " is fast asleep !";
-				}
-				else
-					this.s = this.getpPkmn(p1).getName() + " woke up !";
-			}
-			else if (this.getpPkmn(p1).getStatus()==5)
-			{
-				int rngfrz = ThreadLocalRandom.current().nextInt(0,100);
-				if (rngfrz>90)
-				{
-					this.getpPkmn(this.p1).setStatus(1);
-					this.s = this.getpPkmn(this.p1).getName() + " unfroze !";
-				}
-				else
-					this.s = this.getpPkmn(this.p1).getName() + " is frozen solid !";
 				atkok = false;
-			}
-			else if (this.getpPkmn(p1).getStatus()==6)
-			{
-				this.getpPkmn(p1).setCountConfusion(this.getpPkmn(p1).getCountConfusion() - 1);
-				if (this.getpPkmn(p1).getCountConfusion()>0)
-				{
-					this.s = this.s + this.getpPkmn(p1).getName() + " is confused...\n";
-					int ckcon = ThreadLocalRandom.current().nextInt(0,100);
-					if (ckcon > 50)
-					{
-						int damage = ((2*20)/2 + 2)*40;
-						damage = damage * (this.getpPkmn(p1).getCurrentAtk()/this.getpPkmn(p1).getCurrentDef());
-						damage = damage/50 + 2;
-						this.s = this.s + this.getpPkmn(p1).getName() + " hurts himself in confusion and lost "+damage+" HP.";
-						this.getpPkmn(p1).setCurrentHp(this.getpPkmn(p1).getCurrentHp() - damage);
-						this.checkHpLeft(this.getpPkmn(this.p1),i);
-						atkok = false;
-					}
-				}
-				else
-				{
-					this.s = this.s + this.getpPkmn(p1).getName() + " snapped out of confusion !\n";
-					this.getpPkmn(p1).setStatus(0);
-				}	
-			}
-			if (atkok)
-			{
-				this.s = this.s + this.getpPkmn(p1).getName()+" used "+this.getpattack(this.p1,iAtt).getName()+". ";
-				if (checkHit(this.getpattack(this.p1,iAtt),this.getpPkmn(this.p1)))
-					this.s = this.doDamages(iAtt, 0);
-				else
-					this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " missed !";
-			}
-			//If pokémon is poisoned, lose 1/16 of its HP
-			if (this.getpPkmn(p1).getStatus()==3)
-			{
-				this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " suffers "+Integer.toString(this.getpPkmn(this.p1).getBaseHp()/16) + " HP due to poison.";
-				this.getpPkmn(this.p1).setCurrentHp(this.getpPkmn(this.p1).getCurrentHp() - this.getpPkmn(this.p1).getBaseHp()/16);
-				this.checkHpLeft(this.getpPkmn(this.p1),i);
-			}
-			//If pokémon is burn, lose 1/16 of its HP.
-			else if (this.getpPkmn(p1).getStatus()==4)
-			{
-				this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " suffers "+Integer.toString(this.getpPkmn(this.p1).getBaseHp()/16) + " HP by the burn.";
-				this.getpPkmn(this.p1).setCurrentHp(this.getpPkmn(this.p1).getCurrentHp() - this.getpPkmn(this.p1).getBaseHp()/16);
-				this.checkHpLeft(this.getpPkmn(this.p1),i);
+				this.s = this.getpPkmn(att).getName() + " is fully paralysed !";
 			}
 		}
-		else
+		//If the pokemon is asleep, it can't attack except if it wakes up
+		else if (this.getpPkmn(att).getStatus()==2)
 		{
-			if (this.getpPkmn(p2).getStatus()==1)
+			this.getpPkmn(att).setCountSleep(this.getpPkmn(att).getCountSleep() - 1);
+			if (this.getpPkmn(att).getCountSleep()>0)
 			{
-				int ckatk = ThreadLocalRandom.current().nextInt(0,100);
-				if (ckatk<25)
-				{
-					atkok = false;
-					this.s = "Enemy " + this.getpPkmn(p2).getName() + " is fully paralysed !";
-				}
-			}
-			else if (this.getpPkmn(p2).getStatus()==2)
-			{
-				this.getpPkmn(p2).setCountSleep(this.getpPkmn(p2).getCountSleep() - 1);
-				if (this.getpPkmn(p2).getCountSleep()>0)
-				{
-					atkok = false;
-					this.s = "Enemy " + this.getpPkmn(p2).getName() + " is fast asleep !";
-				}
-				else
-					this.s = "Enemy " + this.getpPkmn(p2).getName() + " woke up !";
-			}
-			else if (this.getpPkmn(p2).getStatus()==5)
-			{
-				int rngfrz = ThreadLocalRandom.current().nextInt(0,100);
-				if (rngfrz>90)
-				{
-					this.getpPkmn(this.p2).setStatus(1);
-					this.s = this.getpPkmn(this.p2).getName() + " unfroze !";
-				}
-				else
-					this.s = this.getpPkmn(this.p1).getName() + " is frozen solid !";
 				atkok = false;
+				this.s = this.getpPkmn(att).getName() + " is fast asleep !";
 			}
-			else if (this.getpPkmn(p2).getStatus()==6)
+			else
+				this.s = this.getpPkmn(att).getName() + " woke up !";
+		}
+		//If the pokemon is frozen, it can't attack except if it unfrozes
+		else if (this.getpPkmn(att).getStatus()==5)
+		{
+			int rngfrz = ThreadLocalRandom.current().nextInt(0,100);
+			if (rngfrz>90)
 			{
-				this.getpPkmn(p2).setCountConfusion(this.getpPkmn(p2).getCountConfusion() - 1);
-				if (this.getpPkmn(p2).getCountConfusion()>0)
+				this.getpPkmn(att).setStatus(1);
+				this.s = this.getpPkmn(att).getName() + " unfroze !";
+			}
+			else
+				this.s = this.getpPkmn(att).getName() + " is frozen solid !";
+			atkok = false;
+		}
+		//If the pokemon is confused, it has 50% of hitting itself
+		else if (this.getpPkmn(att).getStatus()==6)
+		{
+			this.getpPkmn(att).setCountConfusion(this.getpPkmn(att).getCountConfusion() - 1);
+			if (this.getpPkmn(att).getCountConfusion()>0)
+			{
+				this.s = this.s + this.getpPkmn(att).getName() + " is confused...\n";
+				int ckcon = ThreadLocalRandom.current().nextInt(0,100);
+				if (ckcon > 50)
 				{
-					this.s = this.s + "Enemy " + this.getpPkmn(p2).getName() + " is confused...\n";
-					int ckcon = ThreadLocalRandom.current().nextInt(0,100);
-					if (ckcon > 50)
-					{
-						int damage = ((2*20)/2 + 2)*40;
-						damage = damage * (this.getpPkmn(p2).getCurrentAtk()/this.getpPkmn(p2).getCurrentDef());
-						damage = damage/50 + 2;
-						this.s = this.s + "Enemy "+this.getpPkmn(p2).getName() + " hurts himself in confusion and lost "+damage+" HP.";
-						this.getpPkmn(p2).setCurrentHp(this.getpPkmn(p2).getCurrentHp() - damage);
-						this.checkHpLeft(this.getpPkmn(this.p2),i);
-						atkok = false;
-					}
-				}
-				else
-				{
-					this.s = this.s + "Enemy " + this.getpPkmn(p2).getName() + " snapped out of confusion !\n";
-					this.getpPkmn(p2).setStatus(0);
+					int damage = ((2*20)/2 + 2)*40;
+					damage = damage * (this.getpPkmn(att).getCurrentAtk()/this.getpPkmn(att).getCurrentDef());
+					damage = damage/50 + 2;
+					this.s = this.s + this.getpPkmn(att).getName() + " hurts himself in confusion and lost "+damage+" HP.";
+					this.getpPkmn(p1).setCurrentHp(this.getpPkmn(p1).getCurrentHp() - damage);
+					this.checkHpLeft(att);
+					atkok = false;
 				}
 			}
-			if (atkok)
+			else
 			{
-				this.s = this.s + "Enemy " + this.getpPkmn(p2).getName()+" used "+this.getpattack(this.p2,iAtt).getName()+". ";
-				if (checkHit(this.getpattack(this.p2,iAtt),this.getpPkmn(this.p2)))
-					this.s = this.doDamages(iAtt, 1);
-				else
-					this.s = this.s + "\nEnemy "+this.getpPkmn(this.p2).getName() + " missed !";
-			}
-			if (this.getpPkmn(p2).getStatus()==3)
-			{
-				this.s = this.s + "\n Enemy"+this.getpPkmn(this.p2).getName() + " suffers "+Integer.toString(this.getpPkmn(this.p2).getBaseHp()/16) + " HP due to poison.";
-				this.getpPkmn(this.p2).setCurrentHp(this.getpPkmn(this.p2).getCurrentHp() - this.getpPkmn(this.p2).getBaseHp()/16);
-				this.checkHpLeft(this.getpPkmn(this.p2),i);
-			}
-			else if (this.getpPkmn(p2).getStatus()==4)
-			{
-				this.s = this.s + "\nEnemy "+this.getpPkmn(this.p2).getName() + " suffers "+Integer.toString(this.getpPkmn(this.p2).getBaseHp()/16) + " HP by the burn.";
-				this.getpPkmn(this.p2).setCurrentHp(this.getpPkmn(this.p2).getCurrentHp() - this.getpPkmn(this.p2).getBaseHp()/16);
-				this.checkHpLeft(this.getpPkmn(this.p2),i);
-			}
+				this.s = this.s + this.getpPkmn(att).getName() + " snapped out of confusion !\n";
+				this.getpPkmn(att).setStatus(0);
+			}	
+		}
+		//If the attack can occur (no status avoiding it to happen), it does...
+		if (atkok)
+		{
+			this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
+			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att)))
+				this.s = this.doDamages(iAtt, att, def);
+			else
+				this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " missed !";
+		}
+		//After the attack occurs, applies whatever damage it should if there is a status
+		//If the pokémon is poisoned, lose 1/16 of its HP
+		if (this.getpPkmn(att).getStatus()==3)
+		{
+			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to poison.";
+			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
+			this.checkHpLeft(att);
+		}
+		//If the pokémon is burn, lose 1/16 of its HP.
+		else if (this.getpPkmn(att).getStatus()==4)
+		{
+			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP by the burn.";
+			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
+			this.checkHpLeft(att);
 		}
 		return s;
 	}
 	
-	//i : i=0 -> player, i=1 -> opponent (IA). iAtt is the id of the attack (refers to ArrayList Attacks)
 	//Will calculate what happens if the attack hits 
 	//Return s which will be printed as a log trace.
-	private String doDamages(int iAtt, int i)
+	private String doDamages(int iAtt, Player att, Player def)
 	{
-		if (i == 0)
+		//Checking the status of the attack to see what will happen next
+		//If move's power is higher than 0, do damages. Then check status change
+		if (this.getpattack(att,iAtt).getPower()>0)
+			atk0(att, def, iAtt, 1);
+		
+		//Checking if the attack does anything but statut alteration
+		//Checks if the status alteration hits using the accu_status.
+		int randomstat1 = ThreadLocalRandom.current().nextInt(0,100);
+		if (randomstat1 >= 100 - this.getpattack(att, iAtt).getAccu_status())
 		{
-			//Checking the status of the attack to see what will happen next
-			//If move's power is higher than 0, do damages. Then check status change
-			if (this.getpattack(this.p1,iAtt).getPower()>0)
-				atk0(this.p1, this.p2, iAtt, 1);
-			if (this.getpPkmn(this.p2).getStatus()==0)
+			switch (this.getpattack(att, iAtt).getStatus())
 			{
-				int randomstat = ThreadLocalRandom.current().nextInt(0,100);
-				if (randomstat >= 100 - this.getpattack(this.p1, iAtt).getAccu_status())
-				{
-					switch (this.getpattack(this.p1, iAtt).getStatus())
-					{			
-						//Can cause paralysis
-						case 1 : 
-							atk1(this.p2);
-							break;
-						//Can cause sleeping
-						case 2 : 
-							atk2(this.p2);
-							break;
-						//Can cause poison
-						case 3 : 
-							atk3(this.p2);
-							break;
-						//Can cause burn
-						case 4 : 
-							atk4(this.p2);
-							break;
-						//Can cause freeze
-						case 5 : 
-							atk5(this.p2);
-							break;
-						//Can cause confusion
-						case 6 : 
-							atk6(this.p2);
-							break;
-						//Case 7 is never used
-						//Attack drop for opponent
-						case 8 : 
-							atk8(this.p2);
-							break;
-						//Attack boost for user
-						case 9 :
-							atk9(this.p1);
-							break;
-						//Attack drop for user - same as atk8 but with the other player in parameter
-						case 10 :
-							atk8(this.p1);
-							break;
-						//Case 11 is never used
-						//Double attack drop for opponent
-						case 12 :
-							atk12(this.p2);
-							break;
-						//Double attack boost for user
-						case 13 :
-							atk13(this.p1);
-							break;
-						//Case 14 is never used
-						//Def drop for opponent
-						case 16:
-							atk16(this.p2);
-							break;
-					}
-				}
-			}
-			else if (this.getpattack(this.p1,iAtt).getPower()==0)
-			{
-				this.s = this.s + "\nEnemy "+this.getpPkmn(this.p2).getName()+" avoid the attack !";
+				//Attack drop for opponent
+				case 8 : 
+					atk8(def);
+					break;
+				//Attack boost for user
+				case 9 :
+					atk9(att);
+					break;
+				//Attack drop for user - same as atk8 but with the other player in parameter
+				case 10 :
+					atk8(def);
+					break;
+				//Case 11 is never used
+				//Double attack drop for opponent
+				case 12 :
+					atk12(def);
+					break;
+				//Double attack boost for user
+				case 13 :
+					atk13(att);
+					break;
+				//Case 14 is never used
+				//Defense drop for opponent
+				case 16:
+					atk16(def);
+					break;
 			}
 		}
-		else
+		//Status change can only occur if the Pokémon is not already altered by another status.
+		if (this.getpPkmn(def).getStatus()==0)
 		{
-			//If moves power is higher than 0, do damages. Then check status change
-			if (this.getpattack(this.p2,iAtt).getPower()>0)
-				atk0(this.p2, this.p1, iAtt, 0);
-			if (this.getpPkmn(this.p1).getStatus()==0)
+			//Checks if the status alteration hits using the accu_status.
+			int randomstat2 = ThreadLocalRandom.current().nextInt(0,100);
+			if (randomstat2 >= 100 - this.getpattack(att, iAtt).getAccu_status())
 			{
-				int randomstat = ThreadLocalRandom.current().nextInt(0,100);
-				if (randomstat >= 100 - this.getpattack(this.p2, iAtt).getAccu_status())
-				{
-					switch (this.getpattack(this.p2, iAtt).getStatus())
-					{
-						//Can cause paralysis
-						case 1 : 
-							atk1(this.p1);
-							break;	
-						//Can cause sleeping
-						case 2 : 
-							atk2(this.p1);
-							break;
-						//Can cause poison
-						case 3 : 
-							atk3(this.p1);
-							break;
-						//Can cause burn
-						case 4 : 
-							atk4(this.p1);
-							break;
-						//Can cause freeze
-						case 5 : 
-							atk4(this.p1);
-							break;
-						//Can cause confusion
-						case 6 : 
-							atk6(this.p1);
-							break;
-						//Case 7 is never used
-						//Attack drop for opponent
-						case 8 : 
-							atk8(this.p1);
-							break;
-						//Attack boost for user
-						case 9 : 
-							atk9(this.p2);
-							break;
-						//Attack drop for user - same as atk8 but with the other player in parameter
-						case 10 :
-							atk8(this.p2);
-							break;
-						//Case 11 is never used
-						//Double attack drop for opponent
-						case 12 :
-							atk12(this.p1);
-							break;
-						//Double attack boost for user
-						case 13 :
-							atk13(this.p2);
-							break;
-						//Case 14 is never used
-						//Def drop for opponent
-						case 16 :
-							atk16(this.p1);
-							break;
-					}
+				switch (this.getpattack(att, iAtt).getStatus())
+				{			
+					//Can cause paralysis
+					case 1 : 
+						atk1(def);
+						break;
+					//Can cause sleeping
+					case 2 : 
+						atk2(def);
+						break;
+					//Can cause poison
+					case 3 : 
+						atk3(def);
+						break;
+					//Can cause burn
+					case 4 : 
+						atk4(def);
+						break;
+					//Can cause freeze
+					case 5 : 
+						atk5(def);
+						break;
+					//Can cause confusion
+					case 6 : 
+						atk6(def);
+						break;
 				}
 			}
-			else if (this.getpattack(this.p2,iAtt).getPower()==0)
-			{
-				this.s = this.s + "\n"+this.getpPkmn(this.p1).getName()+" avoid the attack !";
-			}
 		}
-		return this.s;
+		//Shows the "avoid attack" message if the purpose of the move is only status alteration
+		else if (this.getpattack(att,iAtt).getPower()==0)
+		{
+			this.s = this.s + this.getpPkmn(this.p2).getName()+" avoid the attack !";
+		}
+		return s;
 	}
 	
 	public Pokemon getpPkmn(Player p)
@@ -362,25 +224,26 @@ public class Battle
 		return p.getCurrentPkmn().getAttacks().get(i);
 	}
 	
-	//To write how many hp left the pokémon has. i -> 0 = player, 1 = IA
-	public void checkHpLeft(Pokemon pk, int i)
+	//To write how many hp left the pokémon has. def is the player who is being checked.
+	public void checkHpLeft(Player def)
 	{
-		if (pk.getStatus() == 9)
+		//Checks if the pokemon is dead
+		if (def.getCurrentPkmn().getStatus() == 9)
 		{
-			this.s = this.s + "\n***********************\n"+pk.getName()+" fainted !";
-			if (i == 0)
+			this.s = this.s + "\n***********************\n"+def.getCurrentPkmn().getName()+" fainted !";
+			if (def.getName().equals("Player"))
 			{
-				this.p1.getTeam().remove(pk);
+				this.p1.getTeam().remove(def.getCurrentPkmn());
 				this.s = this.s + "\nYou have "+this.p1.getTeam().size()+" pokémons left.";
 			}
 			else
 			{
-				this.p2.getTeam().remove(pk);
+				this.p2.getTeam().remove(def.getCurrentPkmn());
 				this.s = this.s + "\nYour opponent has "+this.p2.getTeam().size()+" pokémons left.";
 			}
 		}
 		else
-			this.s = this.s +"\n"+pk.getName()+" has "+pk.getCurrentHp()+"/"+pk.getBaseHp()+" HP.";
+			this.s = this.s +"\n"+def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP.";
 	}
 	
 	private boolean checkHit(Attack att, Pokemon pk)
@@ -565,7 +428,7 @@ public class Battle
 		if (damage != 0)
 			this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
 		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
-		this.checkHpLeft(def.getCurrentPkmn(),i);
+		this.checkHpLeft(def);
 	}
 	
 	//Mechanics for atk2 which is causing paralysis

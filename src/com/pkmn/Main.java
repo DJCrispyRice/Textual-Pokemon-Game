@@ -38,6 +38,7 @@ public class Main implements ActionListener
 			win.logTrace("To do so, type the number of your Pokémon and Enter. You can refer to the Pokédex if needed.");
 			win.whatToChoose = "team";
 		}
+		//Part that is used to select your team
 		else if (win.whatToChoose.equals("team"))
 		{
 			try
@@ -68,7 +69,7 @@ public class Main implements ActionListener
 				}
 				//... Otherwise showing how many pokémons are left to choose
 				else
-					win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose !");
+					win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose.");
 			}
 			//If what the user type is not a pokémon (not a number, something higher than 151...)
 			catch (Exception e)
@@ -76,6 +77,7 @@ public class Main implements ActionListener
 				win.logTrace("Woops ! That doesn't look like a valid Pokémon !");
 			}
 		}
+		//Selecting the attack
 		else if (win.whatToChoose.equals("attack"))
 		{
 			//Try/catch to check if the number is a valid choice
@@ -90,7 +92,7 @@ public class Main implements ActionListener
 				if (b.getpPkmn(b.p1).getCurrentSpd() >= b.getpPkmn(b.p2).getCurrentSpd())
 				{
 					//Calls the useAttack function for index 0 which is the player
-					win.logTrace(b.useAttack(Integer.parseInt(choice)-1,0));
+					win.logTrace(b.useAttack(Integer.parseInt(choice)-1,b.p1,b.p2));
 					//Checks if the opponent fainted
 					if (b.p2.getCurrentPkmn().getStatus()==9)
 					{
@@ -112,7 +114,7 @@ public class Main implements ActionListener
 					else
 					{
 						//The opponent randomly selects an attack and use it.
-						win.logTrace(b.useAttack(ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size()),1));
+						win.logTrace(b.useAttack(ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size()),b.p2,b.p1));
 						//Checks if the player fainted
 						if (b.p1.getCurrentPkmn().getStatus()==9)
 						{
@@ -144,7 +146,7 @@ public class Main implements ActionListener
 				else
 				{
 					//The opponent randomly selects an attack and use it (case he is faster than player)
-					win.logTrace(b.useAttack(ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size()),1));
+					win.logTrace(b.useAttack(ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size()),b.p2,b.p1));
 					//Checks if the player fainted
 					if (b.p1.getCurrentPkmn().getStatus()==9)
 					{
@@ -169,7 +171,7 @@ public class Main implements ActionListener
 					}
 					else
 					{
-						win.logTrace(b.useAttack(Integer.parseInt(choice)-1,0));
+						win.logTrace(b.useAttack(Integer.parseInt(choice)-1,b.p1,b.p2));
 						//Checks if the opponent fainted
 						if (b.p2.getCurrentPkmn().getStatus()==9)
 						{
