@@ -61,7 +61,7 @@ public class Battle
 		{
 			s = s + "\n "+Integer.toString(i+1)+". " + this.getpattack(this.p1, i).getType().getName() + " - " + this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
 		}
-		s = s + "\n*********************** ";
+		s = s + "\n***********************";
 		return s;
 	}
 	
@@ -72,7 +72,7 @@ public class Battle
 		//By default, the attack should occur
 		Boolean atkok = true;
 		this.s = new String();
-		//If the pokemon is paralysed, it has 25% chance not to attack
+		//If the pokemon is paralysed, it has 25% chance not to attack.
 		if (this.getpPkmn(att).getStatus()==1)
 		{
 			int ckatk = ThreadLocalRandom.current().nextInt(0,100);
@@ -360,9 +360,7 @@ public class Battle
 			//Checks if the status alteration hits using the accu_status.
 			int randomstat2 = ThreadLocalRandom.current().nextInt(0,100);
 			if (randomstat2 >= 100 - this.getpattack(att, iAtt).getAccu_status())
-			{
 				statusModifier(def,this.getpattack(att,iAtt).getStatus());
-			}
 		}
 		//Shows the "avoid attack" message if the purpose of the move is only status alteration. Exception with healing move that does not hit opponent
 		else if (this.getpattack(att,iAtt).getPower()==0 && this.getpattack(att,iAtt).getStatus() != 45)
@@ -488,7 +486,7 @@ public class Battle
 		return rt;
 	}
 	
-	//To write how many hp left the pokémon has. def is the player who is being checked.
+	//To write how many hp left the pokémon has. Def is the player who is being checked.
 	public void checkHpLeft(Player def)
 	{
 		//Checks if the pokemon is dead
@@ -498,12 +496,12 @@ public class Battle
 			if (def.getName().equals("Player"))
 			{
 				this.p1.getTeam().remove(def.getCurrentPkmn());
-				this.s = this.s + "\nYou have "+this.p1.getTeam().size()+" pokémons left.";
+				this.s = this.s + "\nYou have "+this.p1.getTeam().size()+" pokémon left.";
 			}
 			else
 			{
 				this.p2.getTeam().remove(def.getCurrentPkmn());
-				this.s = this.s + "\nYour opponent has "+this.p2.getTeam().size()+" pokémons left.";
+				this.s = this.s + "\nYour opponent has "+this.p2.getTeam().size()+" pokémon left.";
 			}
 		}
 		else

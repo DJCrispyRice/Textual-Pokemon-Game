@@ -48,7 +48,7 @@ public class Pokemon
 	int currentEvasion = 100;
 	int stageEvasion = 0;
 	int countSleep = 0;
-	int countConfusion = 3;
+	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
 	boolean canAttack = true; //Used for flinching since it is not really a status
 	
