@@ -59,7 +59,3 @@ public class Window extends JFrame
 		this.jl.setCaretPosition(this.jl.getDocument().getLength());
 	}
 }
-
-
-
-

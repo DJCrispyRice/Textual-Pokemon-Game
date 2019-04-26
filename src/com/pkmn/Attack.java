@@ -1,6 +1,6 @@
 package com.pkmn;
 /* 
- * This class contains any attacks that will be used by Pokemons. It consists of a name with a description, an Id (useful to find the attack in the game data),
+ * This class contains any attacks that will be used by pokémons. It consists of a name with a description, an Id (useful to find the attack in the game data),
  * the power of the attack (used to calculate damages), the number of PP, a type, if it can trigger a status (paralysis, sleep...) with which accuracy 
  * and its accuracy to hit.
  * 

@@ -3,7 +3,7 @@ package com.pkmn;
 import java.util.ArrayList;
 
 /* 
- * This class contains our favorite little monsters. They have a name, an Id (basically number in Pok�dex), at least one type (the second may be null), attacks
+ * This class contains our favorite little monsters. They have a name, an Id (basically number in Pokédex), at least one type (the second may be null), attacks
  * (at least 1, max 4). Every stat is covered by "base" and "current" since attacks may occur that alter stats. Accuracy is 100 by default but can be lowered
  * by sand attack for example. 
  * Status 0 : Normal (no status) - simply deals damages
