@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Status 3 : Poison
  * Status 4 : Burn
  * Status 5 : Frozen
- * Status 6 : Confused
+ * Status 6 : Confused -> not used, read countConfusion instead in order to cumule confusion and other status
  * Status 7 : In the air
  * Status 8 : Underground
  * Status 9 : Dead
@@ -48,7 +48,7 @@ public class Pokemon
 	int currentEvasion = 100;
 	int stageEvasion = 0;
 	int countSleep = 0;
-	int countConfusion = 0;
+	int countConfusion = 3;
 	int countDot = 0; //Count Damage Over Time
 	boolean canAttack = true; //Used for flinching since it is not really a status
 	

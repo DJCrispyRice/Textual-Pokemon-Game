@@ -54,9 +54,6 @@ public class Battle
 				case 5 :
 					this.s = this.s + "frozen.+++\n";
 					break;
-				case 6 :
-					this.s = this.s + "confused.+++\n";
-					break;
 			}
 		}
 		s = s + "***********************\nWhat should "+this.getpPkmn(p1).getName()+" do ?";
@@ -110,30 +107,28 @@ public class Battle
 				this.s = this.getpPkmn(att).getName() + " is frozen solid !";
 			atkok = false;
 		}
-		//If the pokemon is confused, it has 50% of hitting itself
-		else if (this.getpPkmn(att).getStatus()==6)
+		//Confusion check
+		if (this.getpPkmn(att).getCountConfusion()>0)
 		{
 			this.getpPkmn(att).setCountConfusion(this.getpPkmn(att).getCountConfusion() - 1);
 			if (this.getpPkmn(att).getCountConfusion()>0)
 			{
 				this.s = this.s + this.getpPkmn(att).getName() + " is confused...\n";
 				int ckcon = ThreadLocalRandom.current().nextInt(0,100);
+				System.out.println(ckcon);
 				if (ckcon > 50)
 				{
 					int damage = ((2*20)/2 + 2)*40;
 					damage = damage * (this.getpPkmn(att).getCurrentAtk()/this.getpPkmn(att).getCurrentDef());
 					damage = damage/50 + 2;
 					this.s = this.s + this.getpPkmn(att).getName() + " hurts himself in confusion and lost "+damage+" HP.";
-					this.getpPkmn(p1).setCurrentHp(this.getpPkmn(p1).getCurrentHp() - damage);
+					this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - damage);
 					this.checkHpLeft(att);
 					atkok = false;
 				}
 			}
 			else
-			{
 				this.s = this.s + this.getpPkmn(att).getName() + " snapped out of confusion !\n";
-				this.getpPkmn(att).setStatus(0);
-			}	
 		}
 		//If the attack can occur (no status avoiding it to happen), it does...
 		if (atkok)
@@ -602,7 +597,8 @@ public class Battle
 	//Applies status alteration and prints the result
 	private void statusModifier(Player p, int status)
 	{
-		p.getCurrentPkmn().setStatus(status);
+		if (status != 6)
+			p.getCurrentPkmn().setStatus(status);
 		switch (status)
 		{
 			case 1 :
