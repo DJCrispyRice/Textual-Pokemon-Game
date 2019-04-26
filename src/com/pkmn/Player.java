@@ -53,14 +53,21 @@ public class Player
 		this.currentPkmn = currentPkmn;
 	}
 	
-	public void setCurrentStats()
+	//stat is used because haze should not reset status.
+	public void setCurrentStats(boolean stat)
 	{
 		currentPkmn.setCurrentHp(currentPkmn.getBaseHp());
 		currentPkmn.setCurrentAtk(currentPkmn.getBaseAtk());
+		currentPkmn.setStageAtk(0);
 		currentPkmn.setCurrentDef(currentPkmn.getBaseDef());
+		currentPkmn.setStageDef(0);
 		currentPkmn.setCurrentSpe(currentPkmn.getBaseSpe());
+		currentPkmn.setStageSpe(0);
 		currentPkmn.setCurrentSpd(currentPkmn.getBaseSpd());
+		currentPkmn.setStageSpd(0);
 		currentPkmn.setCurrentAccu(currentPkmn.getBaseAccu());
-		currentPkmn.setStatus(0);
+		currentPkmn.setStageAccu(0);
+		if (stat)
+			currentPkmn.setStatus(0);
 	}
 }

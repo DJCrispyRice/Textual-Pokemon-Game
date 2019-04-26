@@ -33,8 +33,33 @@ public class Battle
 	//Shows attacks that can be used by your pokémon
 	public String showAttacks()
 	{
-		this.s = new String();
-		s = "***********************\nPlease choose an attack.";
+		this.s = new String("\n");
+		if (this.getpPkmn(p1).getStatus()!=0)
+		{
+			this.s = this.s + "+++" + this.getpPkmn(p1).getName() + " is ";
+			switch (this.getpPkmn(p1).getStatus())
+			{
+				case 1 :
+					this.s = this.s + "paralysed.+++\n";
+					break;
+				case 2 :
+					this.s = this.s + "asleep.+++\n";
+					break;
+				case 3 :
+					this.s = this.s + "poisoned.+++\n";
+					break;
+				case 4 :
+					this.s = this.s + "burning.+++\n";
+					break;
+				case 5 :
+					this.s = this.s + "frozen.+++\n";
+					break;
+				case 6 :
+					this.s = this.s + "confused.+++\n";
+					break;
+			}
+		}
+		s = s + "***********************\nWhat should "+this.getpPkmn(p1).getName()+" do ?";
 		for (int i=0;i<this.getpPkmn(p1).getAttacks().size();i++)
 		{
 			s = s + "\n "+Integer.toString(i+1)+". " + this.getpattack(this.p1, i).getType().getName() + " - " + this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
@@ -44,7 +69,8 @@ public class Battle
 	}
 	
 	//Is used whatever an attack is launched by a pokemon. att is the attacker, def is the defender
-	public String useAttack (int iAtt, Player att, Player def)
+	//i is used to see if it's the first or the second attack in this turn
+	public String useAttack (int iAtt, Player att, Player def, int i)
 	{
 		//By default, the attack should occur
 		Boolean atkok = true;
@@ -114,7 +140,7 @@ public class Battle
 		{
 			this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
 			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
-				this.s = this.doDamages(iAtt, att, def);
+				this.s = this.doDamages(iAtt, att, def, i);
 			else
 				this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " missed !";
 		}
@@ -138,7 +164,8 @@ public class Battle
 	
 	//Will calculate what happens if the attack hits 
 	//Return s which will be printed as a log trace.
-	private String doDamages(int iAtt, Player att, Player def)
+	//i is used to see if it's the first or the second attack in this turn
+	private String doDamages(int iAtt, Player att, Player def, int i)
 	{
 		//Checking the status of the attack to see what will happen next
 		//If move's power is higher than 0, do damages. Then check status change
@@ -287,6 +314,30 @@ public class Battle
 				case 42:
 					statModifier(att,"evasion",-1);
 					break;
+				//Cause flinching
+				case 43:
+					//Should occur only if the attack was faster or attacked first
+					if (i==0)
+					{
+						this.s = this.s + this.getpPkmn(def).getName() + " flinched !";
+						def.getCurrentPkmn().setCanAttack(false);
+					}
+					break;
+				//Healing mechanic
+				case 45:
+					if (this.getpattack(att, iAtt).getId() == 97 || this.getpattack(att, iAtt).getId() == 119)
+					{
+						int heal = att.getCurrentPkmn().getBaseHp() / 2;
+						att.getCurrentPkmn().setCurrentHp(att.getCurrentPkmn().getCurrentHp() + heal);
+						this.s = this.s + this.getpPkmn(att).getName() + " healed "+ heal +" HP and now has "+att.getCurrentPkmn().getCurrentHp() +"/" + att.getCurrentPkmn().getBaseHp()+".";
+					}
+					else
+					{
+						att.setCurrentStats(false);
+						def.setCurrentStats(false);
+						this.s = this.s + "All status changes were eliminated !";
+					}
+					break;
 			}
 		}
 		//Status change can only occur if the Pokémon is not already altered by another status.
@@ -299,8 +350,8 @@ public class Battle
 				statusModifier(def,this.getpattack(att,iAtt).getStatus());
 			}
 		}
-		//Shows the "avoid attack" message if the purpose of the move is only status alteration
-		else if (this.getpattack(att,iAtt).getPower()==0)
+		//Shows the "avoid attack" message if the purpose of the move is only status alteration. Exception with healing move that does not hit opponent
+		else if (this.getpattack(att,iAtt).getPower()==0 && this.getpattack(att,iAtt).getStatus() != 45)
 		{
 			this.s = this.s + this.getpPkmn(def).getName()+" avoid the attack !";
 		}
@@ -509,7 +560,22 @@ public class Battle
 		//Checks strength/weakness
 		damage = this.checkStrWeak(damage, this.getpattack(atk,iAtt), def.getCurrentPkmn());
 		if (damage != 0)
-			this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
+		{
+			//Checking if the attack should steal HP
+			if (this.getpattack(atk, iAtt).getStatus()==44)
+			{
+				int heal = 0;
+				if (def.getCurrentPkmn().getCurrentHp() - damage < 0)
+					heal = def.getCurrentPkmn().getCurrentHp()/2;
+				else
+					heal = damage/2;
+				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
+				atk.getCurrentPkmn().setCurrentHp(atk.getCurrentPkmn().getCurrentHp()+heal);
+				this.s = this.s + "\n"+atk.getCurrentPkmn().getName()+" stole "+heal+" HP and now has "+atk.getCurrentPkmn().getCurrentHp()+"/"+atk.getCurrentPkmn().getBaseHp()+".";
+			}
+			else
+				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
+		}
 		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
 		this.checkHpLeft(def);
 	}

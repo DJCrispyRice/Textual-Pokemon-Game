@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * This class contains our favorite little monsters. They have a name, an Id (basically number in Pok�dex), at least one type (the second may be null), attacks
  * (at least 1, max 4). Every stat is covered by "base" and "current" since attacks may occur that alter stats. Accuracy is 100 by default but can be lowered
  * by sand attack for example. 
- * Status 0 : Normal (no status)
+ * Status 0 : Normal (no status) - simply deals damages
  * Status 1 : Paralysis
  * Status 2 : Sleep
  * Status 3 : Poison
@@ -16,7 +16,6 @@ import java.util.ArrayList;
  * Status 7 : In the air
  * Status 8 : Underground
  * Status 9 : Dead
- * Status 10 : afraid
  */
 
 public class Pokemon 
@@ -51,7 +50,7 @@ public class Pokemon
 	int countSleep = 0;
 	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
-	
+	boolean canAttack = true; //Used for flinching since it is not really a status
 	
 	
 	//Empty constructor only for the fake index 0 Pokémon
@@ -154,7 +153,12 @@ public class Pokemon
 	public void setCurrentHp(int currentHp) 
 	{
 		if (currentHp > 0)
-			this.currentHp = currentHp;
+		{
+			if  (currentHp > this.getBaseHp())
+				this.currentHp = this.getBaseHp();
+			else
+				this.currentHp = currentHp;
+		}
 		else
 		{
 			this.currentHp = 0;
@@ -401,4 +405,13 @@ public class Pokemon
 			this.stageEvasion = stageEvasion;
 	}
 	
+	public boolean getCanAttack() 
+	{
+		return this.canAttack;
+	}
+	
+	public void setCanAttack(boolean canAttack) 
+	{
+		this.canAttack = canAttack;
+	}
 }
