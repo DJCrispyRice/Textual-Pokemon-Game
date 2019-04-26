@@ -169,7 +169,20 @@ public class Battle
 	{
 		//Checking the status of the attack to see what will happen next
 		//If move's power is higher than 0, do damages. Then check status change
-		if (this.getpattack(att,iAtt).getPower()>0)
+		//Also checks if the attack is a multi-hit move
+		if (this.getpattack(att, iAtt).getStatus() == 46)
+		{
+			int hits = ThreadLocalRandom.current().nextInt(2,5);
+			if (getpattack(att,iAtt).getId() == 29)
+				hits = 2;
+			for (int j = 1; j <= hits; j++)
+			{
+				deal(att,def,iAtt,0);
+				this.s = this.s + "\n";
+			}
+			this.s = this.s + "Hit " + getpPkmn(att).getName() + " " + hits + " times.";
+		}
+		else if (this.getpattack(att,iAtt).getPower()>0)
 			deal(att, def, iAtt, 1);
 		//Checking if the attack does anything but statut alteration
 		//Checks if the status alteration hits using the accu_status.
