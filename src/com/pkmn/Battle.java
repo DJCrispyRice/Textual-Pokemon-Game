@@ -173,16 +173,22 @@ public class Battle
 		if (this.getpattack(att, iAtt).getStatus() == 46)
 		{
 			int hits = ThreadLocalRandom.current().nextInt(2,5);
+			int nb = 0;
+			int j;
 			if (getpattack(att,iAtt).getId() == 29)
 				hits = 2;
-			for (int j = 1; j <= hits; j++)
+			for (j = 1; j <= hits; j++)
 			{
+				nb++;
 				deal(att,def,iAtt,0);
 				this.s = this.s + "\n";
+				if (getpPkmn(def).getCurrentHp()==0)
+					break;
 			}
-			this.s = this.s + "Hit " + getpPkmn(att).getName() + " " + hits + " times.";
+			if (getpPkmn(def).getCurrentHp()>0)
+				this.s = this.s + "Hit " + getpPkmn(def).getName() + " " + nb + " times.";
 		}
-		else if (this.getpattack(att,iAtt).getPower()>0)
+		else if (this.getpattack(att,iAtt).getPower()>0 || this.getpattack(att, iAtt).getStatus() != 46)
 			deal(att, def, iAtt, 1);
 		//Checking if the attack does anything but statut alteration
 		//Checks if the status alteration hits using the accu_status.
