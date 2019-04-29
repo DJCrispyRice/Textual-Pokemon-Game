@@ -150,7 +150,7 @@ public class Battle
 		//If the pokémon is burn, lose 1/16 of its HP.
 		else if (this.getpPkmn(att).getStatus()==4)
 		{
-			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP by the burn.";
+			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to burn.";
 			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
 			this.checkHpLeft(att);
 		}
@@ -183,7 +183,7 @@ public class Battle
 			if (getpPkmn(def).getCurrentHp()>0)
 				this.s = this.s + "Hit " + getpPkmn(def).getName() + " " + nb + " times.";
 		}
-		else if (this.getpattack(att,iAtt).getPower()>0 || this.getpattack(att, iAtt).getStatus() != 46)
+		else if (this.getpattack(att,iAtt).getPower()>0 && this.getpattack(att, iAtt).getStatus() != 46)
 			deal(att, def, iAtt, 1);
 		//Checking if the attack does anything but statut alteration
 		//Checks if the status alteration hits using the accu_status.
@@ -363,7 +363,7 @@ public class Battle
 				statusModifier(def,this.getpattack(att,iAtt).getStatus());
 		}
 		//Shows the "avoid attack" message if the purpose of the move is only status alteration. Exception with healing move that does not hit opponent
-		else if (this.getpattack(att,iAtt).getPower()==0 && this.getpattack(att,iAtt).getStatus() != 45)
+		else if (this.getpattack(att,iAtt).getPower()==0 && this.getpattack(att,iAtt).getStatus() <= 6)
 		{
 			this.s = this.s + this.getpPkmn(def).getName()+" avoid the attack !";
 		}
@@ -550,7 +550,7 @@ public class Battle
 			power = (int) (power * 1.5);
 		}
 		//Mathematical calculation for damages. Level is 50
-		damage = ((2*50)/2 + 2)*power;
+		damage = ((2*50)/5 + 2)*power;
 		//Checking crit to see if we use base or current stats
 		if (checkCrit(this.getpattack(atk,iAtt), atk.getCurrentPkmn()))
 		{
@@ -608,7 +608,9 @@ public class Battle
 				p.getCurrentPkmn().setCountSleep(ThreadLocalRandom.current().nextInt(1,7));
 				break;
 			case 3 :
-				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " is poisonned !";
+				//Type poison pokemons cannot be poisonned
+				if (getpPkmn(p).getType1().getName() != "Poison" && getpPkmn(p).getType2().getName() != "Poison")
+					this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " is poisonned !";
 				break;
 			case 4 :
 				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " got burnt !";
