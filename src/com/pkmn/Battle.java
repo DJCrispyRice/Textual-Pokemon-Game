@@ -170,7 +170,7 @@ public class Battle
 			int hits = ThreadLocalRandom.current().nextInt(2,5);
 			int nb = 0;
 			int j;
-			if (getpattack(att,iAtt).getId() == 29)
+			if (getpattack(att,iAtt).getId() == 29 || getpattack(att,iAtt).getId() == 149)
 				hits = 2;
 			for (j = 1; j <= hits; j++)
 			{
@@ -549,8 +549,8 @@ public class Battle
 		{	
 			power = (int) (power * 1.5);
 		}
-		//Mathematical calculation for damages
-		damage = ((2*20)/2 + 2)*power;
+		//Mathematical calculation for damages. Level is 50
+		damage = ((2*50)/2 + 2)*power;
 		//Checking crit to see if we use base or current stats
 		if (checkCrit(this.getpattack(atk,iAtt), atk.getCurrentPkmn()))
 		{

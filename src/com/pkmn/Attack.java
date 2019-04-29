@@ -48,8 +48,8 @@ package com.pkmn;
  * Status 38 : Applies double special drop
  * Status 39 : Causes accuracy boost > never used
  * Status 40 : Causes accuracy drop (hi sand attack)
- * Status 41 : Applies accuracy boost (shouldn't be used since no attack does increase your accuracy as far as I know)
- * Status 42 : Applies accuracy drop > never used
+ * Status 41 : Applies evasion boost
+ * Status 42 : Applies evasion drop > never used
  * Status 43 : Flinch
  * Status 44 : Steal HP
  * Status 45 : Heal HP/status
