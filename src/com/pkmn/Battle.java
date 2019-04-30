@@ -137,7 +137,7 @@ public class Battle
 			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
 				this.s = this.doDamages(iAtt, att, def, i);
 			else
-				this.s = this.s + "\n"+this.getpPkmn(this.p1).getName() + " missed !";
+				this.s = this.s + "\n"+this.getpPkmn(att).getName() + " missed !";
 		}
 		//After the attack occurs, applies whatever damage it should if there is a status
 		//If the pokémon is poisoned, lose 1/16 of its HP
