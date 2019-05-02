@@ -83,23 +83,40 @@ public class Main implements ActionListener
 			//Try/catch to check if the number is a valid choice
 			try
 			{
-				//Throws a NPE if the number is not a valid choice
-				if (Integer.parseInt(choice) > b.getpPkmn(b.p1).getAttacks().size())
-					throw  new NullPointerException();
+				//If choice is empty, checks if we are in a twoturn situation.
+				if (choice.equals(""))
+				{
+					if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+					{
+						for (int i = 0 ; i < b.getpPkmn(b.p1).getAttacks().size() ; i++)
+						{
+							if (b.getpattack(b.p1,i).getId() == b.getpPkmn(b.p1).getTwoturnstatus())
+							{
+								choice = Integer.toString(i+1);
+								break;
+							}
+						}
+					}
+					else
+						throw new NullPointerException();
+				}
+				//If not, checks the choice to see if it's valid
+				else if (Integer.parseInt(choice) > b.getpPkmn(b.p1).getAttacks().size())
+					throw new NullPointerException();
 				//Speed checking to choose the first Pokémon that hits. If tie, the player moves first
 				
 				//Case : player faster
 				if (b.getpPkmn(b.p1).getCurrentSpd() >= b.getpPkmn(b.p2).getCurrentSpd())
 				{
 					//Calls the useAttack function for index 0 which is the player
-					win.logTrace(b.useAttack(Integer.parseInt(choice)-1,b.p1,b.p2,0));
+					win.logTrace(b.useAttack(Integer.parseInt(choice) - 1,b.p1,b.p2,0));
 					//Checks if the opponent fainted
 					if (b.p2.getCurrentPkmn().getStatus()==9)
 					{
 						//Randomly selects a new pokémon if the previous one fainted, if any available
 						if (b.p2.getTeam().size()>0)
 						{
-							b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size())));
+							b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size() - 1)));
 							b.p2.setCurrentStats(true);
 							win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+" !");
 							win.logTrace(b.showAttacks());
@@ -117,7 +134,8 @@ public class Main implements ActionListener
 						if (b.getpPkmn(b.p2).getCanAttack())
 						{
 							//The opponent randomly selects an attack and use it.
-							win.logTrace(b.useAttack(ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size()),b.p2,b.p1,1));
+							int rdatt = ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size() - 1);
+							win.logTrace(b.useAttack(rdatt,b.p2,b.p1,1));
 							//Checks if the player fainted
 							if (b.p1.getCurrentPkmn().getStatus()==9)
 							{
@@ -156,7 +174,8 @@ public class Main implements ActionListener
 				else
 				{
 					//The opponent randomly selects an attack and use it (case he is faster than player)
-					win.logTrace(b.useAttack(ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size()),b.p2,b.p1,0));
+					int rdatt = ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size() - 1);
+					win.logTrace(b.useAttack(rdatt,b.p2,b.p1,0));
 					//Checks if the player fainted
 					if (b.p1.getCurrentPkmn().getStatus()==9)
 					{
@@ -190,7 +209,7 @@ public class Main implements ActionListener
 								//Randomly selects a new pokémon if the previous one fainted, if any available
 								if (b.p2.getTeam().size()>0)
 								{
-									b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size())));
+									b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size() - 1)));
 									b.p2.setCurrentStats(true);
 									win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+" !");
 									win.logTrace(b.showAttacks());
@@ -213,9 +232,10 @@ public class Main implements ActionListener
 					}
 				}
 			}
-			catch (NullPointerException e1)
+			catch (Exception e1)
 			{
 				win.logTrace("Woops ! That doesn't look like a valid attack !");
+				choice = null;
 			}
 		}
 		else if (win.whatToChoose.equals("swap"))

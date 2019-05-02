@@ -12,9 +12,6 @@ import java.util.ArrayList;
  * Status 3 : Poison
  * Status 4 : Burn
  * Status 5 : Frozen
- * Status 6 : Confused -> not used, read countConfusion instead in order to cumule confusion and other status
- * Status 7 : In the air
- * Status 8 : Underground
  * Status 9 : Dead
  */
 
@@ -50,8 +47,8 @@ public class Pokemon
 	int countSleep = 0;
 	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
-	boolean canAttack = true; //Used for flinching since it is not really a status
-	
+	boolean canAttack = true; //Used for flinching and two-turn attacks since it is not really a status
+	int twoturnstatus = 0; //Used for two-turn attacks. Will contain the ID of the attack
 	
 	//Empty constructor only for the fake index 0 Pokémon
 	public Pokemon()
@@ -414,4 +411,15 @@ public class Pokemon
 	{
 		this.canAttack = canAttack;
 	}
+	
+	public int getTwoturnstatus() 
+	{
+		return twoturnstatus;
+	}
+	public void setTwoturnstatus(int twoturnstatus) 
+	{
+		this.twoturnstatus = twoturnstatus;
+	}
+	
+	
 }

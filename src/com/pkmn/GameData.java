@@ -161,7 +161,7 @@ public final class GameData
 		this.allAtks[i] = new Attack("Acid", "May lower opponent's Special.", 1, 40, 30, false, this.allTypes[3],32,10,100); i++;
 		this.allAtks[i] = new Attack("Acid Armor", "Sharply raises user's Defense.", 2, 0, 20, false, this.allTypes[3],21,100,100); i++;
 		this.allAtks[i] = new Attack("Agility", "Sharply raises user's Speed.", 3, 0, 30, false, this.allTypes[12],29,100,100); i++;
-		this.allAtks[i] = new Attack("Amnesia", "Sharply raises user's Special.", 4, 0, 20, false, this.allTypes[12],21,100,100); i++;
+		this.allAtks[i] = new Attack("Amnesia", "Sharply raises user's Special.", 4, 0, 20, false, this.allTypes[12],37,100,100); i++;
 		this.allAtks[i] = new Attack("Aurora Beam", "May freeze the opponent", 5, 65, 20, false, this.allTypes[13],5,10,100); i++;
 		this.allAtks[i] = new Attack("Barrage", "Hits 2-5 times in one turn.", 6, 15, 20, true, this.allTypes[0],46,100,85); i++;
 		this.allAtks[i] = new Attack("Barrier", "Sharply raises user's Defense.", 7, 0, 20, false, this.allTypes[12],21,100,100); i++;
@@ -208,7 +208,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Glare","Paralyzes opponent.",48,0,30,false,this.allTypes[0],1,100,100); i++;
 		this.allAtks[i] = new Attack ("Growl","Lowers opponent's Attack.",49,0,40,false,this.allTypes[0],8,100,100); i++;
 		this.allAtks[i] = new Attack ("Growth","Raises user's special.",50,0,40,false,this.allTypes[0],9,100,100); i++;
-		this.allAtks[i] = new Attack ("Gust","Hits Pokémon using Fly/Bounce with double power.",51,40,35,false,this.allTypes[2],0,0,100); i++;
+		this.allAtks[i] = new Attack ("Gust","Standard attack",51,40,35,false,this.allTypes[2],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Harden","Raises user's Defense.",52,0,30,false,this.allTypes[0],17,100,100); i++;
 		this.allAtks[i] = new Attack ("Haze","Resets all stat changes.",53,0,30,false,this.allTypes[13],45,100,100); i++;
 		this.allAtks[i] = new Attack ("Headbutt","May cause flinching.",54,70,15,true,this.allTypes[0],43,30,100); i++;
@@ -261,14 +261,14 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Rock Slide","May cause flinching.",101,75,10,true,this.allTypes[5],43,30,90); i++;
 		this.allAtks[i] = new Attack ("Rock Throw","Standard attack",102,50,15,true,this.allTypes[5],0,0,90); i++;
 		this.allAtks[i] = new Attack ("Rolling Kick","May cause flinching.",103,60,15,true,this.allTypes[1],43,30,85); i++;
-		this.allAtks[i] = new Attack ("Sand Attack","Lowers opponent's Accuracy.",104,0,15,false,this.allTypes[4],40,0,100); i++;
+		this.allAtks[i] = new Attack ("Sand Attack","Lowers opponent's Accuracy.",104,0,15,false,this.allTypes[4],40,100,100); i++;
 		this.allAtks[i] = new Attack ("Scratch","Standard attack",105,40,35,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Screech","Sharply lowers opponent's Defense.",106,0,40,false,this.allTypes[0],20,100,85); i++;
 		this.allAtks[i] = new Attack ("Seismic Toss","Inflicts damage equal to user's level.",107,0,20,true,this.allTypes[1],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Self-Destruct","User faints.",108,200,5,true,this.allTypes[0],50,0,100); i++;
 		this.allAtks[i] = new Attack ("Sharpen","Raises user's Attack.",109,0,30,false,this.allTypes[0],9,0,100); i++;
 		this.allAtks[i] = new Attack ("Sing","Puts opponent to sleep.",110,0,15,false,this.allTypes[0],2,100,55); i++;
-		this.allAtks[i] = new Attack ("Skull Bash","Raises Defense on first turn, attacks on second.",111,130,10,true,this.allTypes[0],48,0,100); i++;
+		this.allAtks[i] = new Attack ("Skull Bash","Charges on first turn, attacks on second.",111,130,10,true,this.allTypes[0],48,0,100); i++;
 		this.allAtks[i] = new Attack ("Sky Attack","Charges on first turn, attacks on second. May cause flinching.",112,140,5,true,this.allTypes[2],54,30,90); i++;
 		this.allAtks[i] = new Attack ("Slam","Standard attack",113,80,20,true,this.allTypes[0],0,0,75); i++;
 		this.allAtks[i] = new Attack ("Slash","High critical hit ratio.",114,70,20,true,this.allTypes[0],47,0,100); i++;
@@ -1076,7 +1076,6 @@ public final class GameData
 		this.allPkmn[i].getAttacks().add(this.allAtks[76]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[77]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[31]);
-		
 		
 		//Tracing that loading is OK
 		win.logTrace("Pokémons loaded.");

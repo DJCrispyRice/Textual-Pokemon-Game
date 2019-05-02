@@ -33,35 +33,40 @@ public class Battle
 	//Shows attacks that can be used by your pokémon
 	public String showAttacks()
 	{
-		this.s = new String("\n");
-		if (this.getpPkmn(p1).getStatus()!=0)
+		this.s = new String();
+		if (getpPkmn(p1).getTwoturnstatus() == 0)
 		{
-			this.s = this.s + "+++" + this.getpPkmn(p1).getName() + " is ";
-			switch (this.getpPkmn(p1).getStatus())
+			if (this.getpPkmn(p1).getStatus()!=0)
 			{
-				case 1 :
-					this.s = this.s + "paralysed.+++\n";
-					break;
-				case 2 :
-					this.s = this.s + "asleep.+++\n";
-					break;
-				case 3 :
-					this.s = this.s + "poisoned.+++\n";
-					break;
-				case 4 :
-					this.s = this.s + "burning.+++\n";
-					break;
-				case 5 :
-					this.s = this.s + "frozen.+++\n";
-					break;
+				this.s = this.s + "+++" + this.getpPkmn(p1).getName() + " is ";
+				switch (this.getpPkmn(p1).getStatus())
+				{
+					case 1 :
+						this.s = this.s + "paralysed.+++\n";
+						break;
+					case 2 :
+						this.s = this.s + "asleep.+++\n";
+						break;
+					case 3 :
+						this.s = this.s + "poisoned.+++\n";
+						break;
+					case 4 :
+						this.s = this.s + "burning.+++\n";
+						break;
+					case 5 :
+						this.s = this.s + "frozen.+++\n";
+						break;
+				}
 			}
+			s = s + "***********************\nWhat should "+this.getpPkmn(p1).getName()+" do ?";
+			for (int i=0;i<this.getpPkmn(p1).getAttacks().size();i++)
+			{
+				s = s + "\n "+Integer.toString(i+1)+". " + this.getpattack(this.p1, i).getType().getName() + " - " + this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
+			}
+			s = s + "\n***********************";
 		}
-		s = s + "***********************\nWhat should "+this.getpPkmn(p1).getName()+" do ?";
-		for (int i=0;i<this.getpPkmn(p1).getAttacks().size();i++)
-		{
-			s = s + "\n "+Integer.toString(i+1)+". " + this.getpattack(this.p1, i).getType().getName() + " - " + this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
-		}
-		s = s + "\n***********************";
+		else
+			s = s + "Press enter to proceed to next turn.";
 		return s;
 	}
 	
@@ -92,7 +97,10 @@ public class Battle
 				this.s = this.getpPkmn(att).getName() + " is fast asleep !";
 			}
 			else
+			{
 				this.s = this.getpPkmn(att).getName() + " woke up !";
+				getpPkmn(att).setStatus(0);
+			}
 		}
 		//If the pokemon is frozen, it can't attack except if it unfrozes
 		else if (this.getpPkmn(att).getStatus()==5)
@@ -100,7 +108,7 @@ public class Battle
 			int rngfrz = ThreadLocalRandom.current().nextInt(0,100);
 			if (rngfrz>90)
 			{
-				this.getpPkmn(att).setStatus(1);
+				this.getpPkmn(att).setStatus(0);
 				this.s = this.getpPkmn(att).getName() + " unfroze !";
 			}
 			else
@@ -113,14 +121,17 @@ public class Battle
 			this.getpPkmn(att).setCountConfusion(this.getpPkmn(att).getCountConfusion() - 1);
 			if (this.getpPkmn(att).getCountConfusion()>0)
 			{
+				if (att.getName().equals("Opponent"))
+					this.s = this.s + "Enemy ";
 				this.s = this.s + this.getpPkmn(att).getName() + " is confused...\n";
 				int ckcon = ThreadLocalRandom.current().nextInt(0,100);
-				System.out.println(ckcon);
 				if (ckcon > 50)
 				{
 					int damage = ((2*20)/2 + 2)*40;
 					damage = damage * (this.getpPkmn(att).getCurrentAtk()/this.getpPkmn(att).getCurrentDef());
 					damage = damage/50 + 2;
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "Enemy ";
 					this.s = this.s + this.getpPkmn(att).getName() + " hurts himself in confusion and lost "+damage+" HP.";
 					this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - damage);
 					this.checkHpLeft(att);
@@ -128,21 +139,36 @@ public class Battle
 				}
 			}
 			else
+			{
+				if (att.getName().equals("Opponent"))
+					this.s = this.s + "Enemy ";
 				this.s = this.s + this.getpPkmn(att).getName() + " snapped out of confusion !\n";
+			}
 		}
 		//If the attack can occur (no status avoiding it to happen), it does...
 		if (atkok)
 		{
+			if (att.getName().equals("Opponent"))
+				this.s = this.s + "Enemy ";
 			this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
 			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
 				this.s = this.doDamages(iAtt, att, def, i);
 			else
+			{
+				if (att.getName().equals("Opponent"))
+					this.s = this.s + "Enemy ";
 				this.s = this.s + "\n"+this.getpPkmn(att).getName() + " missed !";
+			}
 		}
+		//If the attack didn't occur, reset the two turn status
+		else
+			getpPkmn(att).setTwoturnstatus(0);
 		//After the attack occurs, applies whatever damage it should if there is a status
 		//If the pokémon is poisoned, lose 1/16 of its HP
 		if (this.getpPkmn(att).getStatus()==3)
 		{
+			if (att.getName().equals("Opponent"))
+				this.s = this.s + "Enemy ";
 			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to poison.";
 			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
 			this.checkHpLeft(att);
@@ -150,6 +176,8 @@ public class Battle
 		//If the pokémon is burn, lose 1/16 of its HP.
 		else if (this.getpPkmn(att).getStatus()==4)
 		{
+			if (att.getName().equals("Opponent"))
+				this.s = this.s + "Enemy ";
 			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to burn.";
 			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
 			this.checkHpLeft(att);
@@ -170,12 +198,12 @@ public class Battle
 			int hits = ThreadLocalRandom.current().nextInt(2,5);
 			int nb = 0;
 			int j;
-			if (getpattack(att,iAtt).getId() == 29 || getpattack(att,iAtt).getId() == 149)
+			if (getpattack(att,iAtt).getId() == 13 || getpattack(att,iAtt).getId() == 29 || getpattack(att,iAtt).getId() == 149)
 				hits = 2;
 			for (j = 1; j <= hits; j++)
 			{
 				nb++;
-				deal(att,def,iAtt,0);
+				deal(att,def,iAtt);
 				this.s = this.s + "\n";
 				if (getpPkmn(def).getCurrentHp()==0)
 					break;
@@ -183,8 +211,44 @@ public class Battle
 			if (getpPkmn(def).getCurrentHp()>0)
 				this.s = this.s + "Hit " + getpPkmn(def).getName() + " " + nb + " times.";
 		}
+		//If the attack is still 48 and canAttack is false, it means it's the second turn : unleash the damages
+		else if (getpPkmn(att).getTwoturnstatus() != 0)
+		{
+			getpPkmn(att).setCanAttack(true);
+			deal(att,def,iAtt);
+			getpPkmn(att).setTwoturnstatus(0);
+		}
+		//Set canAttack to false because the attack is "charging"
+		else if (this.getpattack(att,iAtt).getStatus()==48)
+		{
+			if (att.getName().equals("Opponent"))
+				this.s = this.s + "Enemy ";
+			this.s = this.s + getpPkmn(att).getName();
+			//Switch to trace the attack
+			switch (getpattack(att,iAtt).getId())
+			{
+				case 26 :
+					this.s = this.s + " dug a hole !";
+					getpPkmn(att).setTwoturnstatus(26);
+					break;
+				case 45 : 
+					this.s = this.s + " flew up high !";
+					getpPkmn(att).setTwoturnstatus(45);
+					break;
+				case 111 :
+					this.s = this.s + " lowered its head !";
+					getpPkmn(att).setTwoturnstatus(111);
+					break;
+				case 120 : 
+					this.s = this.s + " is shining !";
+					getpPkmn(att).setTwoturnstatus(120);
+					break;
+			}
+			getpPkmn(att).setCanAttack(false);
+		}
+		//If the power is higher than 0 and it's not a multi-hit move, deals damages to opponent
 		else if (this.getpattack(att,iAtt).getPower()>0 && this.getpattack(att, iAtt).getStatus() != 46)
-			deal(att, def, iAtt, 1);
+			deal(att, def, iAtt);
 		//Checking if the attack does anything but statut alteration
 		//Checks if the status alteration hits using the accu_status.
 		int randomstat1 = ThreadLocalRandom.current().nextInt(0,100);
@@ -333,6 +397,8 @@ public class Battle
 					//Should occur only if the attack was faster or attacked first
 					if (i==0)
 					{
+						if (att.getName().equals("Opponent"))
+							this.s = this.s + "Enemy ";
 						this.s = this.s + this.getpPkmn(def).getName() + " flinched !";
 						def.getCurrentPkmn().setCanAttack(false);
 					}
@@ -343,6 +409,10 @@ public class Battle
 					{
 						int heal = att.getCurrentPkmn().getBaseHp() / 2;
 						att.getCurrentPkmn().setCurrentHp(att.getCurrentPkmn().getCurrentHp() + heal);
+						if (att.getName().equals("Opponent"))
+							this.s = this.s + "\nEnemy ";
+						else
+							this.s = this.s + "\n";
 						this.s = this.s + this.getpPkmn(att).getName() + " healed "+ heal +" HP and now has "+att.getCurrentPkmn().getCurrentHp() +"/" + att.getCurrentPkmn().getBaseHp()+".";
 					}
 					else
@@ -355,7 +425,7 @@ public class Battle
 			}
 		}
 		//Status change can only occur if the Pokémon is not already altered by another status.
-		if (this.getpPkmn(def).getStatus()==0 && (this.getpattack(att,iAtt).getStatus()>=1 && this.getpattack(att,iAtt).getStatus()<=6))
+		if (this.getpPkmn(def).getStatus()==0 && (this.getpattack(att,iAtt).getStatus()>=1 && this.getpattack(att,iAtt).getStatus() < 6))
 		{
 			//Checks if the status alteration hits using the accu_status.
 			int randomstat2 = ThreadLocalRandom.current().nextInt(0,100);
@@ -363,8 +433,10 @@ public class Battle
 				statusModifier(def,this.getpattack(att,iAtt).getStatus());
 		}
 		//Shows the "avoid attack" message if the purpose of the move is only status alteration. Exception with healing move that does not hit opponent
-		else if (this.getpattack(att,iAtt).getPower()==0 && this.getpattack(att,iAtt).getStatus() <= 6)
+		else if (this.getpattack(att,iAtt).getPower()==0 && this.getpattack(att,iAtt).getStatus() < 6)
 		{
+			if (att.getName().equals("Opponent"))
+				this.s = this.s + "Enemy ";
 			this.s = this.s + this.getpPkmn(def).getName()+" avoid the attack !";
 		}
 		return s;
@@ -373,6 +445,9 @@ public class Battle
 	private boolean checkHit(Attack atk, Pokemon att, Pokemon def)
 	{
 		int accurate = 100;
+		//Will automatically fail if the user is in the air or underground except if earthquake + underground
+		if ((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45)
+			return false;
 		accurate = accurate - (100 - atk.getAccuracy()) - (100 - att.getCurrentAccu() - (def.getCurrentEvasion() - 100));
 		if (accurate < 0)
 			accurate = 0;
@@ -505,9 +580,15 @@ public class Battle
 			}
 		}
 		else
-			this.s = this.s +"\n"+def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP.";
+		{
+			if (def.getName().equals("Opponent"))
+				this.s = this.s + "\nEnemy ";
+			else
+				this.s = this.s + "\n";
+			this.s = this.s + def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP.";
+		}
 	}
-
+		
 	private boolean checkCrit(Attack att, Pokemon pk)
 	{
 		//Check if the attack has high critical ratio
@@ -529,7 +610,7 @@ public class Battle
 			int P = ThreadLocalRandom.current().nextInt(0,256);
 			if (T > P)
 			{
-				this.s = s + "\nA critical hit ! ";
+				this.s = this.s + "\nA critical hit ! ";
 				return true;
 			}
 			else
@@ -539,16 +620,17 @@ public class Battle
 	
 	//Dealing damages
 	//atk is attacker, def is defender
-	private void deal(Player atk, Player def, int iAtt, int i)
+	private void deal(Player atk, Player def, int iAtt)
 	{
 		int damage = 0;
 		int power;
 		power = this.getpattack(atk,iAtt).getPower();
 		//Verify if STAB
 		if (this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType1()) || this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType2()))
-		{	
 			power = (int) (power * 1.5);
-		}
+		//If the attack is Earthquake and the defender is underground, doubles the power of the attack
+		if (getpPkmn(def).getTwoturnstatus() == 26 && getpattack(atk,iAtt).getId() == 36)
+			power = power * 2;
 		//Mathematical calculation for damages. Level is 50
 		damage = ((2*50)/5 + 2)*power;
 		//Checking crit to see if we use base or current stats
@@ -581,12 +663,20 @@ public class Battle
 					heal = def.getCurrentPkmn().getCurrentHp()/2;
 				else
 					heal = damage/2;
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "Enemy ";
 				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
 				atk.getCurrentPkmn().setCurrentHp(atk.getCurrentPkmn().getCurrentHp()+heal);
+				if (atk.getName().equals("Opponent"))
+					this.s = this.s + "Enemy ";
 				this.s = this.s + "\n"+atk.getCurrentPkmn().getName()+" stole "+heal+" HP and now has "+atk.getCurrentPkmn().getCurrentHp()+"/"+atk.getCurrentPkmn().getBaseHp()+".";
 			}
 			else
+			{
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "Enemy ";
 				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
+			}
 		}
 		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
 		this.checkHpLeft(def);
@@ -595,32 +685,48 @@ public class Battle
 	//Applies status alteration and prints the result
 	private void statusModifier(Player p, int status)
 	{
-		if (status != 6)
-			p.getCurrentPkmn().setStatus(status);
+		getpPkmn(p).setStatus(status);
+		if (p.getName().equals("Opponent"))
+			this.s = this.s + "\nEnemy ";
+		else
+			this.s = this.s + "\n";
 		switch (status)
 		{
 			case 1 :
-				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " is paralysed ! It may not be able to attack !";
-				p.getCurrentPkmn().setCurrentSpd((int) (p.getCurrentPkmn().getBaseSpd()*0.25));
+				this.s = this.s + getpPkmn(p).getName() + " is paralysed ! It may not be able to attack !";
+				getpPkmn(p).setCurrentSpd((int) (getpPkmn(p).getBaseSpd()*0.25));
 				break;
 			case 2 :
-				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " felt asleep !";
-				p.getCurrentPkmn().setCountSleep(ThreadLocalRandom.current().nextInt(1,7));
+				this.s = this.s + getpPkmn(p).getName() + " felt asleep !";
+				getpPkmn(p).setCountSleep(ThreadLocalRandom.current().nextInt(1,7));
 				break;
 			case 3 :
 				//Type poison pokemons cannot be poisonned
-				if (getpPkmn(p).getType1().getName() != "Poison" && getpPkmn(p).getType2().getName() != "Poison")
-					this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " is poisonned !";
+				if (getpPkmn(p).getType1().getName() != "Poison")
+				{
+					this.s = this.s + getpPkmn(p).getName() + " is poisonned !";
+				}
+				else if (getpPkmn(p).getType2() != null)
+				{
+					if (getpPkmn(p).getType2().getName() != "Poison")
+						this.s = this.s + getpPkmn(p).getName() + " is poisonned !";
+				}
+				else
+				{
+					this.s = this.s + getpPkmn(p).getName() + " avoid the attack !";
+					getpPkmn(p).setStatus(0);
+				}
 				break;
 			case 4 :
-				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " got burnt !";
+				this.s = this.s + getpPkmn(p).getName() + " got burnt !";
 				break;
 			case 5 :
-				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " was frozen solid !";
+				this.s = this.s + getpPkmn(p).getName() + " was frozen solid !";
 				break;
 			case 6 :
-				this.s = this.s + "\n" + p.getCurrentPkmn().getName() + " became confused !";
-				p.getCurrentPkmn().setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
+				this.s = this.s + getpPkmn(p).getName() + " became confused !";
+				getpPkmn(p).setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
+				getpPkmn(p).setStatus(0);
 				break;
 		}
 	}
@@ -633,93 +739,95 @@ public class Battle
 		switch (stat)
 		{
 			case "attack" :
-				p.getCurrentPkmn().setStageAtk(p.getCurrentPkmn().getStageAtk() + modifier);
-				if (p.getCurrentPkmn().getStageAtk()>6)
+				getpPkmn(p).setStageAtk(getpPkmn(p).getStageAtk() + modifier);
+				if (getpPkmn(p).getStageAtk()>6)
 				{
 					max = true;
 					break;
 				}
-				else if (p.getCurrentPkmn().getStageAtk()<-6)
+				else if (getpPkmn(p).getStageAtk()<-6)
 				{
 					min = true;
 					break;
 				}
-				p.getCurrentPkmn().setStageAtk(p.getCurrentPkmn().getStageAtk() + modifier);
-				p.getCurrentPkmn().setCurrentAtk(calculateStat(p.getCurrentPkmn().getStageAtk(),p.getCurrentPkmn().getBaseAtk()));
+				getpPkmn(p).setStageAtk(getpPkmn(p).getStageAtk() + modifier);
+				getpPkmn(p).setCurrentAtk(calculateStat(getpPkmn(p).getStageAtk(),getpPkmn(p).getBaseAtk()));
 				break;
 			case "defense" :
-				if (p.getCurrentPkmn().getStageDef()>6)
+				if (getpPkmn(p).getStageDef()>6)
 				{
 					max = true;
 					break;
 				}
-				else if (p.getCurrentPkmn().getStageDef()<-6)
+				else if (getpPkmn(p).getStageDef()<-6)
 				{
 					min = true;
 					break;
 				}
-				p.getCurrentPkmn().setStageDef(p.getCurrentPkmn().getStageDef() + modifier);
-				p.getCurrentPkmn().setCurrentDef(calculateStat(p.getCurrentPkmn().getStageDef(),p.getCurrentPkmn().getBaseDef()));
+				getpPkmn(p).setStageDef(getpPkmn(p).getStageDef() + modifier);
+				getpPkmn(p).setCurrentDef(calculateStat(getpPkmn(p).getStageDef(),getpPkmn(p).getBaseDef()));
 				break;
 			case "speed" :
-				if (p.getCurrentPkmn().getStageSpd()>6)
+				if (getpPkmn(p).getStageSpd()>6)
 				{
 					max = true;
 					break;
 				}
-				else if (p.getCurrentPkmn().getStageSpd()<-6)
+				else if (getpPkmn(p).getStageSpd()<-6)
 				{
 					min = true;
 					break;
 				}
-				p.getCurrentPkmn().setStageSpd(p.getCurrentPkmn().getStageSpd() + modifier);
-				p.getCurrentPkmn().setCurrentSpd(calculateStat(p.getCurrentPkmn().getStageSpd(),p.getCurrentPkmn().getBaseSpd()));
+				getpPkmn(p).setStageSpd(getpPkmn(p).getStageSpd() + modifier);
+				getpPkmn(p).setCurrentSpd(calculateStat(getpPkmn(p).getStageSpd(),getpPkmn(p).getBaseSpd()));
 				break;
 			case "special" :
-				if (p.getCurrentPkmn().getStageSpd()>6)
+				if (getpPkmn(p).getStageSpd()>6)
 				{
 					max = true;
 					break;
 				}
-				else if (p.getCurrentPkmn().getStageSpd()<-6)
+				else if (getpPkmn(p).getStageSpd()<-6)
 				{
 					min = true;
 					break;
 				}
-				p.getCurrentPkmn().setStageSpd(p.getCurrentPkmn().getStageSpd() + modifier);
-				p.getCurrentPkmn().setCurrentSpe(calculateStat(p.getCurrentPkmn().getStageSpe(),p.getCurrentPkmn().getBaseSpe()));
+				getpPkmn(p).setStageSpd(getpPkmn(p).getStageSpd() + modifier);
+				getpPkmn(p).setCurrentSpe(calculateStat(getpPkmn(p).getStageSpe(),getpPkmn(p).getBaseSpe()));
 				break;
 			case "accuracy" :
-				if (p.getCurrentPkmn().getStageAccu()>6)
+				if (getpPkmn(p).getStageAccu()>6)
 				{
 					max = true;
 					break;
 				}
-				else if (p.getCurrentPkmn().getStageAccu()<-6)
+				else if (getpPkmn(p).getStageAccu()<-6)
 				{
 					min = true;
 					break;
 				}
-				p.getCurrentPkmn().setStageAccu(p.getCurrentPkmn().getStageAccu() + modifier);
-				p.getCurrentPkmn().setCurrentAccu(calculateStat(p.getCurrentPkmn().getStageAccu(),p.getCurrentPkmn().getBaseAccu()));
+				getpPkmn(p).setStageAccu(getpPkmn(p).getStageAccu() + modifier);
+				getpPkmn(p).setCurrentAccu(calculateStat(getpPkmn(p).getStageAccu(),getpPkmn(p).getBaseAccu()));
 				break;
 			case "evasion" :
-				if (p.getCurrentPkmn().getStageEvasion()>6)
+				if (getpPkmn(p).getStageEvasion()>6)
 				{
 					max = true;
 					break;
 				}
-				else if (p.getCurrentPkmn().getStageEvasion()<-6)
+				else if (getpPkmn(p).getStageEvasion()<-6)
 				{
 					min = true;
 					break;
 				}
-				p.getCurrentPkmn().setStageEvasion(p.getCurrentPkmn().getStageEvasion() + modifier);
-				p.getCurrentPkmn().setCurrentEvasion(calculateStat(p.getCurrentPkmn().getStageEvasion(),p.getCurrentPkmn().getBaseEvasion()));
+				getpPkmn(p).setStageEvasion(getpPkmn(p).getStageEvasion() + modifier);
+				getpPkmn(p).setCurrentEvasion(calculateStat(getpPkmn(p).getStageEvasion(),getpPkmn(p).getBaseEvasion()));
 				break;
 			
 		}
-		this.s = this.s + p.getCurrentPkmn().getName()+"'s " + stat;
+		if (p.getName().equals("Opponent"))
+			this.s = this.s + "Enemy ";
+		this.s = this.s + getpPkmn(p).getName()+"'s " + stat;
 		if (max)
 			this.s = this.s + "won't go higher !";
 		else if (min)
