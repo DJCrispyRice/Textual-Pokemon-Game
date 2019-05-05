@@ -103,8 +103,8 @@ public class Main implements ActionListener
 				//If not, checks the choice to see if it's valid
 				else if (Integer.parseInt(choice) > b.getpPkmn(b.p1).getAttacks().size())
 					throw new NullPointerException();
-				//Speed checking to choose the first Pokémon that hits. If tie, the player moves first
 				
+				//Speed checking to choose the first Pokémon that hits. If tie, the player moves first
 				//Case : player faster
 				if (b.getpPkmn(b.p1).getCurrentSpd() >= b.getpPkmn(b.p2).getCurrentSpd())
 				{
@@ -116,7 +116,10 @@ public class Main implements ActionListener
 						//Randomly selects a new pokémon if the previous one fainted, if any available
 						if (b.p2.getTeam().size()>0)
 						{
-							b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size() - 1)));
+							if (b.p2.getTeam().size() == 1)
+								b.p2.setCurrentPkmn(b.p2.getTeam().get(0));
+							else
+								b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size() - 1)));
 							b.p2.setCurrentStats(true);
 							win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+" !");
 							win.logTrace(b.showAttacks());
@@ -209,6 +212,8 @@ public class Main implements ActionListener
 								//Randomly selects a new pokémon if the previous one fainted, if any available
 								if (b.p2.getTeam().size()>0)
 								{
+									if (b.p2.getTeam().size()==1)
+										b.p2.setCurrentPkmn(b.p2.getTeam().get(0));
 									b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size() - 1)));
 									b.p2.setCurrentStats(true);
 									win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+" !");

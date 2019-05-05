@@ -480,12 +480,8 @@ public final class GameData
 		this.allPkmn[i] = new Pokemon("Mewtwo",i,this.allTypes[12],null,250,140,96,146,153);i++;
 		this.allPkmn[i] = new Pokemon("Mew",i,this.allTypes[12],null,264,120,120,120,120);
 		
-		//Assigning attacks to Pokémons. Currently assigning fixed attacks for testing purposes.
-		/*for (i=1;i<=151;i++)
-		{
-			this.allPkmn[i].getAttacks().add(this.allAtks[137]);
-			this.allPkmn[i].getAttacks().add(this.allAtks[29]);
-		}*/
+		//Assigning attacks to Pokémons.
+
 		i = 1;
 		this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);

@@ -69,5 +69,7 @@ public class Player
 		currentPkmn.setStageAccu(0);
 		if (stat)
 			currentPkmn.setStatus(0);
+		currentPkmn.setTwoturnstatus(0);
+		currentPkmn.setCanAttack(true);
 	}
 }

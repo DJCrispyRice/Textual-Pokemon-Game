@@ -66,7 +66,9 @@ public class Battle
 			s = s + "\n***********************";
 		}
 		else
+		{
 			s = s + "Press enter to proceed to next turn.";
+		}
 		return s;
 	}
 	
@@ -74,6 +76,7 @@ public class Battle
 	//i is used to see if it's the first or the second attack in this turn
 	public String useAttack (int iAtt, Player att, Player def, int i)
 	{
+		System.out.println("I am using : " + getpPkmn(att).getAttacks().get(iAtt).getName());
 		//By default, the attack should occur
 		Boolean atkok = true;
 		this.s = new String();
@@ -214,7 +217,6 @@ public class Battle
 		//If the attack is still 48 and canAttack is false, it means it's the second turn : unleash the damages
 		else if (getpPkmn(att).getTwoturnstatus() != 0)
 		{
-			getpPkmn(att).setCanAttack(true);
 			deal(att,def,iAtt);
 			getpPkmn(att).setTwoturnstatus(0);
 		}
@@ -244,7 +246,6 @@ public class Battle
 					getpPkmn(att).setTwoturnstatus(120);
 					break;
 			}
-			getpPkmn(att).setCanAttack(false);
 		}
 		//If the power is higher than 0 and it's not a multi-hit move, deals damages to opponent
 		else if (this.getpattack(att,iAtt).getPower()>0 && this.getpattack(att, iAtt).getStatus() != 46)
@@ -585,7 +586,7 @@ public class Battle
 				this.s = this.s + "\nEnemy ";
 			else
 				this.s = this.s + "\n";
-			this.s = this.s + def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP.";
+			this.s = this.s + def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP. ";
 		}
 	}
 		
@@ -665,17 +666,19 @@ public class Battle
 					heal = damage/2;
 				if (def.getName().equals("Opponent"))
 					this.s = this.s + "Enemy ";
-				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
+				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
 				atk.getCurrentPkmn().setCurrentHp(atk.getCurrentPkmn().getCurrentHp()+heal);
 				if (atk.getName().equals("Opponent"))
-					this.s = this.s + "Enemy ";
-				this.s = this.s + "\n"+atk.getCurrentPkmn().getName()+" stole "+heal+" HP and now has "+atk.getCurrentPkmn().getCurrentHp()+"/"+atk.getCurrentPkmn().getBaseHp()+".";
+					this.s = this.s + "\nEnemy ";
+				else
+					this.s = this.s + "\n";
+				this.s = this.s + atk.getCurrentPkmn().getName()+" stole "+heal+" HP and now has "+atk.getCurrentPkmn().getCurrentHp()+"/"+atk.getCurrentPkmn().getBaseHp()+".";
 			}
 			else
 			{
 				if (def.getName().equals("Opponent"))
 					this.s = this.s + "Enemy ";
-				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP.";
+				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
 			}
 		}
 		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
