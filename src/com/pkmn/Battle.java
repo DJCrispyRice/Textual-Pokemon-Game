@@ -76,7 +76,6 @@ public class Battle
 	//i is used to see if it's the first or the second attack in this turn
 	public String useAttack (int iAtt, Player att, Player def, int i)
 	{
-		System.out.println("I am using : " + getpPkmn(att).getAttacks().get(iAtt).getName());
 		//By default, the attack should occur
 		Boolean atkok = true;
 		this.s = new String();
@@ -160,7 +159,7 @@ public class Battle
 			{
 				if (att.getName().equals("Opponent"))
 					this.s = this.s + "Enemy ";
-				this.s = this.s + "\n"+this.getpPkmn(att).getName() + " missed !";
+				this.s = this.s + this.getpPkmn(att).getName() + " missed !";
 			}
 		}
 		//If the attack didn't occur, reset the two turn status
@@ -214,13 +213,13 @@ public class Battle
 			if (getpPkmn(def).getCurrentHp()>0)
 				this.s = this.s + "Hit " + getpPkmn(def).getName() + " " + nb + " times.";
 		}
-		//If the attack is still 48 and canAttack is false, it means it's the second turn : unleash the damages
+		//Checks if it's the second part of a two-turn attack situation. If so, do the damages and sets the variable to 0
 		else if (getpPkmn(att).getTwoturnstatus() != 0)
 		{
 			deal(att,def,iAtt);
 			getpPkmn(att).setTwoturnstatus(0);
 		}
-		//Set canAttack to false because the attack is "charging"
+		//Checks if the attack is a two-turn attack. If so, sets twoturnstatus to the id of this attack
 		else if (this.getpattack(att,iAtt).getStatus()==48)
 		{
 			if (att.getName().equals("Opponent"))
@@ -231,21 +230,18 @@ public class Battle
 			{
 				case 26 :
 					this.s = this.s + " dug a hole !";
-					getpPkmn(att).setTwoturnstatus(26);
 					break;
 				case 45 : 
 					this.s = this.s + " flew up high !";
-					getpPkmn(att).setTwoturnstatus(45);
 					break;
 				case 111 :
 					this.s = this.s + " lowered its head !";
-					getpPkmn(att).setTwoturnstatus(111);
 					break;
 				case 120 : 
 					this.s = this.s + " is shining !";
-					getpPkmn(att).setTwoturnstatus(120);
 					break;
 			}
+			getpPkmn(att).setTwoturnstatus(getpattack(att,iAtt).getId());
 		}
 		//If the power is higher than 0 and it's not a multi-hit move, deals damages to opponent
 		else if (this.getpattack(att,iAtt).getPower()>0 && this.getpattack(att, iAtt).getStatus() != 46)
@@ -447,14 +443,25 @@ public class Battle
 	{
 		int accurate = 100;
 		//Will automatically fail if the user is in the air or underground except if earthquake + underground
-		if ((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45)
+		//... Unless the used attack is two-turn move (first turn using it)
+		if (atk.getStatus() == 48 && att.getTwoturnstatus() == 0)
+			return true;
+		else if ((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45)
+		{
+			if (att.getTwoturnstatus() != 0)
+				att.setTwoturnstatus(0);
 			return false;
+		}
 		accurate = accurate - (100 - atk.getAccuracy()) - (100 - att.getCurrentAccu() - (def.getCurrentEvasion() - 100));
 		if (accurate < 0)
 			accurate = 0;
 		int random = ThreadLocalRandom.current().nextInt(0,100);
 		if (random > accurate)
+		{
+			if (att.getTwoturnstatus() != 0)
+				att.setTwoturnstatus(0);
 			return false;
+		}
 		else
 			return true;
 	}

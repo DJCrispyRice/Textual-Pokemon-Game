@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Status 9 : Dead
  */
 
-public class Pokemon 
+public class Pokemon implements Cloneable
 {
 	String name;
 	int id;
@@ -47,7 +47,7 @@ public class Pokemon
 	int countSleep = 0;
 	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
-	boolean canAttack = true; //Used for flinching and two-turn attacks since it is not really a status
+	boolean canAttack = true; //Used for flinching
 	int twoturnstatus = 0; //Used for two-turn attacks. Will contain the ID of the attack
 	
 	//Empty constructor only for the fake index 0 Pokémon
@@ -83,7 +83,7 @@ public class Pokemon
 		return name;
 	}
 
-	private void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -421,5 +421,8 @@ public class Pokemon
 		this.twoturnstatus = twoturnstatus;
 	}
 	
-	
+	public Pokemon clone() throws CloneNotSupportedException
+	{
+		return (Pokemon) super.clone();
+	}
 }

@@ -2,6 +2,7 @@ package com.pkmn;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main implements ActionListener
@@ -46,7 +47,7 @@ public class Main implements ActionListener
 				//To avoid MissingNo being a choice
 				if (choice.equals("0") || Integer.parseInt(choice) == 0)
 					throw  new NullPointerException();
-				b.p1.setTeam(gd.allPkmn[Integer.parseInt(choice)]);
+				b.p1.setTeam(gd.allPkmn[Integer.parseInt(choice)].clone());
 				win.logTrace("You chose "+gd.allPkmn[Integer.parseInt(choice)].getName()+" !");
 				//Checking if the party is full
 				if (b.p1.getTeam().size() == 6)
@@ -56,7 +57,7 @@ public class Main implements ActionListener
 					//Randomly choosing 6 pokémons for the opponent.
 					for (int i = 1;i<=6;i++)
 					{
-						b.p2.setTeam(gd.allPkmn[ThreadLocalRandom.current().nextInt(1, 151 + 1)]);
+						b.p2.setTeam((Pokemon) gd.allPkmn[ThreadLocalRandom.current().nextInt(1, 151 + 1)].clone());
 						win.logTrace("Pokémon "+i+" is... "+b.p2.getTeam().get(i-1).getName()+" !");
 					}
 					win.logTrace("Your opponent chose his team, now let's the battle begin !");
@@ -137,7 +138,24 @@ public class Main implements ActionListener
 						if (b.getpPkmn(b.p2).getCanAttack())
 						{
 							//The opponent randomly selects an attack and use it.
-							int rdatt = ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size() - 1);
+							Random r = new Random();
+							int rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
+							//If we are in a two turn situation, chooses the previous attack instead.
+							if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
+							{
+								for (int i = 0 ; i < b.getpPkmn(b.p2).getAttacks().size() ; i++)
+								{
+									if (b.getpattack(b.p2,i).getId() == b.getpPkmn(b.p2).getTwoturnstatus())
+									{
+										rdatt = i;
+										break;
+									}
+								}
+							}
+							else if (b.getpPkmn(b.p2).getAttacks().size() == 1)
+							{
+								rdatt = 0;
+							}
 							win.logTrace(b.useAttack(rdatt,b.p2,b.p1,1));
 							//Checks if the player fainted
 							if (b.p1.getCurrentPkmn().getStatus()==9)
@@ -176,8 +194,23 @@ public class Main implements ActionListener
 				//Case : opponent faster
 				else
 				{
-					//The opponent randomly selects an attack and use it (case he is faster than player)
-					int rdatt = ThreadLocalRandom.current().nextInt(0,b.getpPkmn(b.p2).getAttacks().size() - 1);
+					//The opponent randomly selects an attack and use it.
+					Random r = new Random();
+					int rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
+					//If we are in a two turn situation, chooses the previous attack instead.
+					if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
+					{
+						for (int i = 0 ; i < b.getpPkmn(b.p2).getAttacks().size() ; i++)
+						{
+							if (b.getpattack(b.p2,i).getId() == b.getpPkmn(b.p2).getTwoturnstatus())
+							{
+								rdatt = i;
+								break;
+							}
+						}
+					}
+					else if (b.getpPkmn(b.p2).getAttacks().size() == 1)
+						rdatt = 0;
 					win.logTrace(b.useAttack(rdatt,b.p2,b.p1,0));
 					//Checks if the player fainted
 					if (b.p1.getCurrentPkmn().getStatus()==9)

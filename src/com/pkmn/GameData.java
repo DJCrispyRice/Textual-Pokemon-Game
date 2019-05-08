@@ -207,7 +207,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Fury Swipes","Hits 2-5 times in one turn.",47,18,15,true,this.allTypes[0],46,0,80); i++;
 		this.allAtks[i] = new Attack ("Glare","Paralyzes opponent.",48,0,30,false,this.allTypes[0],1,100,100); i++;
 		this.allAtks[i] = new Attack ("Growl","Lowers opponent's Attack.",49,0,40,false,this.allTypes[0],8,100,100); i++;
-		this.allAtks[i] = new Attack ("Growth","Raises user's special.",50,0,40,false,this.allTypes[0],9,100,100); i++;
+		this.allAtks[i] = new Attack ("Growth","Raises user's special.",50,0,40,false,this.allTypes[0],33,100,100); i++;
 		this.allAtks[i] = new Attack ("Gust","Standard attack",51,40,35,false,this.allTypes[2],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Harden","Raises user's Defense.",52,0,30,false,this.allTypes[0],17,100,100); i++;
 		this.allAtks[i] = new Attack ("Haze","Resets all stat changes.",53,0,30,false,this.allTypes[13],45,100,100); i++;
