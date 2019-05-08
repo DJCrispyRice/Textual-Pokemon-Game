@@ -55,7 +55,7 @@ public class Main implements ActionListener
 					win.logTrace("There you go ! Your party is full.");
 					win.logTrace("Hold on, your opponant is choosing his team...");
 					//Randomly choosing 6 pokémons for the opponent.
-					for (int i = 1;i<=6;i++)
+					for (int i = 1 ;i<=6;i++)
 					{
 						b.p2.setTeam((Pokemon) gd.allPkmn[ThreadLocalRandom.current().nextInt(1, 151 + 1)].clone());
 						win.logTrace("Pokémon "+i+" is... "+b.p2.getTeam().get(i-1).getName()+" !");

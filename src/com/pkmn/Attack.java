@@ -73,6 +73,7 @@ public class Attack
 	int power;
 	int pp;
 	boolean phy;//physical = true, special = false
+	boolean self = false;//applies to user = true, to opponent = false. Usefull especially for stats alteration
 	Type type;
 	int status;
 	int accu_status;
@@ -139,7 +140,17 @@ public class Attack
 	{
 		this.phy = phy;
 	}
+
+	public boolean getSelf() 
+	{
+		return self;
+	}
 	
+	public void setSelf(boolean self) 
+	{
+		this.self = self;
+	}
+
 	public Type getType() 
 	{
 		return type;
@@ -200,5 +211,8 @@ public class Attack
 		this.setStatus(status);
 		this.setAccu_status(accu_status);
 		this.setAccuracy(accuracy);
+		//If the attack "applies" something, puts self at true
+		if (status == 9 || status == 10 || status == 13 || status == 14 || status == 17 || status == 18 || status == 21 || status == 22 || status == 25 || status == 26 || status == 29 || status == 30 || status == 33 || status == 34 || status == 37 || status == 38 || status == 41 || status == 42)
+			this.setSelf(true);
 	}
 }

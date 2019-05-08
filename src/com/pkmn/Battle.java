@@ -446,7 +446,10 @@ public class Battle
 		//... Unless the used attack is two-turn move (first turn using it)
 		if (atk.getStatus() == 48 && att.getTwoturnstatus() == 0)
 			return true;
-		else if ((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45)
+		//If the opponent is in the sky or underground, will automatically failed unless earthquake + underground
+		//But if the move is a status boost for the user, it shouldn't fail
+		
+		else if (((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45) && !atk.getSelf())
 		{
 			if (att.getTwoturnstatus() != 0)
 				att.setTwoturnstatus(0);
@@ -792,17 +795,18 @@ public class Battle
 				getpPkmn(p).setCurrentSpd(calculateStat(getpPkmn(p).getStageSpd(),getpPkmn(p).getBaseSpd()));
 				break;
 			case "special" :
-				if (getpPkmn(p).getStageSpd()>6)
+				if (getpPkmn(p).getStageSpe()>6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageSpd()<-6)
+				else if (getpPkmn(p).getStageSpe()<-6)
 				{
 					min = true;
 					break;
 				}
-				getpPkmn(p).setStageSpd(getpPkmn(p).getStageSpd() + modifier);
+				getpPkmn(p).setStageSpe(getpPkmn(p).getStageSpe() + modifier);
+				
 				getpPkmn(p).setCurrentSpe(calculateStat(getpPkmn(p).getStageSpe(),getpPkmn(p).getBaseSpe()));
 				break;
 			case "accuracy" :
@@ -839,9 +843,9 @@ public class Battle
 			this.s = this.s + "Enemy ";
 		this.s = this.s + getpPkmn(p).getName()+"'s " + stat;
 		if (max)
-			this.s = this.s + "won't go higher !";
+			this.s = this.s + " won't go higher !";
 		else if (min)
-			this.s = this.s + "won't go lower !";
+			this.s = this.s + " won't go lower !";
 		else
 		{
 			if (modifier > 0)
