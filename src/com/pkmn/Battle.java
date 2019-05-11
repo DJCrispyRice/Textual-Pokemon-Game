@@ -59,6 +59,7 @@ public class Battle
 				}
 			}
 			s = s + "***********************\nWhat should "+this.getpPkmn(p1).getName()+" do ?";
+			s = s + "\n 0. Swap Pokémon";
 			for (int i=0;i<this.getpPkmn(p1).getAttacks().size();i++)
 			{
 				s = s + "\n "+Integer.toString(i+1)+". " + this.getpattack(this.p1, i).getType().getName() + " - " + this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
@@ -693,6 +694,18 @@ public class Battle
 		}
 		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
 		this.checkHpLeft(def);
+		if (this.getpattack(atk, iAtt).getStatus() == 49)
+		{
+			int recoil = damage/4;
+			if (recoil == 0)
+				recoil = 1;
+			getpPkmn(atk).setCurrentHp(getpPkmn(atk).getCurrentHp() - (recoil));
+			this.s = this.s + "\n";
+			if (atk.getName().equals("Opponent"))
+				this.s = this.s + "Enemy ";
+			this.s = this.s + getpPkmn(atk).getName() + "'s hit with recoil ! It lost "+ recoil +" HP. ";
+			this.checkHpLeft(atk);
+		}
 	}
 	
 	//Applies status alteration and prints the result
@@ -887,5 +900,13 @@ public class Battle
 				return (int) (stat * 0.25);
 		}
 		return stat;
+	}
+	//Not used yet
+	public boolean checkDead(Player def)
+	{
+		if (def.getCurrentPkmn().getStatus()==9)
+			return true;
+		else
+			return false;
 	}
 }

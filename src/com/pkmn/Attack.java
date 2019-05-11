@@ -78,6 +78,7 @@ public class Attack
 	int status;
 	int accu_status;
 	int accuracy;
+	boolean enabled = true;
 	
 	public String getName() 
 	{

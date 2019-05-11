@@ -105,6 +105,9 @@ public class Main implements ActionListener
 				else if (Integer.parseInt(choice) > b.getpPkmn(b.p1).getAttacks().size())
 					throw new NullPointerException();
 				
+				//Choosing the attack of the opponent
+				Random r = new Random();
+				int rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
 				//Speed checking to choose the first Pokémon that hits. If tie, the player moves first
 				//Case : player faster
 				if (b.getpPkmn(b.p1).getCurrentSpd() >= b.getpPkmn(b.p2).getCurrentSpd())
@@ -132,14 +135,36 @@ public class Main implements ActionListener
 							win.whatToChoose = "continue";
 						}
 					}
-					else
+					//If the attack deals recoil to user, checks if it's not dead
+					if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 49)
+					{
+						if (b.getpPkmn(b.p1).getStatus() == 9)
+						{
+							b.getpPkmn(b.p2).setCanAttack(false);
+							if (b.p1.getTeam().size()>0)
+							{
+								win.logTrace("Please choose another Pokémon from your team.");
+								for (int i = 0; i < b.p1.getTeam().size(); i++)
+								{
+									win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
+								}
+								win.logTrace("*********************** ");
+								win.whatToChoose = "swap";
+							}
+							else
+							{
+								win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
+								win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+								choice = null;
+								win.whatToChoose = "continue";
+							}
+						}
+					}
+					if (b.getpPkmn(b.p2).getStatus() != 9)
 					{
 						//Checks if the pokémon didn't flinched between turns
 						if (b.getpPkmn(b.p2).getCanAttack())
 						{
-							//The opponent randomly selects an attack and use it.
-							Random r = new Random();
-							int rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
 							//If we are in a two turn situation, chooses the previous attack instead.
 							if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
 							{
@@ -186,7 +211,8 @@ public class Main implements ActionListener
 						else
 						{
 							b.getpPkmn(b.p2).setCanAttack(true);
-							win.logTrace(b.showAttacks());
+							if (b.getpPkmn(b.p1).getStatus()!=9)
+								win.logTrace(b.showAttacks());
 						}
 					}
 				}
@@ -194,9 +220,6 @@ public class Main implements ActionListener
 				//Case : opponent faster
 				else
 				{
-					//The opponent randomly selects an attack and use it.
-					Random r = new Random();
-					int rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
 					//If we are in a two turn situation, chooses the previous attack instead.
 					if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
 					{
