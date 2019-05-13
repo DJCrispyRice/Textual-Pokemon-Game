@@ -68,7 +68,7 @@ public class Battle
 		}
 		else
 		{
-			s = s + "Press enter to proceed to next turn.";
+			s = s + "***********************\nPress enter to proceed to next turn.\n***********************";
 		}
 		return s;
 	}
@@ -101,7 +101,7 @@ public class Battle
 			}
 			else
 			{
-				this.s = this.getpPkmn(att).getName() + " woke up !";
+				this.s = this.getpPkmn(att).getName() + " woke up !\n";
 				getpPkmn(att).setStatus(0);
 			}
 		}
@@ -112,7 +112,7 @@ public class Battle
 			if (rngfrz>90)
 			{
 				this.getpPkmn(att).setStatus(0);
-				this.s = this.getpPkmn(att).getName() + " unfroze !";
+				this.s = this.getpPkmn(att).getName() + " unfroze !\n";
 			}
 			else
 				this.s = this.getpPkmn(att).getName() + " is frozen solid !";
@@ -667,6 +667,10 @@ public class Battle
 		damage = this.checkStrWeak(damage, this.getpattack(atk,iAtt), def.getCurrentPkmn());
 		if (damage != 0)
 		{
+			//System.out.println(damage);
+			if (def.getName().equals("Opponent"))
+				this.s = this.s + "Enemy ";
+			this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
 			//Checking if the attack should steal HP
 			if (this.getpattack(atk, iAtt).getStatus()==44)
 			{
@@ -675,9 +679,6 @@ public class Battle
 					heal = def.getCurrentPkmn().getCurrentHp()/2;
 				else
 					heal = damage/2;
-				if (def.getName().equals("Opponent"))
-					this.s = this.s + "Enemy ";
-				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
 				atk.getCurrentPkmn().setCurrentHp(atk.getCurrentPkmn().getCurrentHp()+heal);
 				if (atk.getName().equals("Opponent"))
 					this.s = this.s + "\nEnemy ";
@@ -685,15 +686,10 @@ public class Battle
 					this.s = this.s + "\n";
 				this.s = this.s + atk.getCurrentPkmn().getName()+" stole "+heal+" HP and now has "+atk.getCurrentPkmn().getCurrentHp()+"/"+atk.getCurrentPkmn().getBaseHp()+".";
 			}
-			else
-			{
-				if (def.getName().equals("Opponent"))
-					this.s = this.s + "Enemy ";
-				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
-			}
 		}
 		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
 		this.checkHpLeft(def);
+		//Checks if the attack should inflict recoil damages
 		if (this.getpattack(atk, iAtt).getStatus() == 49)
 		{
 			int recoil = damage/4;
@@ -704,6 +700,12 @@ public class Battle
 			if (atk.getName().equals("Opponent"))
 				this.s = this.s + "Enemy ";
 			this.s = this.s + getpPkmn(atk).getName() + "'s hit with recoil ! It lost "+ recoil +" HP. ";
+			this.checkHpLeft(atk);
+		}
+		//Checks if the attack should kill its user (explosion/self-destruct)
+		else if (this.getpattack(atk, iAtt).getStatus() == 50)
+		{
+			getpPkmn(atk).setCurrentHp(0);
 			this.checkHpLeft(atk);
 		}
 	}
@@ -766,12 +768,12 @@ public class Battle
 		{
 			case "attack" :
 				getpPkmn(p).setStageAtk(getpPkmn(p).getStageAtk() + modifier);
-				if (getpPkmn(p).getStageAtk()>6)
+				if (getpPkmn(p).getStageAtk()>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageAtk()<-6)
+				else if (getpPkmn(p).getStageAtk()<=-6)
 				{
 					min = true;
 					break;
@@ -780,12 +782,12 @@ public class Battle
 				getpPkmn(p).setCurrentAtk(calculateStat(getpPkmn(p).getStageAtk(),getpPkmn(p).getBaseAtk()));
 				break;
 			case "defense" :
-				if (getpPkmn(p).getStageDef()>6)
+				if (getpPkmn(p).getStageDef()>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageDef()<-6)
+				else if (getpPkmn(p).getStageDef()<=-6)
 				{
 					min = true;
 					break;
@@ -794,12 +796,12 @@ public class Battle
 				getpPkmn(p).setCurrentDef(calculateStat(getpPkmn(p).getStageDef(),getpPkmn(p).getBaseDef()));
 				break;
 			case "speed" :
-				if (getpPkmn(p).getStageSpd()>6)
+				if (getpPkmn(p).getStageSpd()>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageSpd()<-6)
+				else if (getpPkmn(p).getStageSpd()<=-6)
 				{
 					min = true;
 					break;
@@ -808,12 +810,12 @@ public class Battle
 				getpPkmn(p).setCurrentSpd(calculateStat(getpPkmn(p).getStageSpd(),getpPkmn(p).getBaseSpd()));
 				break;
 			case "special" :
-				if (getpPkmn(p).getStageSpe()>6)
+				if (getpPkmn(p).getStageSpe()>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageSpe()<-6)
+				else if (getpPkmn(p).getStageSpe()<=-6)
 				{
 					min = true;
 					break;
@@ -823,12 +825,12 @@ public class Battle
 				getpPkmn(p).setCurrentSpe(calculateStat(getpPkmn(p).getStageSpe(),getpPkmn(p).getBaseSpe()));
 				break;
 			case "accuracy" :
-				if (getpPkmn(p).getStageAccu()>6)
+				if (getpPkmn(p).getStageAccu()>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageAccu()<-6)
+				else if (getpPkmn(p).getStageAccu()<=-6)
 				{
 					min = true;
 					break;
@@ -837,12 +839,12 @@ public class Battle
 				getpPkmn(p).setCurrentAccu(calculateStat(getpPkmn(p).getStageAccu(),getpPkmn(p).getBaseAccu()));
 				break;
 			case "evasion" :
-				if (getpPkmn(p).getStageEvasion()>6)
+				if (getpPkmn(p).getStageEvasion()>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageEvasion()<-6)
+				else if (getpPkmn(p).getStageEvasion()<=-6)
 				{
 					min = true;
 					break;
@@ -901,11 +903,51 @@ public class Battle
 		}
 		return stat;
 	}
-	//Not used yet
-	public boolean checkDead(Player def, Window win)
+
+	public boolean checkDead(Player p, Window win)
 	{
-		if (def.getCurrentPkmn().getStatus()==9)
+		if (p.getCurrentPkmn().getStatus()==9)
+		{
+			if (p.getName().equals("Opponent"))
+			{				
+				if (p.getTeam().size()>0)
+				{
+					if (p.getTeam().size()==1)
+						p.setCurrentPkmn(p.getTeam().get(0));
+					p.setCurrentPkmn(p.getTeam().get(ThreadLocalRandom.current().nextInt(0, p.getTeam().size() - 1)));
+					p.setCurrentStats(true);
+					win.logTrace("Your opponent sent "+getpPkmn(p).getName()+" !");
+					getpPkmn(p).setCanAttack(false);
+				}
+				else
+				{
+					win.logTrace("You won ! :-D");
+					win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+					win.whatToChoose = "continue";
+				}
+			}
+			else
+			{
+				if (p.getTeam().size()>0)
+				{
+					win.logTrace("Please choose another Pokémon from your team.");
+					for (int i = 0; i < p.getTeam().size(); i++)
+					{
+						win.logTrace(Integer.toString(i+1)+" - "+p.getTeam().get(i).getName());
+					}
+					win.logTrace("*********************** ");
+					win.whatToChoose = "swap";
+					getpPkmn(p).setCanAttack(false);
+				}
+				else
+				{
+					win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
+					win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+					win.whatToChoose = "continue";
+				}
+			}
 			return true;
+		}
 		else
 			return false;
 	}
