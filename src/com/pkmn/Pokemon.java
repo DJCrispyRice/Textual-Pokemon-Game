@@ -48,6 +48,7 @@ public class Pokemon implements Cloneable
 	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
 	boolean canAttack = true; //Used for flinching
+	boolean prio = false;
 	int twoturnstatus = 0; //Used for two-turn attacks. Will contain the ID of the attack
 	
 	//Empty constructor only for the fake index 0 Pokémon
@@ -410,6 +411,16 @@ public class Pokemon implements Cloneable
 	public void setCanAttack(boolean canAttack) 
 	{
 		this.canAttack = canAttack;
+	}
+	
+	public boolean getPrio() 
+	{
+		return prio;
+	}
+	
+	public void setPrio(boolean prio) 
+	{
+		this.prio = prio;
 	}
 	
 	public int getTwoturnstatus() 

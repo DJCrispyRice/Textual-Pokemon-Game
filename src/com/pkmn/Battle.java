@@ -951,4 +951,10 @@ public class Battle
 		else
 			return false;
 	}
+
+	public void reinitPrio() 
+	{
+		getpPkmn(p1).setPrio(false);
+		getpPkmn(p2).setPrio(false);
+	}
 }
