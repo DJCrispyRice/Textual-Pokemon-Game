@@ -902,7 +902,7 @@ public class Battle
 		return stat;
 	}
 	//Not used yet
-	public boolean checkDead(Player def)
+	public boolean checkDead(Player def, Window win)
 	{
 		if (def.getCurrentPkmn().getStatus()==9)
 			return true;

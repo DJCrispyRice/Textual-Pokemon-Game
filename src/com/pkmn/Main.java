@@ -257,7 +257,30 @@ public class Main implements ActionListener
 							win.whatToChoose = "continue";
 						}
 					}
-					else
+					//If the attack deals recoil to user, checks if it's not dead
+					if (b.getpattack(b.p2, Integer.parseInt(choice)-1).getStatus() == 49)
+					{
+						if (b.getpPkmn(b.p2).getStatus() == 9)
+						{
+							b.getpPkmn(b.p1).setCanAttack(false);
+							if (b.p2.getTeam().size()>0)
+							{
+								if (b.p2.getTeam().size()==1)
+									b.p2.setCurrentPkmn(b.p2.getTeam().get(0));
+								b.p2.setCurrentPkmn(b.p2.getTeam().get(ThreadLocalRandom.current().nextInt(0, b.p2.getTeam().size() - 1)));
+								b.p2.setCurrentStats(true);
+								win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+" !");
+								win.logTrace(b.showAttacks());
+							}
+							else
+							{
+								win.logTrace("You won ! :-D");
+								win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+								win.whatToChoose = "continue";
+							}
+						}
+					}
+					if (b.getpPkmn(b.p2).getStatus() != 9)
 					{
 						if (b.getpPkmn(b.p1).getCanAttack())
 						{
@@ -288,7 +311,8 @@ public class Main implements ActionListener
 						else
 						{
 							b.getpPkmn(b.p1).setCanAttack(true);
-							win.logTrace(b.showAttacks());
+							if (b.getpPkmn(b.p2).getStatus()!=9)
+								win.logTrace(b.showAttacks());
 						}
 					}
 				}
