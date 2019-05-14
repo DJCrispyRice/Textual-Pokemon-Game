@@ -93,11 +93,13 @@ public class Pokemon implements Cloneable
 		this.id = id;
 	}
 
-	public int getLevel() {
+	public int getLevel() 
+	{
 		return level;
 	}
 
-	private void setLevel(int level) {
+	private void setLevel(int level) 
+	{
 		this.level = level;
 	}
 
@@ -121,7 +123,8 @@ public class Pokemon implements Cloneable
 		return attacks;
 	}
 
-	private void setAttacks(ArrayList<Attack> attacks) {
+	private void setAttacks(ArrayList<Attack> attacks) 
+	{
 		this.attacks = attacks;
 	}
 
@@ -164,6 +167,18 @@ public class Pokemon implements Cloneable
 	public Stat getAttack()
 	{
 		return this.attack;
+	}
+	
+	public int getAttack(String s)
+	{
+		if (s.equals("current"))
+			return this.attack.getCurrent();
+		else if (s.equals("base"))
+			return this.attack.getBase();
+		else if (s.equals("stage"))
+			return this.attack.getStage();
+		else
+			return 0;
 	}
 	
 	public void setAttack(Stat st)
