@@ -255,7 +255,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Razor Leaf","High critical hit ratio.",95,55,25,true,this.allTypes[10],47,100,95); i++;
 		this.allAtks[i] = new Attack ("Razor Wind","Charges on first turn, attacks on second. High critical hit ratio.",96,80,10,false,this.allTypes[0],54,0,100); i++;
 		this.allAtks[i] = new Attack ("Recover","User recovers half its max HP.",97,0,10,false,this.allTypes[0],45,100,100); i++;
-		this.allAtks[i] = new Attack ("Reflect","Halves damage from Physical attacks for 5 turns.",98,0,20,false,this.allTypes[12],52,0,100); i++;
+		this.allAtks[i] = new Attack ("Reflect","Halves damage from Physical attacks for 5 turns.",98,0,20,false,this.allTypes[12],52,100,100); i++;
 		this.allAtks[i] = new Attack ("Rest","User sleeps for 2 turns, but user is fully healed.",99,0,10,false,this.allTypes[12],54,0,100); i++;
 		this.allAtks[i] = new Attack ("Roar","In battles, the opponent switches. In the wild, the Pokémon runs.",100,0,20,false,this.allTypes[0],54,100,100); i++;
 		this.allAtks[i] = new Attack ("Rock Slide","May cause flinching.",101,75,10,true,this.allTypes[5],43,30,90); i++;
@@ -483,7 +483,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[93]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[98]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);

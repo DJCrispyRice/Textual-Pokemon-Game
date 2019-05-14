@@ -155,7 +155,9 @@ public class Battle
 				this.s = this.s + "Enemy ";
 			this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
 			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
+			{
 				this.s = this.doDamages(iAtt, att, def, i);
+			}
 			else
 			{
 				if (att.getName().equals("Opponent"))
@@ -427,9 +429,7 @@ public class Battle
 					else
 					{
 						if (att.getName().equals("Opponent"))
-							this.s = this.s + "\nEnemy ";
-						else
-							this.s = this.s + "\n";
+							this.s = this.s + "Enemy ";
 						this.s = this.s + this.getpPkmn(att).getName() + " missed !";
 					}
 			}
