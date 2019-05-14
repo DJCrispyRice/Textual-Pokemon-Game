@@ -148,7 +148,6 @@ public final class GameData
 		
 		//Tracing that loading is OK
 		win.logTrace("Types loaded.");
-		Thread.sleep(500);
 	}
 	
 	//Creating all 164 attacks in Pokémon gen 1. Yay. Bind is excluded because it sucks, one-hit K-O attacks are excluded.
@@ -318,7 +317,6 @@ public final class GameData
 		
 		//Tracing that loading is OK
 		win.logTrace("Attacks loaded.");
-		Thread.sleep(500);
 	}
 	
 	private void createPkmn(Window win) throws InterruptedException
@@ -480,6 +478,7 @@ public final class GameData
 		this.allPkmn[i] = new Pokemon("Mewtwo",i,this.allTypes[12],null,250,140,96,146,153);i++;
 		this.allPkmn[i] = new Pokemon("Mew",i,this.allTypes[12],null,264,120,120,120,120);
 		
+		win.logTrace("Pokémon loaded.");
 		//Assigning attacks to Pokémons.
 
 		i = 1;
@@ -1075,7 +1074,6 @@ public final class GameData
 		this.allPkmn[i].getAttacks().add(this.allAtks[31]);
 		
 		//Tracing that loading is OK
-		win.logTrace("Pokémons loaded.");
-		Thread.sleep(500);
+		win.logTrace("Attacks assigned.");
 	}
 }

@@ -459,7 +459,7 @@ public class Battle
 		//... Unless the used attack is two-turn move (first turn using it)
 		if (atk.getStatus() == 48 && att.getTwoturnstatus() == 0)
 			return true;
-		//If the opponent is in the sky or underground, will automatically failed unless earthquake + underground
+		//If the opponent is in the sky or underground, will automatically fail unless earthquake + underground
 		//But if the move is a status boost for the user, it shouldn't fail
 		
 		else if (((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45) && !atk.getSelf())

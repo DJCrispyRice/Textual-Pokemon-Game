@@ -14,15 +14,15 @@ package com.pkmn;
  * Status 4 : Burn
  * Status 5 : Frozen
  * Status 6 : Confused
- * Status 7 : Causes attack boost > never used
+ * Status 7 : Causes attack boost
  * Status 8 : Causes attack drop
  * Status 9 : Applies attack boost
  * Status 10 : Applies attack drop
- * Status 11 : Causes double attack boost > never used
+ * Status 11 : Causes double attack boost
  * Status 12 : Causes double attack drop
  * Status 13 : Applies double attack boost
- * Status 14 : Applies double attack drop > never used
- * Status 15 : Causes defense boost > never used
+ * Status 14 : Applies double attack drop
+ * Status 15 : Causes defense boost
  * Status 16 : Causes defense drop
  * Status 17 : Applies defense boost
  * Status 18 : Applies defense drop
@@ -46,10 +46,10 @@ package com.pkmn;
  * Status 36 : Causes double special drop
  * Status 37 : Applies double special boost
  * Status 38 : Applies double special drop
- * Status 39 : Causes accuracy boost > never used
+ * Status 39 : Causes accuracy boost
  * Status 40 : Causes accuracy drop (hi sand attack)
  * Status 41 : Applies evasion boost
- * Status 42 : Applies evasion drop > never used
+ * Status 42 : Applies evasion drop
  * Status 43 : Flinch
  * Status 44 : Steal HP
  * Status 45 : Heal HP/status
@@ -63,7 +63,6 @@ package com.pkmn;
  * Status 53 : Fixed damage
  * Status 54 : Special attacks with unique mechanic
  * Status 55 : Trapped
- * 
  */
 public class Attack 
 {
@@ -79,6 +78,23 @@ public class Attack
 	int accu_status;
 	int accuracy;
 	boolean enabled = true;
+	
+	public Attack (String name, String description, int id, int power, int pp, boolean phy, Type type, int status, int accu_status, int accuracy)
+	{
+		this.setName(name);
+		this.setDescription(description);
+		this.setId(id);
+		this.setPower(power);
+		this.setPp(pp);
+		this.setPhy(phy);
+		this.setType(type);
+		this.setStatus(status);
+		this.setAccu_status(accu_status);
+		this.setAccuracy(accuracy);
+		//If the attack "applies" something, puts self at true
+		if (status == 9 || status == 10 || status == 13 || status == 14 || status == 17 || status == 18 || status == 21 || status == 22 || status == 25 || status == 26 || status == 29 || status == 30 || status == 33 || status == 34 || status == 37 || status == 38 || status == 41 || status == 42)
+			this.setSelf(true);
+	}
 	
 	public String getName() 
 	{
@@ -198,22 +214,5 @@ public class Attack
 		else if (accu_status < 0)
 			accu_status = 0;
 		this.accu_status = accu_status;
-	}
-	
-	public Attack (String name, String description, int id, int power, int pp, boolean phy, Type type, int status, int accu_status, int accuracy)
-	{
-		this.setName(name);
-		this.setDescription(description);
-		this.setId(id);
-		this.setPower(power);
-		this.setPp(pp);
-		this.setPhy(phy);
-		this.setType(type);
-		this.setStatus(status);
-		this.setAccu_status(accu_status);
-		this.setAccuracy(accuracy);
-		//If the attack "applies" something, puts self at true
-		if (status == 9 || status == 10 || status == 13 || status == 14 || status == 17 || status == 18 || status == 21 || status == 22 || status == 25 || status == 26 || status == 29 || status == 30 || status == 33 || status == 34 || status == 37 || status == 38 || status == 41 || status == 42)
-			this.setSelf(true);
 	}
 }

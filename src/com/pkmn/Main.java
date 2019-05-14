@@ -16,7 +16,6 @@ public class Main implements ActionListener
 		win = new Window();
 		gd = new GameData(win);
 		win.clear();
-		Thread.sleep(700);
 		win.jtf.addActionListener(this);
 		win.logTrace("Welcome in the Pokémon Textual Game !\nType 1 and Enter to start.");
 	}
