@@ -588,7 +588,7 @@ public class Battle
 	//To write how many hp left the pokémon has. Def is the player who is being checked.
 	public void checkHpLeft(Player def)
 	{
-		//Checks if the pokemon is dead
+		//Checks if the pokemon is dead.
 		if (def.getCurrentPkmn().getStatus() == 9)
 		{
 			this.s = this.s + "\n***********************\n"+def.getCurrentPkmn().getName()+" fainted !";
