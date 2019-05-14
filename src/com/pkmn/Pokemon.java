@@ -26,9 +26,7 @@ public class Pokemon implements Cloneable
 	int status = 0;
 	int baseHp;
 	int currentHp;
-	int baseAtk;
-	int currentAtk;
-	int stageAtk = 0;
+	Stat attack;
 	int baseDef;
 	int currentDef;
 	int stageDef = 0;
@@ -68,8 +66,7 @@ public class Pokemon implements Cloneable
 		this.attacks = new ArrayList<Attack>(); // We will add attacks after the Pokémon is created
 		this.setBaseHp(baseHp);
 		this.setCurrentHp(baseHp);
-		this.setBaseAtk(baseAtk);
-		this.setCurrentAtk(baseAtk);
+		this.setAttack(new Stat("Attack",baseAtk));
 		this.setBaseDef(baseDef);
 		this.setCurrentDef(baseDef);
 		this.setBaseSpd(baseSpd);
@@ -163,25 +160,21 @@ public class Pokemon implements Cloneable
 			this.setStatus(9);
 		}
 	}
-
-	public int getBaseAtk() 
+	
+	public Stat getAttack()
 	{
-		return baseAtk;
+		return this.attack;
 	}
-
-	private void setBaseAtk(int baseAtk) 
+	
+	public void setAttack(Stat st)
 	{
-		this.baseAtk = baseAtk;
+		this.attack = st;
 	}
-
-	public int getCurrentAtk() 
+	
+	//Used if we have to set a specific value
+	public void setAttack(int i)
 	{
-		return currentAtk;
-	}
-
-	public void setCurrentAtk(int currentAtk) 
-	{
-		this.currentAtk = currentAtk;
+		this.attack.setCurrent(i);
 	}
 
 	public int getBaseDef() 
@@ -292,20 +285,6 @@ public class Pokemon implements Cloneable
 	public void setCountDot(int countDot) 
 	{
 		this.countDot = countDot;
-	}
-	
-	public int getStageAtk() 
-	{
-		return stageAtk;
-	}
-	public void setStageAtk(int stageAtk) 
-	{
-		if (stageAtk > 6)
-			this.stageAtk = 6;
-		else if (stageAtk < - 6)
-			this.stageAtk = -6;
-		else
-			this.stageAtk = stageAtk;
 	}
 	
 	public int getStageDef() 

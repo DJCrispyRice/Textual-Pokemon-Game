@@ -131,7 +131,7 @@ public class Battle
 				if (ckcon > 50)
 				{
 					int damage = ((2*20)/2 + 2)*40;
-					damage = damage * (this.getpPkmn(att).getCurrentAtk()/this.getpPkmn(att).getCurrentDef());
+					damage = damage * (this.getpPkmn(att).getAttack().getCurrent()/this.getpPkmn(att).getCurrentDef());
 					damage = damage/50 + 2;
 					if (att.getName().equals("Opponent"))
 						this.s = this.s + "Enemy ";
@@ -666,7 +666,7 @@ public class Battle
 			if (checkCrit(this.getpattack(atk,iAtt), atk.getCurrentPkmn()))
 			{
 				if (this.getpattack(atk,iAtt).getPhy())
-					damage = damage * (atk.getCurrentPkmn().getBaseAtk()/def.getCurrentPkmn().getBaseDef());
+					damage = damage * (atk.getCurrentPkmn().getAttack().getBase()/def.getCurrentPkmn().getBaseDef());
 				else
 					damage = damage * (atk.getCurrentPkmn().getBaseSpe()/def.getCurrentPkmn().getBaseSpe());
 				damage = damage/50 + 2;
@@ -678,9 +678,9 @@ public class Battle
 				{
 					//If protect is on
 					if (def.getWall() == 98)
-						damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/(def.getCurrentPkmn().getCurrentDef() * 2));
+						damage = damage * (atk.getCurrentPkmn().getAttack().getCurrent()/(def.getCurrentPkmn().getCurrentDef() * 2));
 					else	
-						damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/def.getCurrentPkmn().getCurrentDef());
+						damage = damage * (atk.getCurrentPkmn().getAttack().getCurrent()/def.getCurrentPkmn().getCurrentDef());
 				}
 				else
 				{
@@ -794,21 +794,24 @@ public class Battle
 	{
 		boolean min = false;
 		boolean max = false;
+		System.out.println("Attack was : " + getpPkmn(p).getAttack().getCurrent());
+		System.out.println("Stage was: " + getpPkmn(p).getAttack().getStage());
 		switch (stat)
 		{
 			case "attack" :
-				if (getpPkmn(p).getStageAtk()>=6)
+				if (getpPkmn(p).getAttack().getStage() >= 6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageAtk()<=-6)
+				else if (getpPkmn(p).getAttack().getStage() <= -6)
 				{
 					min = true;
 					break;
 				}
-				getpPkmn(p).setStageAtk(getpPkmn(p).getStageAtk() + modifier);
-				getpPkmn(p).setCurrentAtk(calculateStat(getpPkmn(p).getStageAtk(),getpPkmn(p).getBaseAtk()));
+				getpPkmn(p).getAttack().setStage(getpPkmn(p).getAttack().getStage() + modifier);
+				System.out.println("Attack is now : " + getpPkmn(p).getAttack().getCurrent());
+				System.out.println("Stage is now : " + getpPkmn(p).getAttack().getStage());
 				break;
 			case "defense" :
 				if (getpPkmn(p).getStageDef()>=6)
