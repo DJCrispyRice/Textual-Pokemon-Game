@@ -658,37 +658,43 @@ public class Battle
 		//Mathematical calculation for damages. Level is 50
 		damage = ((2*50)/5 + 2)*power;
 		//Checking crit to see if we use base or current stats
-		if (checkCrit(this.getpattack(atk,iAtt), atk.getCurrentPkmn()))
+		//Checks if the attack inflict fixed damages
+		if (this.getpattack(atk, iAtt).getStatus() == 53)
+			damage = this.getpattack(atk, iAtt).getPower();
+		else 
 		{
-			if (this.getpattack(atk,iAtt).getPhy())
-				damage = damage * (atk.getCurrentPkmn().getBaseAtk()/def.getCurrentPkmn().getBaseDef());
-			else
-				damage = damage * (atk.getCurrentPkmn().getBaseSpe()/def.getCurrentPkmn().getBaseSpe());
-			damage = damage/50 + 2;
-			damage = (int) (damage * 1.5);
-		}
-		else
-		{
-			if (this.getpattack(atk,iAtt).getPhy())
+			if (checkCrit(this.getpattack(atk,iAtt), atk.getCurrentPkmn()))
 			{
-				//If protect is on
-				if (def.getWall() == 98)
-					damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/(def.getCurrentPkmn().getCurrentDef() * 2));
-				else	
-					damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/def.getCurrentPkmn().getCurrentDef());
-			}
-			else
-			{
-				//If light screen is on
-				if (def.getWall() == 70)
-					damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/(def.getCurrentPkmn().getCurrentSpe() * 2));
+				if (this.getpattack(atk,iAtt).getPhy())
+					damage = damage * (atk.getCurrentPkmn().getBaseAtk()/def.getCurrentPkmn().getBaseDef());
 				else
-					damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/def.getCurrentPkmn().getCurrentSpe());
+					damage = damage * (atk.getCurrentPkmn().getBaseSpe()/def.getCurrentPkmn().getBaseSpe());
+				damage = damage/50 + 2;
+				damage = (int) (damage * 1.5);
 			}
-			damage = damage/50 + 2;
+			else
+			{
+				if (this.getpattack(atk,iAtt).getPhy())
+				{
+					//If protect is on
+					if (def.getWall() == 98)
+						damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/(def.getCurrentPkmn().getCurrentDef() * 2));
+					else	
+						damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/def.getCurrentPkmn().getCurrentDef());
+				}
+				else
+				{
+					//If light screen is on
+					if (def.getWall() == 70)
+						damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/(def.getCurrentPkmn().getCurrentSpe() * 2));
+					else
+						damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/def.getCurrentPkmn().getCurrentSpe());
+				}
+				damage = damage/50 + 2;
+			}
+			//Checks strength/weakness
+			damage = this.checkStrWeak(damage, this.getpattack(atk,iAtt), def.getCurrentPkmn());
 		}
-		//Checks strength/weakness
-		damage = this.checkStrWeak(damage, this.getpattack(atk,iAtt), def.getCurrentPkmn());
 		if (damage != 0)
 		{
 			//System.out.println(damage);

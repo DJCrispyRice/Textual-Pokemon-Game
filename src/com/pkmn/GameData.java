@@ -190,7 +190,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Double Slap","Hits 2-5 times in one turn.",30,15,10,true,this.allTypes[0],46,0,85); i++;
 		this.allAtks[i] = new Attack ("Double Team","Raises user's Evasiveness.",31,0,15,false,this.allTypes[0],41,0,100); i++;
 		this.allAtks[i] = new Attack ("Double-Edge","User receives recoil damage.",32,100,15,true,this.allTypes[0],49,0,100); i++;
-		this.allAtks[i] = new Attack ("Dragon Rage","Always inflicts 40 HP.",33,0,10,false,this.allTypes[14],53,0,100); i++;
+		this.allAtks[i] = new Attack ("Dragon Rage","Always inflicts 40 HP.",33,40,10,false,this.allTypes[14],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Dream Eater","User recovers half the HP inflicted on a sleeping opponent.",34,100,15,false,this.allTypes[12],54,0,100); i++;
 		this.allAtks[i] = new Attack ("Drill Peck","Standard attack",35,80,20,true,this.allTypes[2],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Earthquake","Power is doubled if opponent is underground from using Dig.",36,100,10,true,this.allTypes[4],54,0,100); i++;
@@ -238,7 +238,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Mimic","Copies the opponent's last move.",78,0,10,false,this.allTypes[0],54,0,100); i++;
 		this.allAtks[i] = new Attack ("Minimize","Sharply raises user's Evasiveness.",79,0,10,false,this.allTypes[0],41,0,100); i++;
 		this.allAtks[i] = new Attack ("Mirror Move","User performs the opponent's last move.",80,0,20,false,this.allTypes[2],54,0,100); i++;
-		this.allAtks[i] = new Attack ("Night Shade","Inflicts damage equal to user's level.",81,0,15,false,this.allTypes[7],53,0,100); i++;
+		this.allAtks[i] = new Attack ("Night Shade","Inflicts damage equal to user's level.",81,50,15,false,this.allTypes[7],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Pay Day","Standard attack",82,40,20,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Peck","Standard attack",83,35,35,true,this.allTypes[2],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Petal Dance","User attacks for 2-3 turns but then becomes confused.",84,120,10,false,this.allTypes[10],54,0,100); i++;
@@ -249,7 +249,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Pound","Standard attack",89,40,35,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Psybeam","May confuse opponent.",90,65,20,false,this.allTypes[12],6,10,100); i++;
 		this.allAtks[i] = new Attack ("Psychic","May lower opponent's SpecialDefense.",91,90,10,false,this.allTypes[12],32,10,100); i++;
-		this.allAtks[i] = new Attack ("Psywave","Inflicts damage 50-150% of user's level.",92,0,15,false,this.allTypes[12],53,0,80); i++;
+		this.allAtks[i] = new Attack ("Psywave","Inflicts damage 50-150% of user's level.",92,0,15,false,this.allTypes[12],54,0,80); i++;
 		this.allAtks[i] = new Attack ("Quick Attack","User attacks first.",93,40,30,true,this.allTypes[0],51,0,100); i++;
 		this.allAtks[i] = new Attack ("Rage","Raises user's Attack when hit.",94,20,20,true,this.allTypes[0],9,100,100); i++;
 		this.allAtks[i] = new Attack ("Razor Leaf","High critical hit ratio.",95,55,25,true,this.allTypes[10],47,100,95); i++;
@@ -264,7 +264,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Sand Attack","Lowers opponent's Accuracy.",104,0,15,false,this.allTypes[4],40,100,100); i++;
 		this.allAtks[i] = new Attack ("Scratch","Standard attack",105,40,35,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Screech","Sharply lowers opponent's Defense.",106,0,40,false,this.allTypes[0],20,100,85); i++;
-		this.allAtks[i] = new Attack ("Seismic Toss","Inflicts damage equal to user's level.",107,0,20,true,this.allTypes[1],53,0,100); i++;
+		this.allAtks[i] = new Attack ("Seismic Toss","Inflicts damage equal to user's level.",107,50,20,true,this.allTypes[1],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Self-Destruct","User faints.",108,200,5,true,this.allTypes[0],50,0,100); i++;
 		this.allAtks[i] = new Attack ("Sharpen","Raises user's Attack.",109,0,30,false,this.allTypes[0],9,0,100); i++;
 		this.allAtks[i] = new Attack ("Sing","Puts opponent to sleep.",110,0,15,false,this.allTypes[0],2,100,55); i++;
@@ -278,7 +278,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Smokescreen","Lowers opponent's Accuracy.",118,0,20,false,this.allTypes[0],40,0,100); i++;
 		this.allAtks[i] = new Attack ("Soft-Boiled","User recovers half its max HP.",119,0,10,false,this.allTypes[0],45,0,100); i++;
 		this.allAtks[i] = new Attack ("Solar Beam","Charges on first turn, attacks on second.",120,120,10,false,this.allTypes[10],48,0,100); i++;
-		this.allAtks[i] = new Attack ("Sonic Boom","Always inflicts 20 HP.",121,0,20,false,this.allTypes[0],53,0,90); i++;
+		this.allAtks[i] = new Attack ("Sonic Boom","Always inflicts 20 HP.",121,20,20,false,this.allTypes[0],53,0,90); i++;
 		this.allAtks[i] = new Attack ("Spike Cannon","Hits 2-5 times in one turn.",122,20,15,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Splash","Maybe has a secret purpose...",123,0,40,false,this.allTypes[0],0,100,100); i++;
 		this.allAtks[i] = new Attack ("Spore","Puts opponent to sleep.",124,0,15,false,this.allTypes[10],2,100,100); i++;
@@ -289,7 +289,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Stun Spore","Paralyzes opponent.",129,0,30,false,this.allTypes[10],1,100,75); i++;
 		this.allAtks[i] = new Attack ("Submission","User receives recoil damage.",130,80,20,true,this.allTypes[1],49,0,80); i++;
 		this.allAtks[i] = new Attack ("Substitute","Uses HP to create a decoy that takes hits.",131,0,10,false,this.allTypes[0],54,0,100); i++;
-		this.allAtks[i] = new Attack ("Super Fang","Always takes off half of the opponent's HP.",132,0,10,true,this.allTypes[0],53,0,90); i++;
+		this.allAtks[i] = new Attack ("Super Fang","Always takes off half of the opponent's HP.",132,0,10,true,this.allTypes[0],54,0,90); i++;
 		this.allAtks[i] = new Attack ("Supersonic","Confuses opponent.",133,0,20,false,this.allTypes[0],6,100,55); i++;
 		this.allAtks[i] = new Attack ("Surf","Standard attack.",134,90,15,false,this.allTypes[9],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Swift","Ignores Accuracy and Evasiveness.",135,60,20,false,this.allTypes[0],54,0,100); i++;
@@ -483,7 +483,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[98]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[107]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);
