@@ -420,6 +420,18 @@ public class Battle
 						this.s = this.s + "All status changes were eliminated !";
 					}
 					break;
+				//Walls
+				case 52:
+					if (att.getWall() == 0)
+						statModifier(att,"wall",this.getpattack(att,iAtt).getId());
+					else
+					{
+						if (att.getName().equals("Opponent"))
+							this.s = this.s + "\nEnemy ";
+						else
+							this.s = this.s + "\n";
+						this.s = this.s + this.getpPkmn(att).getName() + " missed !";
+					}
 			}
 		}
 		//Status change can only occur if the Pokémon is not already altered by another status.
@@ -658,9 +670,21 @@ public class Battle
 		else
 		{
 			if (this.getpattack(atk,iAtt).getPhy())
-				damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/def.getCurrentPkmn().getCurrentDef());
+			{
+				//If protect is on
+				if (def.getWall() == 98)
+					damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/(def.getCurrentPkmn().getCurrentDef() * 2));
+				else	
+					damage = damage * (atk.getCurrentPkmn().getCurrentAtk()/def.getCurrentPkmn().getCurrentDef());
+			}
 			else
-				damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/def.getCurrentPkmn().getCurrentSpe());
+			{
+				//If light screen is on
+				if (def.getWall() == 70)
+					damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/(def.getCurrentPkmn().getCurrentSpe() * 2));
+				else
+					damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/def.getCurrentPkmn().getCurrentSpe());
+			}
 			damage = damage/50 + 2;
 		}
 		//Checks strength/weakness
@@ -767,7 +791,6 @@ public class Battle
 		switch (stat)
 		{
 			case "attack" :
-				getpPkmn(p).setStageAtk(getpPkmn(p).getStageAtk() + modifier);
 				if (getpPkmn(p).getStageAtk()>=6)
 				{
 					max = true;
@@ -852,21 +875,32 @@ public class Battle
 				getpPkmn(p).setStageEvasion(getpPkmn(p).getStageEvasion() + modifier);
 				getpPkmn(p).setCurrentEvasion(calculateStat(getpPkmn(p).getStageEvasion(),getpPkmn(p).getBaseEvasion()));
 				break;
+			case "wall" :
+				p.setWall(modifier);
+				p.setCountWall(5);
 			
 		}
 		if (p.getName().equals("Opponent"))
 			this.s = this.s + "Enemy ";
-		this.s = this.s + getpPkmn(p).getName()+"'s " + stat;
+		if (!stat.equals("wall"))
+			this.s = this.s + getpPkmn(p).getName()+"'s " + stat;
 		if (max)
 			this.s = this.s + " won't go higher !";
 		else if (min)
 			this.s = this.s + " won't go lower !";
 		else
 		{
-			if (modifier > 0)
+			//Should not occur if a wall was used
+			if (modifier > 0 && !stat.equals("wall"))
 				this.s = this.s + " rose !";
-			else
+			else if (modifier < 0 && !stat.equals("wall"))
 				this.s = this.s + " fell !";
+			//If a wall was used - light screen
+			else if (modifier == 70)
+				this.s = this.s + getpPkmn(p).getName() + "'s protected against special attacks !";
+			//If a wall was used - reflect
+			else if (modifier == 98)
+				this.s = this.s + getpPkmn(p).getName() + " gained armor !";
 		}
 	}
 	

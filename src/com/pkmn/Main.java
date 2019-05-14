@@ -204,6 +204,18 @@ public class Main implements ActionListener
 					}
 					
 				}
+				if (b.p1.getCountWall() > 0)
+				{
+					b.p1.setCountWall(b.p1.getCountWall() - 1);
+					if (b.p1.getCountWall() == 0)
+						win.logTrace("The wall of protection vanished !");
+				}
+				if (b.p2.getCountWall() > 0)
+				{
+					b.p2.setCountWall(b.p1.getCountWall() - 1);
+					if (b.p2.getCountWall() == 0)
+						win.logTrace("The enemy's wall of protection vanished !");
+				}
 				if (b.getpPkmn(b.p2).getStatus() != 9 && b.getpPkmn(b.p1).getStatus() != 9)
 					win.logTrace(b.showAttacks());
 				b.reinitPrio();

@@ -11,6 +11,8 @@ public class Player
 	String name;
 	ArrayList <Pokemon> team;
 	Pokemon currentPkmn;
+	int wall = 0;
+	int countWall = 0;
 	
 	public Player(String name)
 	{
@@ -48,9 +50,31 @@ public class Player
 	{
 		return currentPkmn;
 	}
+	
 	public void setCurrentPkmn(Pokemon currentPkmn) 
 	{
 		this.currentPkmn = currentPkmn;
+	}
+	
+	public int getWall() 
+	{
+		return wall;
+	}
+	
+	public void setWall(int wall) 
+	{
+		this.wall = wall;
+	}
+	
+	public int getCountWall() 
+	{
+		return countWall;
+	}
+	public void setCountWall(int countWall) 
+	{
+		this.countWall = countWall;
+		if (this.countWall == 0)
+			this.setWall(0);
 	}
 	
 	//stat is used because haze should not reset status.
