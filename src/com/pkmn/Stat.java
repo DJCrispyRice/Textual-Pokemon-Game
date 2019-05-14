@@ -59,6 +59,7 @@ public class Stat
 	public void setStage(int stage) 
 	{
 		this.stage = stage;
+		System.out.println("Defense was " + this.getCurrent());
 		switch (stage)
 		{
 			case 6 :
@@ -101,5 +102,6 @@ public class Stat
 				this.setCurrent((int) (this.getCurrent() * 0.25));
 				break;
 		}
+		System.out.println("Defense is now " + this.getCurrent());
 	}
 }

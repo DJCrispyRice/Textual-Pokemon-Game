@@ -27,12 +27,9 @@ public class Pokemon implements Cloneable
 	int baseHp;
 	int currentHp;
 	Stat attack;
-	int baseDef;
-	int currentDef;
-	int stageDef = 0;
-	int baseSpd;
-	int currentSpd;
-	int stageSpd = 0;
+	Stat defense;
+	Stat speed;
+	Stat special;
 	int baseSpe;
 	int currentSpe;
 	int stageSpe = 0;
@@ -67,10 +64,9 @@ public class Pokemon implements Cloneable
 		this.setBaseHp(baseHp);
 		this.setCurrentHp(baseHp);
 		this.setAttack(new Stat("Attack",baseAtk));
-		this.setBaseDef(baseDef);
-		this.setCurrentDef(baseDef);
-		this.setBaseSpd(baseSpd);
-		this.setCurrentSpd(baseSpd);
+		this.setDefense(new Stat("Defense",baseDef));
+		this.setSpeed(new Stat("Speed",baseSpd));
+		//this.setSpecial(new Stat("Special",baseSpe));
 		this.setBaseSpe(baseSpe);
 		this.setCurrentSpe(baseSpe);
 	}
@@ -185,51 +181,49 @@ public class Pokemon implements Cloneable
 	{
 		this.attack = st;
 	}
+
+	public Stat getDefense()
+	{
+		return this.defense;
+	}
 	
-	//Used if we have to set a specific value
-	public void setAttack(int i)
+	public int getDefense(String s)
 	{
-		this.attack.setCurrent(i);
+		if (s.equals("current"))
+			return this.defense.getCurrent();
+		else if (s.equals("base"))
+			return this.defense.getBase();
+		else if (s.equals("stage"))
+			return this.defense.getStage();
+		else
+			return 0;
 	}
-
-	public int getBaseDef() 
+	
+	public void setDefense(Stat st)
 	{
-		return baseDef;
+		this.defense = st;
 	}
-
-	private void setBaseDef(int baseDef) 
+	
+	public Stat getSpeed()
 	{
-		this.baseDef = baseDef;
+		return this.speed;
 	}
-
-	public int getCurrentDef() 
+	
+	public int getSpeed(String s)
 	{
-		return currentDef;
+		if (s.equals("current"))
+			return this.speed.getCurrent();
+		else if (s.equals("base"))
+			return this.speed.getBase();
+		else if (s.equals("stage"))
+			return this.speed.getStage();
+		else
+			return 0;
 	}
-
-	public void setCurrentDef(int currentDef) 
+	
+	public void setSpeed(Stat st)
 	{
-		this.currentDef = currentDef;
-	}
-
-	public int getBaseSpd() 
-	{
-		return baseSpd;
-	}
-
-	private void setBaseSpd(int baseSpd) 
-	{
-		this.baseSpd = baseSpd;
-	}
-
-	public int getCurrentSpd() 
-	{
-		return currentSpd;
-	}
-
-	public void setCurrentSpd(int currentSpd) 
-	{
-		this.currentSpd = currentSpd;
+		this.speed = st;
 	}
 
 	public int getBaseSpe() 
@@ -300,36 +294,6 @@ public class Pokemon implements Cloneable
 	public void setCountDot(int countDot) 
 	{
 		this.countDot = countDot;
-	}
-	
-	public int getStageDef() 
-	{
-		return stageDef;
-	}
-	
-	public void setStageDef(int stageDef) 
-	{
-		if (stageDef > 6)
-			this.stageDef = 6;
-		else if (stageDef < - 6)
-			this.stageDef = -6;
-		else
-			this.stageDef = stageDef;
-	}
-	
-	public int getStageSpd() 
-	{
-		return stageSpd;
-	}
-	
-	public void setStageSpd(int stageSpd) 
-	{
-		if (stageSpd > 6)
-			this.stageSpd = 6;
-		else if (stageSpd < - 6)
-			this.stageSpd = -6;
-		else
-			this.stageSpd = stageSpd;
 	}
 	
 	public int getStageSpe() 

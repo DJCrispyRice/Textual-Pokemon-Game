@@ -131,7 +131,7 @@ public class Battle
 				if (ckcon > 50)
 				{
 					int damage = ((2*20)/2 + 2)*40;
-					damage = damage * (this.getpPkmn(att).getAttack("current")/this.getpPkmn(att).getCurrentDef());
+					damage = damage * (this.getpPkmn(att).getAttack("current")/this.getpPkmn(att).getDefense("current"));
 					damage = damage/50 + 2;
 					if (att.getName().equals("Opponent"))
 						this.s = this.s + "Enemy ";
@@ -618,7 +618,7 @@ public class Battle
 		//Check if the attack has high critical ratio
 		if (att.getStatus() == 47)
 		{
-			int T = pk.getBaseSpd() * 4;
+			int T = pk.getSpeed("base") * 4;
 			int P = ThreadLocalRandom.current().nextInt(0,256);
 			if (T > P)
 			{
@@ -630,7 +630,7 @@ public class Battle
 		}
 		else
 		{
-			int T = pk.getBaseSpd() / 2;
+			int T = pk.getSpeed("base") / 2;
 			int P = ThreadLocalRandom.current().nextInt(0,256);
 			if (T > P)
 			{
@@ -666,7 +666,7 @@ public class Battle
 			if (checkCrit(this.getpattack(atk,iAtt), atk.getCurrentPkmn()))
 			{
 				if (this.getpattack(atk,iAtt).getPhy())
-					damage = damage * (atk.getCurrentPkmn().getAttack("base")/def.getCurrentPkmn().getBaseDef());
+					damage = damage * (atk.getCurrentPkmn().getAttack("base")/def.getCurrentPkmn().getDefense("base"));
 				else
 					damage = damage * (atk.getCurrentPkmn().getBaseSpe()/def.getCurrentPkmn().getBaseSpe());
 				damage = damage/50 + 2;
@@ -678,9 +678,9 @@ public class Battle
 				{
 					//If protect is on
 					if (def.getWall() == 98)
-						damage = damage * (atk.getCurrentPkmn().getAttack("current")/(def.getCurrentPkmn().getCurrentDef() * 2));
+						damage = damage * (atk.getCurrentPkmn().getAttack("current")/(def.getCurrentPkmn().getDefense("current") * 2));
 					else	
-						damage = damage * (atk.getCurrentPkmn().getAttack("current")/def.getCurrentPkmn().getCurrentDef());
+						damage = damage * (atk.getCurrentPkmn().getAttack("current")/def.getCurrentPkmn().getDefense("current"));
 				}
 				else
 				{
@@ -751,7 +751,7 @@ public class Battle
 		{
 			case 1 :
 				this.s = this.s + getpPkmn(p).getName() + " is paralysed ! It may not be able to attack !";
-				getpPkmn(p).setCurrentSpd((int) (getpPkmn(p).getBaseSpd()*0.25));
+				getpPkmn(p).getSpeed().setCurrent((int) (getpPkmn(p).getSpeed("base")*0.25));
 				break;
 			case 2 :
 				this.s = this.s + getpPkmn(p).getName() + " felt asleep !";
@@ -809,32 +809,30 @@ public class Battle
 				getpPkmn(p).getAttack().setStage(getpPkmn(p).getAttack("stage") + modifier);
 				break;
 			case "defense" :
-				if (getpPkmn(p).getStageDef()>=6)
+				if (getpPkmn(p).getDefense("stage")>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageDef()<=-6)
+				else if (getpPkmn(p).getDefense("stage")<=-6)
 				{
 					min = true;
 					break;
 				}
-				getpPkmn(p).setStageDef(getpPkmn(p).getStageDef() + modifier);
-				getpPkmn(p).setCurrentDef(calculateStat(getpPkmn(p).getStageDef(),getpPkmn(p).getBaseDef()));
+				getpPkmn(p).getDefense().setStage(getpPkmn(p).getDefense("stage") + modifier);
 				break;
 			case "speed" :
-				if (getpPkmn(p).getStageSpd()>=6)
+				if (getpPkmn(p).getSpeed("stage")>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageSpd()<=-6)
+				else if (getpPkmn(p).getSpeed("stage")<=-6)
 				{
 					min = true;
 					break;
 				}
-				getpPkmn(p).setStageSpd(getpPkmn(p).getStageSpd() + modifier);
-				getpPkmn(p).setCurrentSpd(calculateStat(getpPkmn(p).getStageSpd(),getpPkmn(p).getBaseSpd()));
+				getpPkmn(p).getSpeed().setStage(getpPkmn(p).getSpeed("stage") + modifier);
 				break;
 			case "special" :
 				if (getpPkmn(p).getStageSpe()>=6)

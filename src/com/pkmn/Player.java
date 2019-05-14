@@ -81,14 +81,14 @@ public class Player
 	public void setCurrentStats(boolean stat)
 	{
 		currentPkmn.setCurrentHp(currentPkmn.getBaseHp());
-		currentPkmn.getAttack().setCurrent(currentPkmn.getAttack().getBase());
+		currentPkmn.getAttack().setCurrent(currentPkmn.getAttack("base"));
 		currentPkmn.getAttack().setStage(0);
-		currentPkmn.setCurrentDef(currentPkmn.getBaseDef());
-		currentPkmn.setStageDef(0);
+		currentPkmn.getDefense().setCurrent(currentPkmn.getDefense("base"));
+		currentPkmn.getDefense().setStage(0);
 		currentPkmn.setCurrentSpe(currentPkmn.getBaseSpe());
 		currentPkmn.setStageSpe(0);
-		currentPkmn.setCurrentSpd(currentPkmn.getBaseSpd());
-		currentPkmn.setStageSpd(0);
+		currentPkmn.getSpeed().setCurrent(currentPkmn.getSpeed("base"));
+		currentPkmn.getSpeed().setStage(0);
 		currentPkmn.setCurrentAccu(currentPkmn.getBaseAccu());
 		currentPkmn.setStageAccu(0);
 		if (stat)

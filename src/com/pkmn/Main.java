@@ -114,7 +114,7 @@ public class Main implements ActionListener
 				else if (b.getpattack(b.p2, rdatt).getStatus() == 51)
 					b.getpPkmn(b.p2).setPrio(true);
 				else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51 && b.getpattack(b.p2, rdatt).getStatus() == 51)
-					if (b.getpPkmn(b.p1).getCurrentSpd() >= b.getpPkmn(b.p2).getCurrentSpd())
+					if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current"))
 						b.getpPkmn(b.p1).setPrio(true);
 					else
 						b.getpPkmn(b.p2).setPrio(true);
@@ -123,7 +123,7 @@ public class Main implements ActionListener
 				* Speed checking to choose the first Pokémon that hits. If tie, the player moves first
 				* Case : player faster
 				*/
-				if (b.getpPkmn(b.p1).getCurrentSpd() >= b.getpPkmn(b.p2).getCurrentSpd() || b.getpPkmn(b.p1).getPrio())
+				if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current") || b.getpPkmn(b.p1).getPrio())
 				{
 					//Calls the useAttack function for index 0 which is the player
 					win.logTrace(b.useAttack(Integer.parseInt(choice) - 1,b.p1,b.p2,0));
