@@ -30,15 +30,8 @@ public class Pokemon implements Cloneable
 	Stat defense;
 	Stat speed;
 	Stat special;
-	int baseSpe;
-	int currentSpe;
-	int stageSpe = 0;
-	int baseAccu = 100;
-	int currentAccu = 100;
-	int stageAccu = 0;
-	int baseEvasion= 100;
-	int currentEvasion = 100;
-	int stageEvasion = 0;
+	Stat accuracy = new Stat("Accuracy", 100);
+	Stat evasion = new Stat("Evasion", 100);
 	int countSleep = 0;
 	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
@@ -66,9 +59,7 @@ public class Pokemon implements Cloneable
 		this.setAttack(new Stat("Attack",baseAtk));
 		this.setDefense(new Stat("Defense",baseDef));
 		this.setSpeed(new Stat("Speed",baseSpd));
-		//this.setSpecial(new Stat("Special",baseSpe));
-		this.setBaseSpe(baseSpe);
-		this.setCurrentSpe(baseSpe);
+		this.setSpecial(new Stat("Special",baseSpe));
 	}
 	
 	//Getters/Setters
@@ -77,15 +68,18 @@ public class Pokemon implements Cloneable
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) 
+	{
 		this.name = name;
 	}
 
-	public int getId() {
+	public int getId() 
+	{
 		return id;
 	}
 
-	private void setId(int id) {
+	private void setId(int id) 
+	{
 		this.id = id;
 	}
 
@@ -94,28 +88,28 @@ public class Pokemon implements Cloneable
 		return level;
 	}
 
-	private void setLevel(int level) 
+	public Type getType1() 
 	{
-		this.level = level;
-	}
-
-	public Type getType1() {
 		return type1;
 	}
 
-	private void setType1(Type type1) {
+	private void setType1(Type type1) 
+	{
 		this.type1 = type1;
 	}
 
-	public Type getType2() {
+	public Type getType2() 
+	{
 		return type2;
 	}
 
-	private void setType2(Type type2) {
+	private void setType2(Type type2) 
+	{
 		this.type2 = type2;
 	}
 
-	public ArrayList<Attack> getAttacks() {
+	public ArrayList<Attack> getAttacks() 
+	{
 		return attacks;
 	}
 
@@ -124,23 +118,28 @@ public class Pokemon implements Cloneable
 		this.attacks = attacks;
 	}
 
-	public int getStatus() {
+	public int getStatus() 
+	{
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(int status) 
+	{
 		this.status = status;
 	}
 
-	public int getBaseHp() {
+	public int getBaseHp() 
+	{
 		return baseHp;
 	}
 
-	private void setBaseHp(int baseHp) {
+	private void setBaseHp(int baseHp) 
+	{
 		this.baseHp = baseHp;
 	}
 
-	public int getCurrentHp() {
+	public int getCurrentHp() 
+	{
 		return currentHp;
 	}
 
@@ -225,45 +224,71 @@ public class Pokemon implements Cloneable
 	{
 		this.speed = st;
 	}
-
-	public int getBaseSpe() 
+	
+	public Stat getSpecial()
 	{
-		return baseSpe;
+		return this.special;
 	}
-
-	private void setBaseSpe(int baseSpe) 
+	
+	public int getSpecial(String s)
 	{
-		this.baseSpe = baseSpe;
+		if (s.equals("current"))
+			return this.special.getCurrent();
+		else if (s.equals("base"))
+			return this.special.getBase();
+		else if (s.equals("stage"))
+			return this.special.getStage();
+		else
+			return 0;
 	}
-
-	public int getCurrentSpe() 
+	
+	public void setSpecial(Stat st)
 	{
-		return currentSpe;
+		this.special = st;
 	}
-
-	public void setCurrentSpe(int currentSpe) 
+	
+	public Stat getAccuracy()
 	{
-		this.currentSpe = currentSpe;
+		return this.accuracy;
 	}
-
-	public int getBaseAccu() 
+	
+	public int getAccuracy(String s)
 	{
-		return baseAccu;
+		if (s.equals("current"))
+			return this.accuracy.getCurrent();
+		else if (s.equals("base"))
+			return this.accuracy.getBase();
+		else if (s.equals("stage"))
+			return this.accuracy.getStage();
+		else
+			return 0;
 	}
-
-	private void setBaseAccu(int baseAccu) 
+	
+	public void setAccuracy(Stat st)
 	{
-		this.baseAccu = baseAccu;
+		this.accuracy = st;
 	}
-
-	public int getCurrentAccu() 
+	
+	public Stat getEvasion()
 	{
-		return currentAccu;
+		return this.evasion;
 	}
-
-	public void setCurrentAccu(int currentAccu) 
+	
+	public int getEvasion(String s)
 	{
-		this.currentAccu = currentAccu;
+		if (s.equals("current"))
+			return this.evasion.getCurrent();
+		else if (s.equals("base"))
+			return this.evasion.getBase();
+		else if (s.equals("stage"))
+			return this.evasion.getStage();
+		else
+			return 0;
+	}
+	
+	public void setEvasion(Stat st)
+	{
+		this.evasion = st;
 	}
 	
 	public int getCountConfusion() 
@@ -294,71 +319,6 @@ public class Pokemon implements Cloneable
 	public void setCountDot(int countDot) 
 	{
 		this.countDot = countDot;
-	}
-	
-	public int getStageSpe() 
-	{
-		return stageSpe;
-	}
-	
-	public void setStageSpe(int stageSpe) 
-	{
-		if (stageSpe > 6)
-			this.stageSpe = 6;
-		else if (stageSpe < - 6)
-			this.stageSpe = -6;
-		else
-			this.stageSpe = stageSpe;
-	}
-	
-	public int getStageAccu() 
-	{
-		return stageAccu;
-	}
-	
-	public void setStageAccu(int stageAccu) 
-	{
-		if (stageAccu > 6)
-			this.stageAccu = 6;
-		else if (stageAccu < - 6)
-			this.stageAccu = -6;
-		else
-			this.stageAccu = stageAccu;
-	}
-	
-	public int getBaseEvasion() 
-	{
-		return baseEvasion;
-	}
-	
-	public void setBaseEvasion(int baseEvasion) 
-	{
-		this.baseEvasion = baseEvasion;
-	}
-	
-	public int getCurrentEvasion() 
-	{
-		return currentEvasion;
-	}
-	
-	public void setCurrentEvasion(int currentEvasion) 
-	{
-		this.currentEvasion = currentEvasion;
-	}
-	
-	public int getStageEvasion() 
-	{
-		return stageEvasion;
-	}
-	
-	public void setStageEvasion(int stageEvasion) 
-	{
-		if (stageEvasion > 6)
-			this.stageEvasion = 6;
-		else if (stageEvasion < - 6)
-			this.stageEvasion = -6;
-		else
-			this.stageEvasion = stageEvasion;
 	}
 	
 	public boolean getCanAttack() 

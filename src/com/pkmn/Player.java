@@ -85,12 +85,14 @@ public class Player
 		currentPkmn.getAttack().setStage(0);
 		currentPkmn.getDefense().setCurrent(currentPkmn.getDefense("base"));
 		currentPkmn.getDefense().setStage(0);
-		currentPkmn.setCurrentSpe(currentPkmn.getBaseSpe());
-		currentPkmn.setStageSpe(0);
+		currentPkmn.getSpecial().setCurrent(currentPkmn.getDefense("base"));
+		currentPkmn.getSpecial().setStage(0);
 		currentPkmn.getSpeed().setCurrent(currentPkmn.getSpeed("base"));
 		currentPkmn.getSpeed().setStage(0);
-		currentPkmn.setCurrentAccu(currentPkmn.getBaseAccu());
-		currentPkmn.setStageAccu(0);
+		currentPkmn.getAccuracy().setCurrent(100);
+		currentPkmn.getAccuracy().setStage(0);
+		currentPkmn.getEvasion().setCurrent(100);
+		currentPkmn.getEvasion().setStage(0);
 		if (stat)
 			currentPkmn.setStatus(0);
 		currentPkmn.setTwoturnstatus(0);

@@ -468,7 +468,7 @@ public class Battle
 				att.setTwoturnstatus(0);
 			return false;
 		}
-		accurate = accurate - (100 - atk.getAccuracy()) - (100 - att.getCurrentAccu() - (def.getCurrentEvasion() - 100));
+		accurate = accurate - (100 - atk.getAccuracy()) - (100 - att.getAccuracy("current") - (def.getEvasion("current") - 100));
 		if (accurate < 0)
 			accurate = 0;
 		int random = ThreadLocalRandom.current().nextInt(0,100);
@@ -668,7 +668,7 @@ public class Battle
 				if (this.getpattack(atk,iAtt).getPhy())
 					damage = damage * (atk.getCurrentPkmn().getAttack("base")/def.getCurrentPkmn().getDefense("base"));
 				else
-					damage = damage * (atk.getCurrentPkmn().getBaseSpe()/def.getCurrentPkmn().getBaseSpe());
+					damage = damage * (atk.getCurrentPkmn().getSpecial("base")/def.getCurrentPkmn().getSpecial("base"));
 				damage = damage/50 + 2;
 				damage = (int) (damage * 1.5);
 			}
@@ -686,9 +686,9 @@ public class Battle
 				{
 					//If light screen is on
 					if (def.getWall() == 70)
-						damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/(def.getCurrentPkmn().getCurrentSpe() * 2));
+						damage = damage * (atk.getCurrentPkmn().getSpecial("current")/(def.getCurrentPkmn().getSpecial("current") * 2));
 					else
-						damage = damage * (atk.getCurrentPkmn().getCurrentSpe()/def.getCurrentPkmn().getCurrentSpe());
+						damage = damage * (atk.getCurrentPkmn().getSpecial("current")/def.getCurrentPkmn().getSpecial("current"));
 				}
 				damage = damage/50 + 2;
 			}
@@ -835,47 +835,43 @@ public class Battle
 				getpPkmn(p).getSpeed().setStage(getpPkmn(p).getSpeed("stage") + modifier);
 				break;
 			case "special" :
-				if (getpPkmn(p).getStageSpe()>=6)
+				if (getpPkmn(p).getSpecial("stage")>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageSpe()<=-6)
+				else if (getpPkmn(p).getSpecial("stage")<=-6)
 				{
 					min = true;
 					break;
 				}
-				getpPkmn(p).setStageSpe(getpPkmn(p).getStageSpe() + modifier);
-				
-				getpPkmn(p).setCurrentSpe(calculateStat(getpPkmn(p).getStageSpe(),getpPkmn(p).getBaseSpe()));
+				getpPkmn(p).getSpecial().setStage(getpPkmn(p).getSpecial("current") + modifier);
 				break;
 			case "accuracy" :
-				if (getpPkmn(p).getStageAccu()>=6)
+				if (getpPkmn(p).getAccuracy("stage")>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageAccu()<=-6)
+				else if (getpPkmn(p).getAccuracy("stage")<=-6)
 				{
 					min = true;
 					break;
 				}
-				getpPkmn(p).setStageAccu(getpPkmn(p).getStageAccu() + modifier);
-				getpPkmn(p).setCurrentAccu(calculateStat(getpPkmn(p).getStageAccu(),getpPkmn(p).getBaseAccu()));
+				getpPkmn(p).getAccuracy().setStage(getpPkmn(p).getAccuracy("stage") + modifier);
 				break;
 			case "evasion" :
-				if (getpPkmn(p).getStageEvasion()>=6)
+				if (getpPkmn(p).getEvasion("stage")>=6)
 				{
 					max = true;
 					break;
 				}
-				else if (getpPkmn(p).getStageEvasion()<=-6)
+				else if (getpPkmn(p).getEvasion("stage")<=-6)
 				{
 					min = true;
 					break;
 				}
-				getpPkmn(p).setStageEvasion(getpPkmn(p).getStageEvasion() + modifier);
-				getpPkmn(p).setCurrentEvasion(calculateStat(getpPkmn(p).getStageEvasion(),getpPkmn(p).getBaseEvasion()));
+				getpPkmn(p).getEvasion().setStage(getpPkmn(p).getEvasion("stage") + modifier);
 				break;
 			case "wall" :
 				p.setWall(modifier);
@@ -906,40 +902,6 @@ public class Battle
 		}
 	}
 	
-	private int calculateStat(int stage,int stat)
-	{
-		switch (stage)
-		{
-			case 6 :
-				return stat * 4;
-			case 5 : 
-				return (int) (stat * 3.5);
-			case 4 : 
-				return (int) (stat * 3);
-			case 3 : 
-				return (int) (stat * 2.5);
-			case 2 : 
-				return (int) (stat * 2);
-			case 1 :
-				return (int) (stat * 1.5);
-			case 0 :
-				return stat;
-			case -1 :
-				return (int) (stat * 0.66);
-			case -2 :
-				return (int) (stat * 0.5);
-			case -3 :
-				return (int) (stat * 0.4);
-			case -4 :
-				return (int) (stat * 0.33);
-			case -5 :
-				return (int) (stat * 0.28);
-			case -6 :
-				return (int) (stat * 0.25);
-		}
-		return stat;
-	}
-
 	public boolean checkDead(Player p, Window win)
 	{
 		if (p.getCurrentPkmn().getStatus()==9)
