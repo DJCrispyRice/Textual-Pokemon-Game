@@ -164,7 +164,7 @@ public final class GameData
 		this.allAtks[i] = new Attack("Aurora Beam", "May freeze the opponent", 5, 65, 20, false, this.allTypes[13],5,10,100); i++;
 		this.allAtks[i] = new Attack("Barrage", "Hits 2-5 times in one turn.", 6, 15, 20, true, this.allTypes[0],46,100,85); i++;
 		this.allAtks[i] = new Attack("Barrier", "Sharply raises user's Defense.", 7, 0, 20, false, this.allTypes[12],21,100,100); i++;
-		this.allAtks[i] = new Attack("Bide", "User takes damage for two turns then strikes back double.", 8, 0, 10, true, this.allTypes[10],54,100,100); i++;
+		this.allAtks[i] = new Attack("Bide", "User takes damage for two turns then strikes back double.", 8, 0, 10, true, this.allTypes[10],54,100,100); i++; //To code
 		this.allAtks[i] = new Attack("Bite", "May cause flinching", 9, 60, 25, true, this.allTypes[0],43,30,100); i++;
 		this.allAtks[i] = new Attack("Blizzard", "May freeze opponent.", 10, 110, 5, false, this.allTypes[13],5,10,70); i++;
 		this.allAtks[i] = new Attack("Body Slam", "May paralyze opponent.", 11, 85, 15, true, this.allTypes[0],1 ,30,100); i++;
@@ -172,33 +172,33 @@ public final class GameData
 		this.allAtks[i] = new Attack("Bonemerang", "Hits twice in one turn.", 13, 50, 10, true, this.allTypes[4],0,100,90); i++;
 		this.allAtks[i] = new Attack("Bubble", "May lower opponent's Speed.", 14, 40, 30, false, this.allTypes[9],24,10,100); i++;
 		this.allAtks[i] = new Attack ("Bubble Beam","May lower opponent's Speed.",15,65,20,false,this.allTypes[9],24,10,100); i++;
-		this.allAtks[i] = new Attack ("Clamp","Traps opponent, damaging them for 4-5 turns.",16,35,10,true,this.allTypes[9],55,0,85); i++;
+		this.allAtks[i] = new Attack ("Clamp","Traps opponent, damaging them for 4-5 turns.",16,35,10,true,this.allTypes[9],54,0,85); i++; //To code
 		this.allAtks[i] = new Attack ("Comet Punch","Hits 2-5 times in one turn.",17,18,15,true,this.allTypes[0],46,0,85); i++;
 		this.allAtks[i] = new Attack ("Confuse Ray","Confuses opponent.",18,0,10,false,this.allTypes[7],6,100,100); i++;
 		this.allAtks[i] = new Attack ("Confusion","May confuse opponent.",19,50,25,false,this.allTypes[12],6,10,100); i++;
 		this.allAtks[i] = new Attack ("Constrict","May lower opponent's Speed by one stage.",20,10,35,true,this.allTypes[0],24,10,100); i++;
-		this.allAtks[i] = new Attack ("Conversion","Changes user's type to that of its first move.",21,0,30,false,this.allTypes[0],54,0,100); i++;
-		this.allAtks[i] = new Attack ("Counter","When hit by a Physical Attack, user strikes back with 2x power.",22,0,20,true,this.allTypes[1],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Conversion","Changes user's type to that of its first move.",21,0,30,false,this.allTypes[0],54,0,100); i++; //To code
+		this.allAtks[i] = new Attack ("Counter","When hit by a Physical Attack, user strikes back with 2x power.",22,0,20,true,this.allTypes[1],54,0,100); i++; //To code
 		this.allAtks[i] = new Attack ("Crabhammer","High critical hit ratio.",23,100,10,true,this.allTypes[9],47,1000,90); i++;
 		this.allAtks[i] = new Attack ("Cut","Standard attack",24,50,30,true,this.allTypes[0],0,0,95); i++;
 		this.allAtks[i] = new Attack ("Defense Curl","Raises user's Defense.",25,0,40,false,this.allTypes[0],17,1000,100); i++;
 		this.allAtks[i] = new Attack ("Dig","Digs underground on first turn, attacks on second. Can also escape from caves.",26,80,10,true,this.allTypes[4],48,100,100); i++;
-		this.allAtks[i] = new Attack ("Disable","Opponent can't use its last attack for a few turns.",27,0,20,false,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Disable","Opponent can't use its last attack for a few turns.",27,0,20,false,this.allTypes[0],54,0,100); i++; //To code
 		this.allAtks[i] = new Attack ("Dizzy Punch","May confuse opponent.",28,70,10,true,this.allTypes[0],6,20,100); i++;
 		this.allAtks[i] = new Attack ("Double Kick","Hits twice in one turn.",29,30,30,true,this.allTypes[1],46,0,100); i++;
 		this.allAtks[i] = new Attack ("Double Slap","Hits 2-5 times in one turn.",30,15,10,true,this.allTypes[0],46,0,85); i++;
 		this.allAtks[i] = new Attack ("Double Team","Raises user's Evasiveness.",31,0,15,false,this.allTypes[0],41,0,100); i++;
 		this.allAtks[i] = new Attack ("Double-Edge","User receives recoil damage.",32,100,15,true,this.allTypes[0],49,0,100); i++;
 		this.allAtks[i] = new Attack ("Dragon Rage","Always inflicts 40 HP.",33,40,10,false,this.allTypes[14],53,0,100); i++;
-		this.allAtks[i] = new Attack ("Dream Eater","User recovers half the HP inflicted on a sleeping opponent.",34,100,15,false,this.allTypes[12],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Dream Eater","User recovers half the HP inflicted on a sleeping opponent.",34,100,15,false,this.allTypes[12],54,0,100); i++; //To code
 		this.allAtks[i] = new Attack ("Drill Peck","Standard attack",35,80,20,true,this.allTypes[2],0,0,100); i++;
-		this.allAtks[i] = new Attack ("Earthquake","Power is doubled if opponent is underground from using Dig.",36,100,10,true,this.allTypes[4],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Earthquake","Power is doubled if opponent is underground from using Dig.",36,100,10,true,this.allTypes[4],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Egg Bomb","Standard attack",37,100,10,true,this.allTypes[0],0,0,75); i++;
 		this.allAtks[i] = new Attack ("Ember","May burn opponent.",38,40,25,false,this.allTypes[8],4,10,100); i++;
 		this.allAtks[i] = new Attack ("Explosion","User faints.",39,250,5,true,this.allTypes[0],50,0,100); i++;
 		this.allAtks[i] = new Attack ("Fire Blast","May burn opponent.",40,110,5,false,this.allTypes[8],4,10,85); i++;
 		this.allAtks[i] = new Attack ("Fire Punch","May burn opponent.",41,75,15,true,this.allTypes[8],4,10,100); i++;
-		this.allAtks[i] = new Attack ("Fire Spin","Traps opponent, damaging them for 4-5 turns.",42,35,15,false,this.allTypes[8],55,0,85); i++;
+		this.allAtks[i] = new Attack ("Fire Spin","Traps opponent, damaging them for 4-5 turns.",42,35,15,false,this.allTypes[8],54,100,85); i++; //To code - same as 16
 		this.allAtks[i] = new Attack ("Flamethrower","May burn opponent.",43,90,15,false,this.allTypes[8],4,10,100); i++;
 		this.allAtks[i] = new Attack ("Flash","Lowers opponent's Accuracy.",44,0,20,false,this.allTypes[0],40,100,100); i++;
 		this.allAtks[i] = new Attack ("Fly","Flies up on first turn, attacks on second turn.",45,90,15,true,this.allTypes[2],48,0,95); i++;
@@ -211,19 +211,19 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Harden","Raises user's Defense.",52,0,30,false,this.allTypes[0],17,100,100); i++;
 		this.allAtks[i] = new Attack ("Haze","Resets all stat changes.",53,0,30,false,this.allTypes[13],45,100,100); i++;
 		this.allAtks[i] = new Attack ("Headbutt","May cause flinching.",54,70,15,true,this.allTypes[0],43,30,100); i++;
-		this.allAtks[i] = new Attack ("High Jump Kick","If it misses, the user loses half their HP.",55,130,10,true,this.allTypes[1],0,0,90); i++;
+		this.allAtks[i] = new Attack ("High Jump Kick","If it misses, the user loses half their HP.",55,130,10,true,this.allTypes[1],54,0,90); i++; // To code
 		this.allAtks[i] = new Attack ("Horn Attack","Standard attack",56,65,25,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Hydro Pump","Standard attack",57,110,5,false,this.allTypes[9],0,0,80); i++;
-		this.allAtks[i] = new Attack ("Hyper Beam","User must recharge next turn.",58,150,5,false,this.allTypes[0],54,0,90); i++;
+		this.allAtks[i] = new Attack ("Hyper Beam","User must recharge next turn.",58,150,5,false,this.allTypes[0],54,0,90); i++; // To code
 		this.allAtks[i] = new Attack ("Hyper Fang","May cause flinching.",59,80,15,true,this.allTypes[0],43,10,90); i++;
 		this.allAtks[i] = new Attack ("Hypnosis","Puts opponent to sleep.",60,0,20,false,this.allTypes[12],2,100,60); i++;
 		this.allAtks[i] = new Attack ("Ice Beam","May freeze opponent.",61,90,10,false,this.allTypes[13],5,10,100); i++;
 		this.allAtks[i] = new Attack ("Ice Punch","May freeze opponent.",62,75,15,true,this.allTypes[13],5,10,100); i++;
-		this.allAtks[i] = new Attack ("Jump Kick","If it misses, the user loses half their HP.",63,100,10,true,this.allTypes[1],0,0,95); i++;
+		this.allAtks[i] = new Attack ("Jump Kick","If it misses, the user loses half their HP.",63,100,10,true,this.allTypes[1],54,0,95); i++; //To code - same as 55
 		this.allAtks[i] = new Attack ("Karate Chop","High critical hit ratio.",64,50,25,true,this.allTypes[1],47,100,100); i++;
 		this.allAtks[i] = new Attack ("Kinesis","Lowers opponent's Accuracy.",65,0,15,false,this.allTypes[12],40,100,80); i++;
 		this.allAtks[i] = new Attack ("Leech Life","User recovers half the HP inflicted on opponent.",66,80,10,true,this.allTypes[6],44,100,100); i++;
-		this.allAtks[i] = new Attack ("Leech Seed","Drains HP from opponent each turn.",67,0,10,false,this.allTypes[10],54,100,90); i++;
+		this.allAtks[i] = new Attack ("Leech Seed","Drains HP from opponent each turn.",67,0,10,false,this.allTypes[10],54,100,90); i++; // To code
 		this.allAtks[i] = new Attack ("Leer","Lowers opponent's Defense.",68,0,30,false,this.allTypes[0],16,100,100); i++;
 		this.allAtks[i] = new Attack ("Lick","May paralyze opponent.",69,30,30,true,this.allTypes[7],1,30,100); i++;
 		this.allAtks[i] = new Attack ("Light Screen","Halves damage from Specialattacks for 5 turns.",70,0,30,false,this.allTypes[12],52,0,100); i++;
@@ -233,14 +233,14 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Mega Drain","User recovers half the HP inflicted on opponent.",74,40,15,false,this.allTypes[10],44,100,100); i++;
 		this.allAtks[i] = new Attack ("Mega Kick","Standard attack",75,120,5,true,this.allTypes[0],0,0,75); i++;
 		this.allAtks[i] = new Attack ("Mega Punch","Standard attack",76,80,20,true,this.allTypes[0],0,0,85); i++;
-		this.allAtks[i] = new Attack ("Metronome","User performs almost any move in the game at random.",77,0,10,false,this.allTypes[0],54,0,100); i++;
-		this.allAtks[i] = new Attack ("Mimic","Copies the opponent's last move.",78,0,10,false,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Metronome","User performs almost any move in the game at random.",77,0,10,false,this.allTypes[0],54,0,100); i++; // To code
+		this.allAtks[i] = new Attack ("Mimic","Copies the opponent's last move.",78,0,10,false,this.allTypes[0],54,0,100); i++; // To code
 		this.allAtks[i] = new Attack ("Minimize","Sharply raises user's Evasiveness.",79,0,10,false,this.allTypes[0],41,0,100); i++;
-		this.allAtks[i] = new Attack ("Mirror Move","User performs the opponent's last move.",80,0,20,false,this.allTypes[2],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Mirror Move","User performs the opponent's last move.",80,0,20,false,this.allTypes[2],54,0,100); i++; //To code
 		this.allAtks[i] = new Attack ("Night Shade","Inflicts damage equal to user's level.",81,50,15,false,this.allTypes[7],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Pay Day","Standard attack",82,40,20,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Peck","Standard attack",83,35,35,true,this.allTypes[2],0,0,100); i++;
-		this.allAtks[i] = new Attack ("Petal Dance","User attacks for 2-3 turns but then becomes confused.",84,120,10,false,this.allTypes[10],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Petal Dance","User attacks for 2-3 turns but then becomes confused.",84,120,10,false,this.allTypes[10],54,0,100); i++; // To code
 		this.allAtks[i] = new Attack ("Pin Missile","Hits 2-5 times in one turn.",85,25,20,true,this.allTypes[6],46,0,95); i++;
 		this.allAtks[i] = new Attack ("Poison Gas","Poisons opponent.",86,0,40,false,this.allTypes[3],3,100,90); i++;
 		this.allAtks[i] = new Attack ("Poison Powder","Poisons opponent.",87,0,35,false,this.allTypes[3],3,100,75); i++;
@@ -252,11 +252,11 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Quick Attack","User attacks first.",93,40,30,true,this.allTypes[0],51,0,100); i++;
 		this.allAtks[i] = new Attack ("Rage","Raises user's Attack when hit.",94,20,20,true,this.allTypes[0],9,100,100); i++;
 		this.allAtks[i] = new Attack ("Razor Leaf","High critical hit ratio.",95,55,25,true,this.allTypes[10],47,100,95); i++;
-		this.allAtks[i] = new Attack ("Razor Wind","Charges on first turn, attacks on second. High critical hit ratio.",96,80,10,false,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Razor Wind","Charges on first turn, attacks on second. High critical hit ratio.",96,80,10,false,this.allTypes[0],54,0,100); i++; // To code
 		this.allAtks[i] = new Attack ("Recover","User recovers half its max HP.",97,0,10,false,this.allTypes[0],45,100,100); i++;
 		this.allAtks[i] = new Attack ("Reflect","Halves damage from Physical attacks for 5 turns.",98,0,20,false,this.allTypes[12],52,100,100); i++;
-		this.allAtks[i] = new Attack ("Rest","User sleeps for 2 turns, but user is fully healed.",99,0,10,false,this.allTypes[12],54,0,100); i++;
-		this.allAtks[i] = new Attack ("Roar","In battles, the opponent switches. In the wild, the Pokémon runs.",100,0,20,false,this.allTypes[0],54,100,100); i++;
+		this.allAtks[i] = new Attack ("Rest","User sleeps for 2 turns, but user is fully healed.",99,0,10,false,this.allTypes[12],54,0,100); i++; // To code
+		this.allAtks[i] = new Attack ("Roar","In battles, the opponent switches. In the wild, the Pokémon runs.",100,0,20,false,this.allTypes[0],54,100,100); i++; // To code
 		this.allAtks[i] = new Attack ("Rock Slide","May cause flinching.",101,75,10,true,this.allTypes[5],43,30,90); i++;
 		this.allAtks[i] = new Attack ("Rock Throw","Standard attack",102,50,15,true,this.allTypes[5],0,0,90); i++;
 		this.allAtks[i] = new Attack ("Rolling Kick","May cause flinching.",103,60,15,true,this.allTypes[1],43,30,85); i++;
@@ -268,7 +268,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Sharpen","Raises user's Attack.",109,0,30,false,this.allTypes[0],9,0,100); i++;
 		this.allAtks[i] = new Attack ("Sing","Puts opponent to sleep.",110,0,15,false,this.allTypes[0],2,100,55); i++;
 		this.allAtks[i] = new Attack ("Skull Bash","Charges on first turn, attacks on second.",111,130,10,true,this.allTypes[0],48,0,100); i++;
-		this.allAtks[i] = new Attack ("Sky Attack","Charges on first turn, attacks on second. May cause flinching.",112,140,5,true,this.allTypes[2],54,30,90); i++;
+		this.allAtks[i] = new Attack ("Sky Attack","Charges on first turn, attacks on second. May cause flinching.",112,140,5,true,this.allTypes[2],54,30,90); i++; // To code
 		this.allAtks[i] = new Attack ("Slam","Standard attack",113,80,20,true,this.allTypes[0],0,0,75); i++;
 		this.allAtks[i] = new Attack ("Slash","High critical hit ratio.",114,70,20,true,this.allTypes[0],47,0,100); i++;
 		this.allAtks[i] = new Attack ("Sleep Powder","Puts opponent to sleep.",115,0,15,false,this.allTypes[10],2,100,75); i++;
@@ -284,36 +284,36 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Stomp","May cause flinching.",125,65,20,true,this.allTypes[0],43,30,100); i++;
 		this.allAtks[i] = new Attack ("Strength","Standard attack",126,80,15,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("String Shot","Sharply lowers opponent's Speed.",127,0,40,false,this.allTypes[6],28,100,95); i++;
-		this.allAtks[i] = new Attack ("Struggle","Only usable when all PP are gone. Hurts the user.",128,50,1000,true,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Struggle","Only usable when all PP are gone. Hurts the user.",128,50,1000,true,this.allTypes[0],54,0,100); i++; // To code
 		this.allAtks[i] = new Attack ("Stun Spore","Paralyzes opponent.",129,0,30,false,this.allTypes[10],1,100,75); i++;
 		this.allAtks[i] = new Attack ("Submission","User receives recoil damage.",130,80,20,true,this.allTypes[1],49,0,80); i++;
-		this.allAtks[i] = new Attack ("Substitute","Uses HP to create a decoy that takes hits.",131,0,10,false,this.allTypes[0],54,0,100); i++;
-		this.allAtks[i] = new Attack ("Super Fang","Always takes off half of the opponent's HP.",132,0,10,true,this.allTypes[0],54,0,90); i++;
+		this.allAtks[i] = new Attack ("Substitute","Uses HP to create a decoy that takes hits.",131,0,10,false,this.allTypes[0],54,0,100); i++; // To code
+		this.allAtks[i] = new Attack ("Super Fang","Always takes off half of the opponent's HP.",132,0,10,true,this.allTypes[0],54,0,90); i++; // To code
 		this.allAtks[i] = new Attack ("Supersonic","Confuses opponent.",133,0,20,false,this.allTypes[0],6,100,55); i++;
 		this.allAtks[i] = new Attack ("Surf","Standard attack.",134,90,15,false,this.allTypes[9],0,0,100); i++;
-		this.allAtks[i] = new Attack ("Swift","Ignores Accuracy and Evasiveness.",135,60,20,false,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Swift","Ignores Accuracy and Evasiveness.",135,60,20,false,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Swords Dance","Sharply raises user's Attack.",136,0,20,false,this.allTypes[0],13,100,100); i++;
 		this.allAtks[i] = new Attack ("Tackle","Standard attack",137,40,35,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Tail Whip","Lowers opponent's Defense.",138,0,30,false,this.allTypes[0],16,100,100); i++;
 		this.allAtks[i] = new Attack ("Take Down","User receives recoil damage.",139,90,20,true,this.allTypes[0],49,0,85); i++;
-		this.allAtks[i] = new Attack ("Thrash","User attacks for 2-3 turns but then becomes confused.",140,120,10,true,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Thrash","User attacks for 2-3 turns but then becomes confused.",140,120,10,true,this.allTypes[0],54,0,100); i++; // To code - same as 84
 		this.allAtks[i] = new Attack ("Thunder","May paralyze opponent.",141,110,10,false,this.allTypes[11],1,30,70); i++;
 		this.allAtks[i] = new Attack ("Thunder Punch","May paralyze opponent.",142,75,15,true,this.allTypes[11],1,10,100); i++;
 		this.allAtks[i] = new Attack ("Thunder Shock","May paralyze opponent.",143,40,30,false,this.allTypes[11],1,10,100); i++;
 		this.allAtks[i] = new Attack ("Thunder Wave","Paralyzes opponent.",144,0,20,false,this.allTypes[11],1,100,90); i++;
 		this.allAtks[i] = new Attack ("Thunderbolt","May paralyze opponent.",145,90,15,false,this.allTypes[11],1,10,100); i++;
 		this.allAtks[i] = new Attack ("Toxic","Badly poisons opponent.",146,0,10,false,this.allTypes[3],3,100,90); i++;
-		this.allAtks[i] = new Attack ("Transform","User takes on the form and attacks of the opponent.",147,0,10,false,this.allTypes[0],54,0,100); i++;
-		this.allAtks[i] = new Attack ("Tri Attack","May paralyze, burn or freeze opponent.",148,80,10,false,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Transform","User takes on the form and attacks of the opponent.",147,0,10,false,this.allTypes[0],54,0,100); i++; // To code
+		this.allAtks[i] = new Attack ("Tri Attack","May paralyze, burn or freeze opponent.",148,80,10,false,this.allTypes[0],54,0,100); i++; // To code
 		this.allAtks[i] = new Attack ("Twineedle","Hits twice in one turn. May poison opponent.",149,25,20,true,this.allTypes[6],46,20,100); i++;
 		this.allAtks[i] = new Attack ("Vice Grip","Standard attack",150,55,30,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Vine Whip","Standard attack",151,45,25,true,this.allTypes[10],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Water Gun","Standard attack",152,40,25,false,this.allTypes[9],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Waterfall","May cause flinching.",153,80,15,true,this.allTypes[9],43,20,100); i++;
-		this.allAtks[i] = new Attack ("Whirlwind","In battles, the opponent switches. In the wild, the Pokémon runs.",154,0,20,false,this.allTypes[0],54,0,100); i++;
+		this.allAtks[i] = new Attack ("Whirlwind","In battles, the opponent switches. In the wild, the Pokémon runs.",154,0,20,false,this.allTypes[0],54,0,100); i++; // To code - same as 100
 		this.allAtks[i] = new Attack ("Wing Attack","Standard attack",155,60,35,true,this.allTypes[2],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Withdraw","Raises user's Defense.",156,0,40,false,this.allTypes[9],17,100,100); i++;
-		this.allAtks[i] = new Attack ("Wrap","Traps opponent, damaging them for 4-5 turns.",157,15,20,true,this.allTypes[0],55,0,90); i++;
+		this.allAtks[i] = new Attack ("Wrap","Traps opponent, damaging them for 4-5 turns.",157,15,20,true,this.allTypes[0],54,0,90); i++; // To code - same as 16 and 42
 		
 		//Tracing that loading is OK
 		win.logTrace("Attacks loaded.");
@@ -482,7 +482,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[127]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[8]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);

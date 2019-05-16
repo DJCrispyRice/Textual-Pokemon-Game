@@ -83,17 +83,28 @@ public class Main implements ActionListener
 			//Try/catch to check if the number is a valid choice
 			try
 			{
-				//If choice is empty, checks if we are in a twoturn situation.
+				//If choice is empty, checks if we are in a twoturn or bind situation.
 				if (choice.equals(""))
 				{
-					if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+					if (b.getpPkmn(b.p1).getTwoturnstatus() != 0 || b.getpPkmn(b.p1).getCountBide() != 0)
 					{
 						for (int i = 0 ; i < b.getpPkmn(b.p1).getAttacks().size() ; i++)
 						{
-							if (b.getpattack(b.p1,i).getId() == b.getpPkmn(b.p1).getTwoturnstatus())
+							if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
 							{
-								choice = Integer.toString(i+1);
-								break;
+								if (b.getpattack(b.p1,i).getId() == b.getpPkmn(b.p1).getTwoturnstatus())
+								{
+									choice = Integer.toString(i+1);
+									break;
+								}
+							}
+							else
+							{
+								if (b.getpattack(b.p1,i).getId() == 8)
+								{
+									choice = Integer.toString(i+1);
+									break;
+								}
 							}
 						}
 					}

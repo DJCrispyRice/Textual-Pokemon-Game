@@ -35,6 +35,8 @@ public class Pokemon implements Cloneable
 	int countSleep = 0;
 	int countConfusion = 0;
 	int countDot = 0; //Count Damage Over Time
+	int countBide = 0;
+	int totalBideDmg = 0;
 	boolean canAttack = true; //Used for flinching
 	boolean prio = false;
 	int twoturnstatus = 0; //Used for two-turn attacks. Will contain the ID of the attack
@@ -319,6 +321,26 @@ public class Pokemon implements Cloneable
 	public void setCountDot(int countDot) 
 	{
 		this.countDot = countDot;
+	}
+	
+	public int getCountBide() 
+	{
+		return countBide;
+	}
+	
+	public void setCountBide(int countBide) 
+	{
+		this.countBide = countBide;
+	}
+	
+	public int getTotalBideDmg() 
+	{
+		return totalBideDmg;
+	}
+	
+	public void setTotalBideDmg(int totalBideDmg) 
+	{
+		this.totalBideDmg = totalBideDmg;
 	}
 	
 	public boolean getCanAttack() 

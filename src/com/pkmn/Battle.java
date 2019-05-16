@@ -34,7 +34,7 @@ public class Battle
 	public String showAttacks()
 	{
 		this.s = new String();
-		if (getpPkmn(p1).getTwoturnstatus() == 0)
+		if (getpPkmn(p1).getTwoturnstatus() == 0 && getpPkmn(p1).getCountBide() == 0)
 		{
 			if (this.getpPkmn(p1).getStatus()!=0)
 			{
@@ -67,9 +67,7 @@ public class Battle
 			s = s + "\n***********************";
 		}
 		else
-		{
 			s = s + "***********************\nPress enter to proceed to next turn.\n***********************";
-		}
 		return s;
 	}
 	
@@ -156,7 +154,10 @@ public class Battle
 			this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
 			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
 			{
-				this.s = this.doDamages(iAtt, att, def, i);
+				if (this.getpattack(att,iAtt).getStatus() == 54)
+					this.s = this.doSpecialAttack(iAtt, att, def, i);
+				else
+					this.s = this.doDamages(iAtt, att, def, i);
 			}
 			else
 			{
@@ -452,16 +453,109 @@ public class Battle
 		return s;
 	}
 	
+	//This function will be used to simplify the usage of status 54 attacks which contains every move that is "unique".
+	private String doSpecialAttack(int iAtt, Player att, Player def, int i)
+	{
+		switch (this.getpattack(att, iAtt).getId())
+		{
+			case 8 : 
+				if (getpPkmn(att).getCountBide() == 0)
+				{
+					getpPkmn(att).setCountBide(2);
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "Enemy ";
+					this.s = this.s + getpPkmn(att).getName() + " is storing energy !";
+				}
+				else
+				{
+					getpPkmn(att).setCountBide(getpPkmn(att).getCountBide()-1);
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "Enemy ";
+					if (getpPkmn(att).getCountBide() == 0)
+					{
+						this.s = this.s + getpPkmn(att).getName() + " unleashed energy !\n";
+						//Damage calculation here
+						int damage = getpPkmn(att).getTotalBideDmg() * 2;
+						getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - damage );
+						if (def.getName().equals("Opponent"))
+							this.s = this.s + "Enemy ";
+						this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
+						getpPkmn(att).setTotalBideDmg(0);
+						this.checkHpLeft(def);
+					}
+					else
+						this.s = this.s + getpPkmn(att).getName() + " is still storing energy !";
+				}
+				break;
+			case 16 : 
+				break;
+			case 21 : 
+				break;
+			case 22 : 
+				break;
+			case 27 : 
+				break;
+			case 34 : 
+				break;
+			case 42 : 
+				break;
+			case 55 : 
+				break;
+			case 58 : 
+				break;
+			case 63 : 
+				break;
+			case 67 : 
+				break;
+			case 77 : 
+				break;
+			case 78 : 
+				break;
+			case 80 : 
+				break;
+			case 84 : 
+				break;
+			case 96 : 
+				break;
+			case 99 : 
+				break;
+			case 100 : 
+				break;
+			case 112 : 
+				break;
+			case 128 : 
+				break;
+			case 131 : 
+				break;
+			case 132 : 
+				break;
+			case 140 : 
+				break;
+			case 147 : 
+				break;
+			case 148 : 
+				break;
+			case 154 : 
+				break;
+			case 157 : 
+				break;
+		}
+		
+		return this.s;
+	}
+	
 	private boolean checkHit(Attack atk, Pokemon att, Pokemon def)
 	{
 		int accurate = 100;
+		//Swift can't fail whatever the case, if it's currently biding it can't also fail
+		if (atk.getName().equals("Swift") || att.getCountBide() > 0)
+			return true;
 		//Will automatically fail if the user is in the air or underground except if earthquake + underground
 		//... Unless the used attack is two-turn move (first turn using it)
 		if (atk.getStatus() == 48 && att.getTwoturnstatus() == 0)
 			return true;
 		//If the opponent is in the sky or underground, will automatically fail unless earthquake + underground
 		//But if the move is a status boost for the user, it shouldn't fail
-		
 		else if (((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45) && !atk.getSelf())
 		{
 			if (att.getTwoturnstatus() != 0)
@@ -715,6 +809,8 @@ public class Battle
 					this.s = this.s + "\n";
 				this.s = this.s + atk.getCurrentPkmn().getName()+" stole "+heal+" HP and now has "+atk.getCurrentPkmn().getCurrentHp()+"/"+atk.getCurrentPkmn().getBaseHp()+".";
 			}
+			if (getpPkmn(def).getCountBide() > 0)
+				getpPkmn(def).setTotalBideDmg(getpPkmn(def).getTotalBideDmg() + damage);
 		}
 		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
 		this.checkHpLeft(def);

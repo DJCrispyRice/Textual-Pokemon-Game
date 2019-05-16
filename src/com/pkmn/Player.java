@@ -13,6 +13,7 @@ public class Player
 	Pokemon currentPkmn;
 	int wall = 0;
 	int countWall = 0;
+	boolean seeded = false;
 	
 	public Player(String name)
 	{
@@ -70,6 +71,7 @@ public class Player
 	{
 		return countWall;
 	}
+	
 	public void setCountWall(int countWall) 
 	{
 		this.countWall = countWall;
@@ -77,23 +79,28 @@ public class Player
 			this.setWall(0);
 	}
 	
+	public boolean getSeeded() 
+	{
+		return seeded;
+	}
+	
+	public void setSeeded(boolean seeded) 
+	{
+		this.seeded = seeded;
+	}
+	
 	//stat is used because haze should not reset status.
-	public void setCurrentStats(boolean stat)
+	public void setCurrentStats(boolean status)
 	{
 		currentPkmn.setCurrentHp(currentPkmn.getBaseHp());
-		currentPkmn.getAttack().setCurrent(currentPkmn.getAttack("base"));
 		currentPkmn.getAttack().setStage(0);
-		currentPkmn.getDefense().setCurrent(currentPkmn.getDefense("base"));
 		currentPkmn.getDefense().setStage(0);
-		currentPkmn.getSpecial().setCurrent(currentPkmn.getDefense("base"));
 		currentPkmn.getSpecial().setStage(0);
-		currentPkmn.getSpeed().setCurrent(currentPkmn.getSpeed("base"));
 		currentPkmn.getSpeed().setStage(0);
-		currentPkmn.getAccuracy().setCurrent(100);
 		currentPkmn.getAccuracy().setStage(0);
-		currentPkmn.getEvasion().setCurrent(100);
 		currentPkmn.getEvasion().setStage(0);
-		if (stat)
+		this.setSeeded(false);
+		if (status)
 			currentPkmn.setStatus(0);
 		currentPkmn.setTwoturnstatus(0);
 		currentPkmn.setCanAttack(true);

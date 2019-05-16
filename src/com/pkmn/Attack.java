@@ -62,7 +62,6 @@ package com.pkmn;
  * Status 52 : Walls
  * Status 53 : Fixed damage
  * Status 54 : Special attacks with unique mechanic
- * Status 55 : Trapped
  */
 public class Attack 
 {
