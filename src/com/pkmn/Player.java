@@ -104,5 +104,6 @@ public class Player
 			currentPkmn.setStatus(0);
 		currentPkmn.setTwoturnstatus(0);
 		currentPkmn.setCanAttack(true);
+		currentPkmn.setCountTrap(0);
 	}
 }

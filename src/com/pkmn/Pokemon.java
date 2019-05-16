@@ -34,7 +34,7 @@ public class Pokemon implements Cloneable
 	Stat evasion = new Stat("Evasion", 100);
 	int countSleep = 0;
 	int countConfusion = 0;
-	int countDot = 0; //Count Damage Over Time
+	int countTrap = 0; //Count for trap attacks
 	int countBide = 0;
 	int totalBideDmg = 0;
 	boolean canAttack = true; //Used for flinching
@@ -313,14 +313,14 @@ public class Pokemon implements Cloneable
 		this.countSleep = countStatus;
 	}
 	
-	public int getCountDot() 
+	public int getCountTrap() 
 	{
-		return countDot;
+		return countTrap;
 	}
 	
-	public void setCountDot(int countDot) 
+	public void setCountTrap(int countTrap) 
 	{
-		this.countDot = countDot;
+		this.countTrap = countTrap;
 	}
 	
 	public int getCountBide() 

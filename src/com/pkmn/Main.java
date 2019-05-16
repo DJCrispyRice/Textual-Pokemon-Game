@@ -119,15 +119,15 @@ public class Main implements ActionListener
 				Random r = new Random();
 				int rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
 				//Checking if a prioritary move has been used
-				if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
-					b.getpPkmn(b.p1).setPrio(true);
-				else if (b.getpattack(b.p2, rdatt).getStatus() == 51)
-					b.getpPkmn(b.p2).setPrio(true);
-				else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51 && b.getpattack(b.p2, rdatt).getStatus() == 51)
+				if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51 && b.getpattack(b.p2, rdatt).getStatus() == 51)
 					if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current"))
 						b.getpPkmn(b.p1).setPrio(true);
 					else
 						b.getpPkmn(b.p2).setPrio(true);
+				else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
+					b.getpPkmn(b.p1).setPrio(true);
+				else if (b.getpattack(b.p2, rdatt).getStatus() == 51)
+					b.getpPkmn(b.p2).setPrio(true);
 						
 				/*
 				* Speed checking to choose the first Pokémon that hits. If tie, the player moves first
@@ -180,16 +180,12 @@ public class Main implements ActionListener
 				{
 					//If we are in a two turn situation, chooses the previous attack instead.
 					if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
-					{
 						for (int i = 0 ; i < b.getpPkmn(b.p2).getAttacks().size() ; i++)
-						{
 							if (b.getpattack(b.p2,i).getId() == b.getpPkmn(b.p2).getTwoturnstatus())
 							{
 								rdatt = i;
 								break;
 							}
-						}
-					}
 					else if (b.getpPkmn(b.p2).getAttacks().size() == 1)
 						rdatt = 0;
 					win.logTrace(b.useAttack(rdatt,b.p2,b.p1,0));
@@ -214,6 +210,10 @@ public class Main implements ActionListener
 					}
 					
 				}
+				
+				/*
+				 * Checks after attacks were used
+				*/
 				if (b.p1.getCountWall() > 0)
 				{
 					b.p1.setCountWall(b.p1.getCountWall() - 1);
@@ -226,6 +226,11 @@ public class Main implements ActionListener
 					if (b.p2.getCountWall() == 0)
 						win.logTrace("The enemy's wall of protection vanished !");
 				}
+				//Trap checking
+				b.checkTrap(b.p1, win);
+				b.checkTrap(b.p2, win);
+				
+				//Shows attacks if both player and opponent are not dead
 				if (b.getpPkmn(b.p2).getStatus() != 9 && b.getpPkmn(b.p1).getStatus() != 9)
 					win.logTrace(b.showAttacks());
 				b.reinitPrio();

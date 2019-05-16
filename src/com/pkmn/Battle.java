@@ -58,7 +58,7 @@ public class Battle
 						break;
 				}
 			}
-			s = s + "***********************\nWhat should "+this.getpPkmn(p1).getName()+" do ?";
+			s = s + "What should "+this.getpPkmn(p1).getName()+" do ?";
 			s = s + "\n 0. Swap Pokémon";
 			for (int i=0;i<this.getpPkmn(p1).getAttacks().size();i++)
 			{
@@ -188,6 +188,7 @@ public class Battle
 			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
 			this.checkHpLeft(att);
 		}
+		s = s + "\n***********************";
 		return s;
 	}
 	
@@ -458,6 +459,7 @@ public class Battle
 	{
 		switch (this.getpattack(att, iAtt).getId())
 		{
+			//Bide
 			case 8 : 
 				if (getpPkmn(att).getCountBide() == 0)
 				{
@@ -487,7 +489,13 @@ public class Battle
 						this.s = this.s + getpPkmn(att).getName() + " is still storing energy !";
 				}
 				break;
+			//Clamp
 			case 16 : 
+				deal(att,def,iAtt);
+				if (att.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				this.s = this.s + getpPkmn(def).getName() + " was CLAMPED by " + getpPkmn(att).getName() + " !";
+				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
 				break;
 			case 21 : 
 				break;
@@ -497,7 +505,13 @@ public class Battle
 				break;
 			case 34 : 
 				break;
+			//Fire spin
 			case 42 : 
+				deal(att,def,iAtt);
+				if (att.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				this.s = this.s + getpPkmn(def).getName() + " was trapped !";
+				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
 				break;
 			case 55 : 
 				break;
@@ -537,7 +551,13 @@ public class Battle
 				break;
 			case 154 : 
 				break;
+			//Wrap
 			case 157 : 
+				deal(att,def,iAtt);
+				if (att.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				this.s = this.s + getpPkmn(def).getName() + " was WRAPPED by " + getpPkmn(att).getName() + " !";
+				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
 				break;
 		}
 		
@@ -554,6 +574,11 @@ public class Battle
 		//... Unless the used attack is two-turn move (first turn using it)
 		if (atk.getStatus() == 48 && att.getTwoturnstatus() == 0)
 			return true;
+		//If the defender is already trapped, the attack will miss
+		if (def.getCountTrap() != 0)
+		{
+			return false;
+		}
 		//If the opponent is in the sky or underground, will automatically fail unless earthquake + underground
 		//But if the move is a status boost for the user, it shouldn't fail
 		else if (((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45) && !atk.getSelf())
@@ -996,6 +1021,30 @@ public class Battle
 			else if (modifier == 98)
 				this.s = this.s + getpPkmn(p).getName() + " gained armor !";
 		}
+	}
+	
+	public void checkTrap(Player p,Window win)
+	{
+		this.s = "";
+		if (getpPkmn(p).getCountTrap() > 0)
+		{
+			getpPkmn(p).setCountTrap(getpPkmn(p).getCountTrap() - 1);
+			if (p.getName().equals("Opponent"))
+				this.s = this.s + "Enemy ";
+			if (getpPkmn(p).getCountTrap() == 0)
+			{
+				this.s = this.s + getpPkmn(p).getName() + " was released from TRAP !";
+			}
+			else
+			{
+				int dmg = getpPkmn(p).getCurrentHp()/16;
+				getpPkmn(p).setCurrentHp(getpPkmn(p).getCurrentHp() - dmg);
+				this.s = this.s + getpPkmn(p).getName() + " lost " + dmg + " HP due to TRAP.";
+				checkHpLeft(p);
+			}
+			s = s + "\n***********************";
+			win.logTrace(s);
+		}		
 	}
 	
 	public boolean checkDead(Player p, Window win)
