@@ -457,6 +457,7 @@ public class Battle
 	//This function will be used to simplify the usage of status 54 attacks which contains every move that is "unique".
 	private String doSpecialAttack(int iAtt, Player att, Player def, int i)
 	{
+		int damage;
 		switch (this.getpattack(att, iAtt).getId())
 		{
 			//Bide
@@ -477,7 +478,7 @@ public class Battle
 					{
 						this.s = this.s + getpPkmn(att).getName() + " unleashed energy !\n";
 						//Damage calculation here
-						int damage = getpPkmn(att).getTotalBideDmg() * 2;
+						damage = getpPkmn(att).getTotalBideDmg() * 2;
 						getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - damage );
 						if (def.getName().equals("Opponent"))
 							this.s = this.s + "Enemy ";
@@ -497,9 +498,31 @@ public class Battle
 				this.s = this.s + getpPkmn(def).getName() + " was CLAMPED by " + getpPkmn(att).getName() + " !";
 				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
 				break;
+			//Conversion
 			case 21 : 
+				this.s = this.s + "Converted type to ";
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "Enemy";
+				this.s = this.s + "'s " + getpPkmn(def).getName() + " !";
+				getpPkmn(att).setType1(getpPkmn(def).getType1());
 				break;
+			//Counter
 			case 22 : 
+				if (getpPkmn(att).getLastattacksuffered().getPhy() && getpPkmn(att).getLastdamagesuffered() > 0)
+				{
+					damage = getpPkmn(att).getLastdamagesuffered() * 2;
+					getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - damage );
+					if (def.getName().equals("Opponent"))
+						this.s = this.s + "Enemy ";
+					this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
+					this.checkHpLeft(def);
+				}
+				else
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " missed !";
+				}
 				break;
 			case 27 : 
 				break;
@@ -858,6 +881,8 @@ public class Battle
 			getpPkmn(atk).setCurrentHp(0);
 			this.checkHpLeft(atk);
 		}
+		getpPkmn(def).setLastattacksuffered(getpattack(atk,iAtt));
+		getpPkmn(def).setLastdamagesuffered(damage);
 	}
 	
 	//Applies status alteration and prints the result

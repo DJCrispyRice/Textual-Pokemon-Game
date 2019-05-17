@@ -78,6 +78,11 @@ public class Attack
 	int accuracy;
 	boolean enabled = true;
 	
+	public Attack()
+	{
+		
+	}
+	
 	public Attack (String name, String description, int id, int power, int pp, boolean phy, Type type, int status, int accu_status, int accuracy)
 	{
 		this.setName(name);

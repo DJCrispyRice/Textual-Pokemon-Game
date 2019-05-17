@@ -118,22 +118,31 @@ public class Main implements ActionListener
 				//Choosing the attack of the opponent
 				Random r = new Random();
 				int rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-				//Checking if a prioritary move has been used
-				if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51 && b.getpattack(b.p2, rdatt).getStatus() == 51)
-					if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current"))
+				
+				//Checking prioritary using speed and moves used
+				if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current"))
+				{
+					if (b.getpattack(b.p2, rdatt).getStatus() == 51)
+						b.getpPkmn(b.p1).setPrio(false);
+					else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 22)
+						b.getpPkmn(b.p1).setPrio(false);
+					else
+						b.getpPkmn(b.p1).setPrio(true);
+				}
+				else
+				{
+					if (b.getpattack(b.p1, rdatt).getStatus() == 51)
+						b.getpPkmn(b.p1).setPrio(true);
+					else if (b.getpattack(b.p2, Integer.parseInt(choice)-1).getId() == 22)
 						b.getpPkmn(b.p1).setPrio(true);
 					else
-						b.getpPkmn(b.p2).setPrio(true);
-				else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
-					b.getpPkmn(b.p1).setPrio(true);
-				else if (b.getpattack(b.p2, rdatt).getStatus() == 51)
-					b.getpPkmn(b.p2).setPrio(true);
-						
+						b.getpPkmn(b.p1).setPrio(false);
+				}
+				
 				/*
-				* Speed checking to choose the first Pokémon that hits. If tie, the player moves first
 				* Case : player faster
 				*/
-				if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current") || b.getpPkmn(b.p1).getPrio())
+				if (b.getpPkmn(b.p1).getPrio())
 				{
 					//Calls the useAttack function for index 0 which is the player
 					win.logTrace(b.useAttack(Integer.parseInt(choice) - 1,b.p1,b.p2,0));

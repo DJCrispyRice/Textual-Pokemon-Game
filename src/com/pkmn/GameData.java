@@ -177,8 +177,8 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Confuse Ray","Confuses opponent.",18,0,10,false,this.allTypes[7],6,100,100); i++;
 		this.allAtks[i] = new Attack ("Confusion","May confuse opponent.",19,50,25,false,this.allTypes[12],6,10,100); i++;
 		this.allAtks[i] = new Attack ("Constrict","May lower opponent's Speed by one stage.",20,10,35,true,this.allTypes[0],24,10,100); i++;
-		this.allAtks[i] = new Attack ("Conversion","Changes user's type to that of its first move.",21,0,30,false,this.allTypes[0],54,0,100); i++; //To code
-		this.allAtks[i] = new Attack ("Counter","When hit by a Physical Attack, user strikes back with 2x power.",22,0,20,true,this.allTypes[1],54,0,100); i++; //To code
+		this.allAtks[i] = new Attack ("Conversion","Changes user's type to enemy's",21,0,30,false,this.allTypes[0],54,0,100); i++; // OK
+		this.allAtks[i] = new Attack ("Counter","When hit by a Physical Attack, user strikes back with 2x power.",22,0,20,true,this.allTypes[1],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Crabhammer","High critical hit ratio.",23,100,10,true,this.allTypes[9],47,1000,90); i++;
 		this.allAtks[i] = new Attack ("Cut","Standard attack",24,50,30,true,this.allTypes[0],0,0,95); i++;
 		this.allAtks[i] = new Attack ("Defense Curl","Raises user's Defense.",25,0,40,false,this.allTypes[0],17,1000,100); i++;
@@ -326,7 +326,7 @@ public final class GameData
 		this.allPkmn[i] = new Pokemon(); i++;
 		// Name - id - Type1 - Type2 (may be null) - HP - Attacks - Defense - Speed - Special
 		//First we create all the pokémon, then we will assign them their attacks.
-		this.allPkmn[i] = new Pokemon("Bulbasaur",i,this.allTypes[10],this.allTypes[3],132,80,81,77,97); i++;
+		this.allPkmn[i] = new Pokemon("Bulbasaur",i,this.allTypes[10],this.allTypes[3],132,80,81,7777,97); i++;
 		this.allPkmn[i] = new Pokemon("Ivysaur",i,this.allTypes[10],this.allTypes[3],141,87,89,85,106);i++;
 		this.allPkmn[i] = new Pokemon("Venusaur",i,this.allTypes[10],this.allTypes[3],156,103,104,102,121);i++;
 		this.allPkmn[i] = new Pokemon("Charmander",i,this.allTypes[8],null,126,83,75,97,82);i++;
@@ -482,7 +482,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[157]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[22]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);
