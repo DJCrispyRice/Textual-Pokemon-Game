@@ -85,7 +85,7 @@ public class Attack
 	
 	public Attack (String name, String description, int id, int power, int pp, boolean phy, Type type, int status, int accu_status, int accuracy)
 	{
-		this.setName(name);
+		this.setName(name.toUpperCase());
 		this.setDescription(description);
 		this.setId(id);
 		this.setPower(power);
@@ -218,5 +218,15 @@ public class Attack
 		else if (accu_status < 0)
 			accu_status = 0;
 		this.accu_status = accu_status;
+	}
+
+	public boolean getEnabled() 
+	{
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) 
+	{
+		this.enabled = enabled;
 	}
 }

@@ -36,6 +36,7 @@ public class Pokemon implements Cloneable
 	int countConfusion = 0;
 	int countTrap = 0; 
 	int countBide = 0;
+	int countDisable = 0;
 	int totalBideDmg = 0;
 	boolean canAttack = true;
 	boolean prio = false;
@@ -53,7 +54,7 @@ public class Pokemon implements Cloneable
 	//Also Accuracy is 100 by default as stated in the descriptor.
 	public Pokemon(String name, int id, Type type1, Type type2, int baseHp, int baseAtk,  int baseDef,  int baseSpd, int baseSpe)
 	{
-		this.setName(name);
+		this.setName(name.toUpperCase());
 		this.setId(id);
 		this.setType1(type1);
 		this.setType2(type2);
@@ -344,6 +345,16 @@ public class Pokemon implements Cloneable
 	public void setTotalBideDmg(int totalBideDmg) 
 	{
 		this.totalBideDmg = totalBideDmg;
+	}
+	
+	public int getCountDisable() 
+	{
+		return countDisable;
+	}
+
+	public void setCountDisable(int countDisable) 
+	{
+		this.countDisable = countDisable;
 	}
 	
 	public boolean getCanAttack() 

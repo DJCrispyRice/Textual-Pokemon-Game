@@ -183,7 +183,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Cut","Standard attack",24,50,30,true,this.allTypes[0],0,0,95); i++;
 		this.allAtks[i] = new Attack ("Defense Curl","Raises user's Defense.",25,0,40,false,this.allTypes[0],17,1000,100); i++;
 		this.allAtks[i] = new Attack ("Dig","Digs underground on first turn, attacks on second. Can also escape from caves.",26,80,10,true,this.allTypes[4],48,100,100); i++;
-		this.allAtks[i] = new Attack ("Disable","Opponent can't use its last attack for a few turns.",27,0,20,false,this.allTypes[0],54,0,100); i++; //To code
+		this.allAtks[i] = new Attack ("Disable","Opponent can't use a random attack for a few turns.",27,0,20,false,this.allTypes[0],54,0,55); i++; //To code
 		this.allAtks[i] = new Attack ("Dizzy Punch","May confuse opponent.",28,70,10,true,this.allTypes[0],6,20,100); i++;
 		this.allAtks[i] = new Attack ("Double Kick","Hits twice in one turn.",29,30,30,true,this.allTypes[1],46,0,100); i++;
 		this.allAtks[i] = new Attack ("Double Slap","Hits 2-5 times in one turn.",30,15,10,true,this.allTypes[0],46,0,85); i++;
@@ -326,7 +326,7 @@ public final class GameData
 		this.allPkmn[i] = new Pokemon(); i++;
 		// Name - id - Type1 - Type2 (may be null) - HP - Attacks - Defense - Speed - Special
 		//First we create all the pokémon, then we will assign them their attacks.
-		this.allPkmn[i] = new Pokemon("Bulbasaur",i,this.allTypes[10],this.allTypes[3],132,80,81,7777,97); i++;
+		this.allPkmn[i] = new Pokemon("Bulbasaur",i,this.allTypes[10],this.allTypes[3],132,80,81,77,97); i++;
 		this.allPkmn[i] = new Pokemon("Ivysaur",i,this.allTypes[10],this.allTypes[3],141,87,89,85,106);i++;
 		this.allPkmn[i] = new Pokemon("Venusaur",i,this.allTypes[10],this.allTypes[3],156,103,104,102,121);i++;
 		this.allPkmn[i] = new Pokemon("Charmander",i,this.allTypes[8],null,126,83,75,97,82);i++;
@@ -482,7 +482,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[22]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[27]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);
