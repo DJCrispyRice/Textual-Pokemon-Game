@@ -154,22 +154,37 @@ public class Battle
 		//If the attack can occur (no status avoiding it to happen), it does...
 		if (atkok)
 		{
-			if (att.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
-			this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
-				
-			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
-			{
-				if (this.getpattack(att,iAtt).getStatus() == 54)
-					this.s = this.doSpecialAttack(iAtt, att, def, i);
-				else
-					this.s = this.doDamages(iAtt, att, def, i);
-			}
+			//Hyperbeam situation
+			if (getpPkmn(att).getTwoturnstatus() == 58)
+				this.s = this.doSpecialAttack(iAtt, att, def, i);
 			else
 			{
 				if (att.getName().equals("Opponent"))
 					this.s = this.s + "Enemy ";
-				this.s = this.s + this.getpPkmn(att).getName() + " missed !";
+				this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
+					
+				if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
+				{
+					if (this.getpattack(att,iAtt).getStatus() == 54 && getpattack(att, iAtt).getId() != 55 && getpattack(att, iAtt).getId() != 63)
+						this.s = this.doSpecialAttack(iAtt, att, def, i);
+					else
+						this.s = this.doDamages(iAtt, att, def, i);
+				}
+				else
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "Enemy ";
+					//Handle crashing attacks
+					if (getpattack(att, iAtt).getId() == 55 || getpattack(att, iAtt).getId() == 63)
+					{
+						int damage = getpPkmn(att).getBaseHp()/8;
+						this.s = this.s + getpPkmn(att).getName() + " crashed and lost " + damage + " HP.";
+						getpPkmn(att).setCurrentHp(getpPkmn(att).getCurrentHp() - damage);
+						this.checkHpLeft(att);
+					}
+					else
+						this.s = this.s + this.getpPkmn(att).getName() + " missed !";
+				}
 			}
 			//If a move is disabled, lowers the counter. Should occur only if an attack is used
 			if (this.getpPkmn(att).getCountDisable() > 0)
@@ -570,13 +585,32 @@ public class Battle
 				this.s = this.s + getpPkmn(def).getName() + " was trapped !";
 				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
 				break;
-			case 55 : 
-				break;
+			//Hyper Beam
 			case 58 : 
+				if (getpPkmn(att).getTwoturnstatus() == 58)
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " must recharge !";
+					getpPkmn(att).setTwoturnstatus(0);
+				}
+				else
+				{
+					deal(att,def,iAtt);
+					getpPkmn(att).setTwoturnstatus(58);
+				}
 				break;
-			case 63 : 
-				break;
+			//Leech Seed
 			case 67 : 
+				if (att.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				if (getpPkmn(def).getSeeded())
+					this.s = this.s + getpPkmn(def).getName() + " is already seeded !";
+				else
+				{
+					getpPkmn(def).setSeeded(true);
+					this.s = this.s + getpPkmn(def).getName() + " was seeded !";
+				}
 				break;
 			case 77 : 
 				break;
@@ -820,7 +854,7 @@ public class Battle
 	
 	//Dealing damages
 	//atk is attacker, def is defender
-	private void deal(Player atk, Player def, int iAtt)
+	private int deal(Player atk, Player def, int iAtt)
 	{
 		int damage = 0;
 		int power;
@@ -917,6 +951,7 @@ public class Battle
 		}
 		getpPkmn(def).setLastattacksuffered(getpattack(atk,iAtt));
 		getpPkmn(def).setLastdamagesuffered(damage);
+		return damage;
 	}
 	
 	//Applies status alteration and prints the result
@@ -1104,6 +1139,23 @@ public class Battle
 			s = s + "\n***********************";
 			win.logTrace(s);
 		}		
+	}
+	
+	public void checkSeed(Player att, Player def, Window win)
+	{
+		int seed;
+		if (getpPkmn(def).getSeeded())
+		{
+			seed = getpPkmn(def).getBaseHp()/8;
+			getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - seed);
+			getpPkmn(att).setCurrentHp(getpPkmn(att).getCurrentHp() + (seed/2));
+			this.s = this.s + "\n" + getpPkmn(def).getName() + " lost " + seed + " HP from LEECH SIDE.\n";
+			this.s = this.s + getpPkmn(att).getName() + " was healed " + seed/2 + " HP from LEECH SIDE.";
+			checkHpLeft(def);
+			checkHpLeft(att);
+			this.s = this.s + "\n***********************";
+			win.logTrace(s);
+		}
 	}
 	
 	public boolean checkDead(Player p, Window win)

@@ -103,6 +103,7 @@ public class Player
 		if (status)
 			currentPkmn.setStatus(0);
 		currentPkmn.setTwoturnstatus(0);
+		currentPkmn.setSeeded(false);
 		currentPkmn.setCanAttack(true);
 		currentPkmn.setCountTrap(0);
 	}

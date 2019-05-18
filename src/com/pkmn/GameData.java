@@ -211,19 +211,19 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Harden","Raises user's Defense.",52,0,30,false,this.allTypes[0],17,100,100); i++;
 		this.allAtks[i] = new Attack ("Haze","Resets all stat changes.",53,0,30,false,this.allTypes[13],45,100,100); i++;
 		this.allAtks[i] = new Attack ("Headbutt","May cause flinching.",54,70,15,true,this.allTypes[0],43,30,100); i++;
-		this.allAtks[i] = new Attack ("High Jump Kick","If it misses, the user loses half their HP.",55,130,10,true,this.allTypes[1],54,0,90); i++; // To code - same as 63
+		this.allAtks[i] = new Attack ("High Jump Kick","If it misses, the user loses HP.",55,85,10,true,this.allTypes[1],54,0,90); i++; // OK
 		this.allAtks[i] = new Attack ("Horn Attack","Standard attack",56,65,25,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Hydro Pump","Standard attack",57,110,5,false,this.allTypes[9],0,0,80); i++;
-		this.allAtks[i] = new Attack ("Hyper Beam","User must recharge next turn.",58,150,5,false,this.allTypes[0],54,0,90); i++; // To code
+		this.allAtks[i] = new Attack ("Hyper Beam","User must recharge next turn.",58,150,5,false,this.allTypes[0],54,0,90); i++; // OK
 		this.allAtks[i] = new Attack ("Hyper Fang","May cause flinching.",59,80,15,true,this.allTypes[0],43,10,90); i++;
 		this.allAtks[i] = new Attack ("Hypnosis","Puts opponent to sleep.",60,0,20,false,this.allTypes[12],2,100,60); i++;
 		this.allAtks[i] = new Attack ("Ice Beam","May freeze opponent.",61,90,10,false,this.allTypes[13],5,10,100); i++;
 		this.allAtks[i] = new Attack ("Ice Punch","May freeze opponent.",62,75,15,true,this.allTypes[13],5,10,100); i++;
-		this.allAtks[i] = new Attack ("Jump Kick","If it misses, the user loses half their HP.",63,100,10,true,this.allTypes[1],54,0,95); i++; //To code - same as 55
+		this.allAtks[i] = new Attack ("Jump Kick","If it misses, the user loses HP.",63,70,10,true,this.allTypes[1],54,0,95); i++; // OK
 		this.allAtks[i] = new Attack ("Karate Chop","High critical hit ratio.",64,50,25,true,this.allTypes[1],47,100,100); i++;
 		this.allAtks[i] = new Attack ("Kinesis","Lowers opponent's Accuracy.",65,0,15,false,this.allTypes[12],40,100,80); i++;
 		this.allAtks[i] = new Attack ("Leech Life","User recovers half the HP inflicted on opponent.",66,80,10,true,this.allTypes[6],44,100,100); i++;
-		this.allAtks[i] = new Attack ("Leech Seed","Drains HP from opponent each turn.",67,0,10,false,this.allTypes[10],54,100,90); i++; // To code
+		this.allAtks[i] = new Attack ("Leech Seed","Drains HP from opponent each turn.",67,0,10,false,this.allTypes[10],54,100,90); i++; // OK
 		this.allAtks[i] = new Attack ("Leer","Lowers opponent's Defense.",68,0,30,false,this.allTypes[0],16,100,100); i++;
 		this.allAtks[i] = new Attack ("Lick","May paralyze opponent.",69,30,30,true,this.allTypes[7],1,30,100); i++;
 		this.allAtks[i] = new Attack ("Light Screen","Halves damage from Specialattacks for 5 turns.",70,0,30,false,this.allTypes[12],52,0,100); i++;
@@ -482,7 +482,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[27]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[67]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);

@@ -40,6 +40,7 @@ public class Pokemon implements Cloneable
 	int totalBideDmg = 0;
 	boolean canAttack = true;
 	boolean prio = false;
+	boolean seeded = false;
 	int twoturnstatus = 0; //Used for two-turn attacks. Will contain the ID of the attack
 	Attack lastattacksuffered = new Attack(); // Only used for counter and disable
 	int lastdamagesuffered = 0; // Only used for counter
@@ -375,6 +376,16 @@ public class Pokemon implements Cloneable
 	public void setPrio(boolean prio) 
 	{
 		this.prio = prio;
+	}
+	
+	public boolean getSeeded() 
+	{
+		return seeded;
+	}
+	
+	public void setSeeded(boolean seeded) 
+	{
+		this.seeded = seeded;
 	}
 	
 	public int getTwoturnstatus() 

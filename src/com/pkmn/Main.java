@@ -165,9 +165,8 @@ public class Main implements ActionListener
 					//Checks if the opponent fainted
 					b.checkDead(b.p2, win);
 					//If the attack deals to user, checks if it's not dead
-					if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 49 || b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 50)
-						if (b.checkDead(b.p1, win))
-							b.getpPkmn(b.p2).setCanAttack(false);
+					if (b.checkDead(b.p1, win))
+						b.getpPkmn(b.p2).setCanAttack(false);
 					if (b.getpPkmn(b.p2).getStatus() != 9)
 					{
 						//Checks if the pokémon didn't flinched between turns
@@ -191,8 +190,9 @@ public class Main implements ActionListener
 							win.logTrace(b.useAttack(rdatt,b.p2,b.p1,1));
 							//Checks if the player fainted
 							b.checkDead(b.p1, win);
+							b.checkDead(b.p2, win);
 						}
-						//... if it flinched, reset canAttack and shows attacks
+						//... if it flinched, reset canAttack
 						else
 							b.getpPkmn(b.p2).setCanAttack(true);
 					}
@@ -216,19 +216,16 @@ public class Main implements ActionListener
 					win.logTrace(b.useAttack(rdatt,b.p2,b.p1,0));
 					//Checks if the player fainted
 					b.checkDead(b.p1, win);
-					//If the attack deals recoil to user, checks if it's not dead
-					if (b.getpattack(b.p2, rdatt).getStatus() == 49 || b.getpattack(b.p2, rdatt).getStatus() == 50)
-						b.checkDead(b.p2, win);
-					if (b.getpPkmn(b.p2).getStatus() != 9)
+					if (b.checkDead(b.p2, win))
+						b.getpPkmn(b.p1).setCanAttack(false);
+					if (b.getpPkmn(b.p1).getStatus() != 9)
 					{
 						if (b.getpPkmn(b.p1).getCanAttack())
 						{
 							win.logTrace(b.useAttack(Integer.parseInt(choice)-1,b.p1,b.p2,1));
 							//Checks if the opponent fainted
 							b.checkDead(b.p2, win);
-							//If the attack deals to user,  checks if he dies from it
-							if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 49 || b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 50)
-								b.checkDead(b.p1, win);
+							b.checkDead(b.p1, win);
 						}
 						else
 							b.getpPkmn(b.p1).setCanAttack(true);
@@ -251,8 +248,12 @@ public class Main implements ActionListener
 						win.logTrace("The enemy's wall of protection vanished !");
 				}
 				//Trap checking
-				b.checkTrap(b.p1, win);
-				b.checkTrap(b.p2, win);
+				
+				b.checkSeed(b.p1,b.p2,win);
+				b.checkSeed(b.p2,b.p1,win);
+				
+				b.checkDead(b.p1, win);
+				b.checkDead(b.p2, win);
 				
 				//Shows attacks if both player and opponent are not dead
 				if (b.getpPkmn(b.p2).getStatus() != 9 && b.getpPkmn(b.p1).getStatus() != 9)
