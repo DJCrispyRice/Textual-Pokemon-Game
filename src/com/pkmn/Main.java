@@ -63,7 +63,7 @@ public class Main implements ActionListener
 					win.whatToChoose = "attack";
 					b.p1.currentPkmn = b.p1.getTeam().get(0);
 					b.p2.currentPkmn = b.p2.getTeam().get(0);
-					win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !");
+					win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !\n***********************");
 					win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
 					win.logTrace(b.showAttacks());
 				}
