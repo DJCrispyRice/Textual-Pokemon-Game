@@ -1,7 +1,17 @@
+/*
+ * TO DO :
+ * - Finish special attacks
+ * - Enable switching in battle
+ * - Better pokémon selection
+ * - Sound (cries, music)
+ * - Graphics (not sure if it suits this project yet)
+ */
+
 package com.pkmn;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.channels.AlreadyBoundException;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -53,6 +63,7 @@ public class Main implements ActionListener
 				{
 					win.logTrace("There you go ! Your party is full.");
 					win.logTrace("Hold on, your opponant is choosing his team...");
+					//b.p2.setTeam((Pokemon) gd.allPkmn[1].clone());
 					//Randomly choosing 6 pokémons for the opponent.
 					for (int i = 1 ;i<=6;i++)
 					{
@@ -118,22 +129,36 @@ public class Main implements ActionListener
 				//Choosing the attack of the opponent
 				Random r = new Random();
 				int rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-				//Checking if a prioritary move has been used
-				if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51 && b.getpattack(b.p2, rdatt).getStatus() == 51)
-					if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current"))
+				//To avoid a disabled attack being a choice
+				while (rdatt == b.checkDisabledAttack(b.p2))
+					rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
+				if (Integer.parseInt(choice) - 1 == b.checkDisabledAttack(b.p1))
+					throw new AlreadyBoundException();
+				
+				//Checking prioritary using speed and moves used
+				if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current"))
+				{
+					if (b.getpattack(b.p2, rdatt).getStatus() == 51)
+						b.getpPkmn(b.p1).setPrio(false);
+					else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 22)
+						b.getpPkmn(b.p1).setPrio(false);
+					else
+						b.getpPkmn(b.p1).setPrio(true);
+				}
+				else
+				{
+					if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
+						b.getpPkmn(b.p1).setPrio(true);
+					else if (b.getpattack(b.p2, rdatt).getId() == 22)
 						b.getpPkmn(b.p1).setPrio(true);
 					else
-						b.getpPkmn(b.p2).setPrio(true);
-				else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
-					b.getpPkmn(b.p1).setPrio(true);
-				else if (b.getpattack(b.p2, rdatt).getStatus() == 51)
-					b.getpPkmn(b.p2).setPrio(true);
-						
+						b.getpPkmn(b.p1).setPrio(false);
+				}
+				
 				/*
-				* Speed checking to choose the first Pokémon that hits. If tie, the player moves first
 				* Case : player faster
 				*/
-				if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current") || b.getpPkmn(b.p1).getPrio())
+				if (b.getpPkmn(b.p1).getPrio())
 				{
 					//Calls the useAttack function for index 0 which is the player
 					win.logTrace(b.useAttack(Integer.parseInt(choice) - 1,b.p1,b.p2,0));
@@ -208,7 +233,6 @@ public class Main implements ActionListener
 						else
 							b.getpPkmn(b.p1).setCanAttack(true);
 					}
-					
 				}
 				
 				/*
@@ -235,10 +259,14 @@ public class Main implements ActionListener
 					win.logTrace(b.showAttacks());
 				b.reinitPrio();
 			}
-			catch (Exception e1)
+			catch (NullPointerException e1)
 			{
 				win.logTrace("Woops ! That doesn't look like a valid attack !");
 				choice = null;
+			}
+			catch (AlreadyBoundException e3)
+			{
+				win.logTrace("This move is disabled. Please choose another one.");
 			}
 		}
 		else if (win.whatToChoose.equals("swap"))

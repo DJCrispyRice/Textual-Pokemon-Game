@@ -34,12 +34,15 @@ public class Pokemon implements Cloneable
 	Stat evasion = new Stat("Evasion", 100);
 	int countSleep = 0;
 	int countConfusion = 0;
-	int countTrap = 0; //Count for trap attacks
+	int countTrap = 0; 
 	int countBide = 0;
+	int countDisable = 0;
 	int totalBideDmg = 0;
-	boolean canAttack = true; //Used for flinching
+	boolean canAttack = true;
 	boolean prio = false;
 	int twoturnstatus = 0; //Used for two-turn attacks. Will contain the ID of the attack
+	Attack lastattacksuffered = new Attack(); // Only used for counter and disable
+	int lastdamagesuffered = 0; // Only used for counter
 	
 	//Empty constructor only for the fake index 0 Pokémon
 	public Pokemon()
@@ -51,7 +54,7 @@ public class Pokemon implements Cloneable
 	//Also Accuracy is 100 by default as stated in the descriptor.
 	public Pokemon(String name, int id, Type type1, Type type2, int baseHp, int baseAtk,  int baseDef,  int baseSpd, int baseSpe)
 	{
-		this.setName(name);
+		this.setName(name.toUpperCase());
 		this.setId(id);
 		this.setType1(type1);
 		this.setType2(type2);
@@ -94,8 +97,9 @@ public class Pokemon implements Cloneable
 	{
 		return type1;
 	}
-
-	private void setType1(Type type1) 
+	
+	//This one is public for Conversion move reason
+	public void setType1(Type type1) 
 	{
 		this.type1 = type1;
 	}
@@ -343,6 +347,16 @@ public class Pokemon implements Cloneable
 		this.totalBideDmg = totalBideDmg;
 	}
 	
+	public int getCountDisable() 
+	{
+		return countDisable;
+	}
+
+	public void setCountDisable(int countDisable) 
+	{
+		this.countDisable = countDisable;
+	}
+	
 	public boolean getCanAttack() 
 	{
 		return this.canAttack;
@@ -367,9 +381,30 @@ public class Pokemon implements Cloneable
 	{
 		return twoturnstatus;
 	}
+	
 	public void setTwoturnstatus(int twoturnstatus) 
 	{
 		this.twoturnstatus = twoturnstatus;
+	}
+	
+	public Attack getLastattacksuffered() 
+	{
+		return lastattacksuffered;
+	}
+	
+	public void setLastattacksuffered(Attack lastattacksuffered) 
+	{
+		this.lastattacksuffered = lastattacksuffered;
+	}
+	
+	public int getLastdamagesuffered() 
+	{
+		return lastdamagesuffered;
+	}
+	
+	public void setLastdamagesuffered(int lastdamagesuffered) 
+	{
+		this.lastdamagesuffered = lastdamagesuffered;
 	}
 	
 	public Pokemon clone() throws CloneNotSupportedException

@@ -1,5 +1,6 @@
 package com.pkmn;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /* 
@@ -62,7 +63,11 @@ public class Battle
 			s = s + "\n 0. Swap Pokémon";
 			for (int i=0;i<this.getpPkmn(p1).getAttacks().size();i++)
 			{
-				s = s + "\n "+Integer.toString(i+1)+". " + this.getpattack(this.p1, i).getType().getName() + " - " + this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
+				if (getpPkmn(p1).getAttacks().get(i).getEnabled())
+					s = s + "\n "+Integer.toString(i+1)+". ";  
+				else
+					s = s + "\n DISABLED. ";
+				s = s + this.getpattack(this.p1, i).getType().getName() + " - " + this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
 			}
 			s = s + "\n***********************";
 		}
@@ -152,6 +157,7 @@ public class Battle
 			if (att.getName().equals("Opponent"))
 				this.s = this.s + "Enemy ";
 			this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
+				
 			if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
 			{
 				if (this.getpattack(att,iAtt).getStatus() == 54)
@@ -164,6 +170,16 @@ public class Battle
 				if (att.getName().equals("Opponent"))
 					this.s = this.s + "Enemy ";
 				this.s = this.s + this.getpPkmn(att).getName() + " missed !";
+			}
+			//If a move is disabled, lowers the counter. Should occur only if an attack is used
+			if (this.getpPkmn(att).getCountDisable() > 0)
+			{
+				if (this.getpPkmn(att).getCountDisable()==1)
+				{
+					this.getpPkmn(att).getAttacks().get(checkDisabledAttack(att)).setEnabled(true);
+					this.s = this.s + "\nThe effect of DISABLE whore off !";
+				}
+				this.getpPkmn(att).setCountDisable(this.getpPkmn(att).getCountDisable() - 1);
 			}
 		}
 		//If the attack didn't occur, reset the two turn status
@@ -457,6 +473,7 @@ public class Battle
 	//This function will be used to simplify the usage of status 54 attacks which contains every move that is "unique".
 	private String doSpecialAttack(int iAtt, Player att, Player def, int i)
 	{
+		int damage;
 		switch (this.getpattack(att, iAtt).getId())
 		{
 			//Bide
@@ -477,7 +494,7 @@ public class Battle
 					{
 						this.s = this.s + getpPkmn(att).getName() + " unleashed energy !\n";
 						//Damage calculation here
-						int damage = getpPkmn(att).getTotalBideDmg() * 2;
+						damage = getpPkmn(att).getTotalBideDmg() * 2;
 						getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - damage );
 						if (def.getName().equals("Opponent"))
 							this.s = this.s + "Enemy ";
@@ -497,11 +514,51 @@ public class Battle
 				this.s = this.s + getpPkmn(def).getName() + " was CLAMPED by " + getpPkmn(att).getName() + " !";
 				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
 				break;
+			//Conversion
 			case 21 : 
+				this.s = this.s + "Converted type to ";
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "Enemy";
+				this.s = this.s + "'s " + getpPkmn(def).getName() + " !";
+				getpPkmn(att).setType1(getpPkmn(def).getType1());
 				break;
+			//Counter
 			case 22 : 
+				if (getpPkmn(att).getLastattacksuffered().getPhy() && getpPkmn(att).getLastdamagesuffered() > 0)
+				{
+					damage = getpPkmn(att).getLastdamagesuffered() * 2;
+					getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - damage );
+					if (def.getName().equals("Opponent"))
+						this.s = this.s + "Enemy ";
+					this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
+					this.checkHpLeft(def);
+				}
+				else
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " missed !";
+				}
 				break;
-			case 27 : 
+			//Disable	
+			case 27 :
+				if (getpPkmn(def).getCountDisable() > 0 || getpPkmn(def).getAttacks().size() == 1)
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " missed !";
+				}
+				else
+				{
+					//Choosing the attack that will be disabled
+					Random r = new Random();
+					int rdatt = r.nextInt(getpPkmn(def).getAttacks().size());
+					getpPkmn(def).getAttacks().get(rdatt).setEnabled(false);
+					getpPkmn(def).setCountDisable(ThreadLocalRandom.current().nextInt(2,8));
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s  + getpPkmn(def).getName() + "'s " + getpPkmn(def).getAttacks().get(rdatt).getName() + " was disabled !";
+				}
 				break;
 			case 34 : 
 				break;
@@ -858,6 +915,8 @@ public class Battle
 			getpPkmn(atk).setCurrentHp(0);
 			this.checkHpLeft(atk);
 		}
+		getpPkmn(def).setLastattacksuffered(getpattack(atk,iAtt));
+		getpPkmn(def).setLastdamagesuffered(damage);
 	}
 	
 	//Applies status alteration and prints the result
@@ -1099,5 +1158,17 @@ public class Battle
 	{
 		getpPkmn(p1).setPrio(false);
 		getpPkmn(p2).setPrio(false);
+	}
+	
+	public int checkDisabledAttack(Player p)
+	{
+		for (int i = 0;i < getpPkmn(p).getAttacks().size();i++)
+		{
+			if (!getpPkmn(p).getAttacks().get(i).getEnabled())
+			{
+				return i;
+			}
+		}	
+		return 5;
 	}
 }

@@ -177,13 +177,13 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Confuse Ray","Confuses opponent.",18,0,10,false,this.allTypes[7],6,100,100); i++;
 		this.allAtks[i] = new Attack ("Confusion","May confuse opponent.",19,50,25,false,this.allTypes[12],6,10,100); i++;
 		this.allAtks[i] = new Attack ("Constrict","May lower opponent's Speed by one stage.",20,10,35,true,this.allTypes[0],24,10,100); i++;
-		this.allAtks[i] = new Attack ("Conversion","Changes user's type to that of its first move.",21,0,30,false,this.allTypes[0],54,0,100); i++; //To code
-		this.allAtks[i] = new Attack ("Counter","When hit by a Physical Attack, user strikes back with 2x power.",22,0,20,true,this.allTypes[1],54,0,100); i++; //To code
+		this.allAtks[i] = new Attack ("Conversion","Changes user's type to enemy's",21,0,30,false,this.allTypes[0],54,0,100); i++; // OK
+		this.allAtks[i] = new Attack ("Counter","When hit by a Physical Attack, user strikes back with 2x power.",22,0,20,true,this.allTypes[1],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Crabhammer","High critical hit ratio.",23,100,10,true,this.allTypes[9],47,1000,90); i++;
 		this.allAtks[i] = new Attack ("Cut","Standard attack",24,50,30,true,this.allTypes[0],0,0,95); i++;
 		this.allAtks[i] = new Attack ("Defense Curl","Raises user's Defense.",25,0,40,false,this.allTypes[0],17,1000,100); i++;
 		this.allAtks[i] = new Attack ("Dig","Digs underground on first turn, attacks on second. Can also escape from caves.",26,80,10,true,this.allTypes[4],48,100,100); i++;
-		this.allAtks[i] = new Attack ("Disable","Opponent can't use its last attack for a few turns.",27,0,20,false,this.allTypes[0],54,0,100); i++; //To code
+		this.allAtks[i] = new Attack ("Disable","Opponent can't use a random attack for a few turns.",27,0,20,false,this.allTypes[0],54,0,55); i++; // OK
 		this.allAtks[i] = new Attack ("Dizzy Punch","May confuse opponent.",28,70,10,true,this.allTypes[0],6,20,100); i++;
 		this.allAtks[i] = new Attack ("Double Kick","Hits twice in one turn.",29,30,30,true,this.allTypes[1],46,0,100); i++;
 		this.allAtks[i] = new Attack ("Double Slap","Hits 2-5 times in one turn.",30,15,10,true,this.allTypes[0],46,0,85); i++;
@@ -482,7 +482,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[157]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[27]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);
