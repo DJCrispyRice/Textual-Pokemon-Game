@@ -19,6 +19,7 @@ public class Battle
 	{
 		this.p1 = new Player("Player");
 		this.p2 = new Player("Opponent");
+		this.gd = new GameData();
 	}
 	
 	public Pokemon getpPkmn(Player p)
@@ -612,7 +613,15 @@ public class Battle
 					this.s = this.s + getpPkmn(def).getName() + " was seeded !";
 				}
 				break;
+			//Metronome
 			case 77 : 
+				Random r = new Random();
+				int rdatt = r.nextInt(156);
+				gd.randomAttack(rdatt);
+				this.s = this.s + "\nA random attack is going to be choosed !";
+				getpPkmn(att).getAttacks().set(iAtt, gd.randomAttack(rdatt));
+				this.useAttack(iAtt, att, def, i);
+				getpPkmn(att).getAttacks().set(iAtt, gd.randomAttack(77));
 				break;
 			case 78 : 
 				break;

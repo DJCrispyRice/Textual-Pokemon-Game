@@ -11,14 +11,20 @@ public final class GameData
 	Pokemon[] allPkmn;
 	Attack[] allAtks;
 	Type[] allTypes;
-	public GameData(Window win) throws InterruptedException
+	
+	public GameData()
 	{
-		this.createTypes(win);
-		this.createAttacks(win);
+		
+	}
+	
+	public GameData(Window win)
+	{
+		this.createTypes();
+		this.createAttacks();
 		this.createPkmn(win);
 	}
 	
-	private void createTypes(Window win) throws InterruptedException
+	private void createTypes()
 	{
 		this.allTypes = new Type[15];
 		//Creating all types
@@ -147,11 +153,10 @@ public final class GameData
 		this.allTypes[14].getStrength().add(this.allTypes[14]);
 		
 		//Tracing that loading is OK
-		win.logTrace("Types loaded.");
 	}
 	
-	//Creating all 164 attacks in Pokémon gen 1. Yay. Bind is excluded because it sucks, one-hit K-O attacks are excluded.
-	private void createAttacks(Window win) throws InterruptedException
+	//Creating all 164 attacks in Pokémon gen 1. Yay. One-hit K-O attacks are excluded.
+	private void createAttacks()
 	{
 		this.allAtks = new Attack[158];
 		int i = 0;
@@ -316,10 +321,9 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Wrap","Traps opponent, damaging them for 2-5 turns.",157,15,20,true,this.allTypes[0],54,0,90); i++; // OK
 		
 		//Tracing that loading is OK
-		win.logTrace("Attacks loaded.");
 	}
 	
-	private void createPkmn(Window win) throws InterruptedException
+	private void createPkmn(Window win)
 	{
 		this.allPkmn = new Pokemon[152]; //Pokémon at index 0 will be null to simplify further researches in the array (index will be exactly the pokédex's number)
 		int i = 0;
@@ -482,7 +486,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[67]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[77]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);
@@ -1075,5 +1079,13 @@ public final class GameData
 		
 		//Tracing that loading is OK
 		win.logTrace("Attacks assigned.");
+	}
+	
+	//Handles the random attack choic for convienient reason
+	public Attack randomAttack(int i)
+	{
+		this.createTypes();
+		this.createAttacks();
+		return this.allAtks[i];
 	}
 }
