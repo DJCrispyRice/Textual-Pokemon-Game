@@ -79,7 +79,7 @@ public class Battle
 	
 	//Is used whatever an attack is launched by a pokemon. att is the attacker, def is the defender
 	//i is used to see if it's the first or the second attack in this turn
-	public String useAttack (int iAtt, Player att, Player def, int i)
+	public String useAttack (Attack iAtt, Player att, Player def, int i)
 	{
 		//By default, the attack should occur
 		Boolean atkok = true;
@@ -162,11 +162,11 @@ public class Battle
 			{
 				if (att.getName().equals("Opponent"))
 					this.s = this.s + "Enemy ";
-				this.s = this.s + this.getpPkmn(att).getName()+" used "+this.getpattack(att,iAtt).getName()+". ";
+				this.s = this.s + this.getpPkmn(att).getName()+" used "+iAtt.getName()+". ";
 					
-				if (checkHit(this.getpattack(att,iAtt),this.getpPkmn(att),this.getpPkmn(def)))
+				if (checkHit(iAtt,this.getpPkmn(att),this.getpPkmn(def)))
 				{
-					if (this.getpattack(att,iAtt).getStatus() == 54 && getpattack(att, iAtt).getId() != 55 && getpattack(att, iAtt).getId() != 63)
+					if (iAtt.getStatus() == 54 && iAtt.getId() != 55 && iAtt.getId() != 63)
 						this.s = this.doSpecialAttack(iAtt, att, def, i);
 					else
 						this.s = this.doDamages(iAtt, att, def, i);
@@ -176,7 +176,7 @@ public class Battle
 					if (att.getName().equals("Opponent"))
 						this.s = this.s + "Enemy ";
 					//Handle crashing attacks
-					if (getpattack(att, iAtt).getId() == 55 || getpattack(att, iAtt).getId() == 63)
+					if (iAtt.getId() == 55 || iAtt.getId() == 63)
 					{
 						int damage = getpPkmn(att).getBaseHp()/8;
 						this.s = this.s + getpPkmn(att).getName() + " crashed and lost " + damage + " HP.";
@@ -187,7 +187,7 @@ public class Battle
 						this.s = this.s + this.getpPkmn(att).getName() + " missed !";
 				}
 			}
-			//If a move is disabled, lowers the counter. Should occur only if an attack is used
+			//If a move is disabled, lowers the disable counter. Should occur only if an attack is used
 			if (this.getpPkmn(att).getCountDisable() > 0)
 			{
 				if (this.getpPkmn(att).getCountDisable()==1)
@@ -203,41 +203,43 @@ public class Battle
 			getpPkmn(att).setTwoturnstatus(0);
 		//After the attack occurs, applies whatever damage it should if there is a status
 		//If the pokémon is poisoned, lose 1/16 of its HP
-		if (this.getpPkmn(att).getStatus()==3)
+		if (this.getpPkmn(att).getStatus()==3 && iAtt.getId() != 77)
 		{
 			if (att.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
+				this.s = this.s + "\nEnemy ";
 			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to poison.";
 			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
 			this.checkHpLeft(att);
 		}
 		//If the pokémon is burn, lose 1/16 of its HP.
-		else if (this.getpPkmn(att).getStatus()==4)
+		else if (this.getpPkmn(att).getStatus()==4 && iAtt.getId() != 77)
 		{
 			if (att.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
+				this.s = this.s + "\nEnemy ";
 			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to burn.";
 			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
 			this.checkHpLeft(att);
 		}
-		s = s + "\n***********************";
+		//To avoid *** being shown multiple times when Metronome is used
+		if (iAtt.getId() != 77)
+			s = s + "\n***********************";
 		return s;
 	}
 	
 	//Will calculate what happens if the attack hits 
 	//Return s which will be printed as a log trace.
 	//i is used to see if it's the first or the second attack in this turn
-	private String doDamages(int iAtt, Player att, Player def, int i)
+	private String doDamages(Attack iAtt, Player att, Player def, int i)
 	{
 		//Checking the status of the attack to see what will happen next
 		//If move's power is higher than 0, do damages. Then check status change
 		//Also checks if the attack is a multi-hit move
-		if (this.getpattack(att, iAtt).getStatus() == 46)
+		if (iAtt.getStatus() == 46)
 		{
 			int hits = ThreadLocalRandom.current().nextInt(2,5);
 			int nb = 0;
 			int j;
-			if (getpattack(att,iAtt).getId() == 13 || getpattack(att,iAtt).getId() == 29 || getpattack(att,iAtt).getId() == 149)
+			if (iAtt.getId() == 13 || iAtt.getId() == 29 || iAtt.getId() == 149)
 				hits = 2;
 			for (j = 1; j <= hits; j++)
 			{
@@ -257,13 +259,13 @@ public class Battle
 			getpPkmn(att).setTwoturnstatus(0);
 		}
 		//Checks if the attack is a two-turn attack. If so, sets twoturnstatus to the id of this attack
-		else if (this.getpattack(att,iAtt).getStatus()==48)
+		else if (iAtt.getStatus()==48)
 		{
 			if (att.getName().equals("Opponent"))
 				this.s = this.s + "Enemy ";
 			this.s = this.s + getpPkmn(att).getName();
 			//Switch to trace the attack
-			switch (getpattack(att,iAtt).getId())
+			switch (iAtt.getStatus())
 			{
 				case 26 :
 					this.s = this.s + " dug a hole !";
@@ -278,17 +280,17 @@ public class Battle
 					this.s = this.s + " is shining !";
 					break;
 			}
-			getpPkmn(att).setTwoturnstatus(getpattack(att,iAtt).getId());
+			getpPkmn(att).setTwoturnstatus(iAtt.getId());
 		}
 		//If the power is higher than 0 and it's not a multi-hit move, deals damages to opponent
-		else if (this.getpattack(att,iAtt).getPower()>0 && this.getpattack(att, iAtt).getStatus() != 46)
+		else if (iAtt.getPower()>0 && iAtt.getStatus() != 46)
 			deal(att, def, iAtt);
 		//Checking if the attack does anything but statut alteration
 		//Checks if the status alteration hits using the accu_status.
 		int randomstat1 = ThreadLocalRandom.current().nextInt(0,100);
-		if (randomstat1 >= 100 - this.getpattack(att, iAtt).getAccu_status())
+		if (randomstat1 >= 100 - iAtt.getAccu_status())
 		{
-			switch (this.getpattack(att, iAtt).getStatus())
+			switch (iAtt.getStatus())
 			{
 				//Attack drop for opponent
 				case 8 : 
@@ -439,7 +441,7 @@ public class Battle
 					break;
 				//Healing mechanic
 				case 45:
-					if (this.getpattack(att, iAtt).getId() == 97 || this.getpattack(att, iAtt).getId() == 119)
+					if (iAtt.getId() == 97 || iAtt.getId() == 119)
 					{
 						int heal = att.getCurrentPkmn().getBaseHp() / 2;
 						att.getCurrentPkmn().setCurrentHp(att.getCurrentPkmn().getCurrentHp() + heal);
@@ -459,7 +461,7 @@ public class Battle
 				//Walls
 				case 52:
 					if (att.getWall() == 0)
-						statModifier(att,"wall",this.getpattack(att,iAtt).getId());
+						statModifier(att,"wall",iAtt.getId());
 					else
 					{
 						if (att.getName().equals("Opponent"))
@@ -469,15 +471,15 @@ public class Battle
 			}
 		}
 		//Status change can only occur if the Pokémon is not already altered by another status.
-		if (this.getpPkmn(def).getStatus()==0 && (this.getpattack(att,iAtt).getStatus()>=1 && this.getpattack(att,iAtt).getStatus() < 6))
+		if (this.getpPkmn(def).getStatus()==0 && (iAtt.getStatus()>=1 && iAtt.getStatus() < 6))
 		{
 			//Checks if the status alteration hits using the accu_status.
 			int randomstat2 = ThreadLocalRandom.current().nextInt(0,100);
-			if (randomstat2 >= 100 - this.getpattack(att, iAtt).getAccu_status())
-				statusModifier(def,this.getpattack(att,iAtt).getStatus());
+			if (randomstat2 >= 100 - iAtt.getAccu_status())
+				statusModifier(def,iAtt.getStatus());
 		}
 		//Shows the "avoid attack" message if the purpose of the move is only status alteration. Exception with healing move that does not hit opponent
-		else if (this.getpattack(att,iAtt).getPower()==0 && this.getpattack(att,iAtt).getStatus() < 6)
+		else if (iAtt.getPower()==0 && iAtt.getStatus() < 6)
 		{
 			if (att.getName().equals("Opponent"))
 				this.s = this.s + "Enemy ";
@@ -487,10 +489,10 @@ public class Battle
 	}
 	
 	//This function will be used to simplify the usage of status 54 attacks which contains every move that is "unique".
-	private String doSpecialAttack(int iAtt, Player att, Player def, int i)
+	private String doSpecialAttack(Attack iAtt, Player att, Player def, int i)
 	{
 		int damage;
-		switch (this.getpattack(att, iAtt).getId())
+		switch (iAtt.getId())
 		{
 			//Bide
 			case 8 : 
@@ -618,10 +620,7 @@ public class Battle
 				Random r = new Random();
 				int rdatt = r.nextInt(156);
 				gd.randomAttack(rdatt);
-				this.s = this.s + "\nA random attack is going to be choosed !";
-				getpPkmn(att).getAttacks().set(iAtt, gd.randomAttack(rdatt));
-				this.useAttack(iAtt, att, def, i);
-				getpPkmn(att).getAttacks().set(iAtt, gd.randomAttack(77));
+				this.useAttack(gd.randomAttack(rdatt), att, def, i);
 				break;
 			case 78 : 
 				break;
@@ -863,28 +862,28 @@ public class Battle
 	
 	//Dealing damages
 	//atk is attacker, def is defender
-	private int deal(Player atk, Player def, int iAtt)
+	private int deal(Player atk, Player def, Attack iAtt)
 	{
 		int damage = 0;
 		int power;
-		power = this.getpattack(atk,iAtt).getPower();
+		power = iAtt.getPower();
 		//Verify if STAB
-		if (this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType1()) || this.getpattack(atk,iAtt).getType().equals(atk.getCurrentPkmn().getType2()))
+		if (iAtt.getType().equals(atk.getCurrentPkmn().getType1()) || iAtt.getType().equals(atk.getCurrentPkmn().getType2()))
 			power = (int) (power * 1.5);
 		//If the attack is Earthquake and the defender is underground, doubles the power of the attack
-		if (getpPkmn(def).getTwoturnstatus() == 26 && getpattack(atk,iAtt).getId() == 36)
+		if (getpPkmn(def).getTwoturnstatus() == 26 && iAtt.getId() == 36)
 			power = power * 2;
 		//Mathematical calculation for damages. Level is 50
 		damage = ((2*50)/5 + 2)*power;
 		//Checking crit to see if we use base or current stats
 		//Checks if the attack inflict fixed damages
-		if (this.getpattack(atk, iAtt).getStatus() == 53)
-			damage = this.getpattack(atk, iAtt).getPower();
+		if (iAtt.getStatus() == 53)
+			damage = iAtt.getPower();
 		else 
 		{
-			if (checkCrit(this.getpattack(atk,iAtt), atk.getCurrentPkmn()))
+			if (checkCrit(iAtt, atk.getCurrentPkmn()))
 			{
-				if (this.getpattack(atk,iAtt).getPhy())
+				if (iAtt.getPhy())
 					damage = damage * (atk.getCurrentPkmn().getAttack("base")/def.getCurrentPkmn().getDefense("base"));
 				else
 					damage = damage * (atk.getCurrentPkmn().getSpecial("base")/def.getCurrentPkmn().getSpecial("base"));
@@ -893,7 +892,7 @@ public class Battle
 			}
 			else
 			{
-				if (this.getpattack(atk,iAtt).getPhy())
+				if (iAtt.getPhy())
 				{
 					//If protect is on
 					if (def.getWall() == 98)
@@ -912,7 +911,7 @@ public class Battle
 				damage = damage/50 + 2;
 			}
 			//Checks strength/weakness
-			damage = this.checkStrWeak(damage, this.getpattack(atk,iAtt), def.getCurrentPkmn());
+			damage = this.checkStrWeak(damage, iAtt, def.getCurrentPkmn());
 		}
 		if (damage != 0)
 		{
@@ -920,7 +919,7 @@ public class Battle
 				this.s = this.s + "Enemy ";
 			this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
 			//Checking if the attack should steal HP
-			if (this.getpattack(atk, iAtt).getStatus()==44)
+			if (iAtt.getStatus()==44)
 			{
 				int heal = 0;
 				if (def.getCurrentPkmn().getCurrentHp() - damage < 0)
@@ -940,7 +939,7 @@ public class Battle
 		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
 		this.checkHpLeft(def);
 		//Checks if the attack should inflict recoil damages
-		if (this.getpattack(atk, iAtt).getStatus() == 49)
+		if (iAtt.getStatus() == 49)
 		{
 			int recoil = damage/4;
 			if (recoil == 0)
@@ -953,12 +952,12 @@ public class Battle
 			this.checkHpLeft(atk);
 		}
 		//Checks if the attack should kill its user (explosion/self-destruct)
-		else if (this.getpattack(atk, iAtt).getStatus() == 50)
+		else if (iAtt.getStatus() == 50)
 		{
 			getpPkmn(atk).setCurrentHp(0);
 			this.checkHpLeft(atk);
 		}
-		getpPkmn(def).setLastattacksuffered(getpattack(atk,iAtt));
+		getpPkmn(def).setLastattacksuffered(iAtt);
 		getpPkmn(def).setLastdamagesuffered(damage);
 		return damage;
 	}
@@ -1150,7 +1149,7 @@ public class Battle
 		}		
 	}
 	
-	public void checkSeed(Player att, Player def, Window win)
+	public boolean checkSeed(Player att, Player def, Window win)
 	{
 		int seed;
 		if (getpPkmn(def).getSeeded())
@@ -1164,7 +1163,10 @@ public class Battle
 			checkHpLeft(att);
 			this.s = this.s + "\n***********************";
 			win.logTrace(s);
+			return true;
 		}
+		else
+			return false;
 	}
 	
 	public boolean checkDead(Player p, Window win)

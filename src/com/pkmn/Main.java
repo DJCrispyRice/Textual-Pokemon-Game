@@ -95,44 +95,27 @@ public class Main implements ActionListener
 			try
 			{
 				//If choice is empty, checks if we are in a twoturn or bind situation.
-				if (choice.equals(""))
-				{
-					if (b.getpPkmn(b.p1).getTwoturnstatus() != 0 || b.getpPkmn(b.p1).getCountBide() != 0)
-					{
-						for (int i = 0 ; i < b.getpPkmn(b.p1).getAttacks().size() ; i++)
-						{
-							if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
-							{
-								if (b.getpattack(b.p1,i).getId() == b.getpPkmn(b.p1).getTwoturnstatus())
-								{
-									choice = Integer.toString(i+1);
-									break;
-								}
-							}
-							else
-							{
-								if (b.getpattack(b.p1,i).getId() == 8)
-								{
-									choice = Integer.toString(i+1);
-									break;
-								}
-							}
-						}
-					}
-					else
+				if (choice.equals("") && b.getpPkmn(b.p1).getTwoturnstatus() == 0)
 						throw new NullPointerException();
-				}
 				//If not, checks the choice to see if it's valid
-				else if (Integer.parseInt(choice) > b.getpPkmn(b.p1).getAttacks().size())
+				else if (!choice.equals("") && Integer.parseInt(choice) > b.getpPkmn(b.p1).getAttacks().size())
 					throw new NullPointerException();
 				
 				//Choosing the attack of the opponent
-				Random r = new Random();
-				int rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-				//To avoid a disabled attack being a choice
-				while (rdatt == b.checkDisabledAttack(b.p2))
+				
+				int rdatt;
+				if (b.getpPkmn(b.p2).getAttacks().size() == 1)
+					rdatt = 0;
+				else
+				{
+					Random r = new Random();
 					rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-				if (Integer.parseInt(choice) - 1 == b.checkDisabledAttack(b.p1))
+					while (rdatt == b.checkDisabledAttack(b.p2))
+						rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
+				}
+				//To avoid a disabled attack being a choice
+				
+				if (!choice.equals("") && Integer.parseInt(choice) - 1 == b.checkDisabledAttack(b.p1))
 					throw new AlreadyBoundException();
 				
 				//Checking prioritary using speed and moves used
@@ -147,7 +130,7 @@ public class Main implements ActionListener
 				}
 				else
 				{
-					if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
+					if (!choice.equals("") && b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
 						b.getpPkmn(b.p1).setPrio(true);
 					else if (b.getpattack(b.p2, rdatt).getId() == 22)
 						b.getpPkmn(b.p1).setPrio(true);
@@ -160,8 +143,11 @@ public class Main implements ActionListener
 				*/
 				if (b.getpPkmn(b.p1).getPrio())
 				{
-					//Calls the useAttack function for index 0 which is the player
-					win.logTrace(b.useAttack(Integer.parseInt(choice) - 1,b.p1,b.p2,0));
+					//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
+					if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+						win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p1).getTwoturnstatus()],b.p1,b.p2,0));
+					else
+						win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
 					//Checks if the opponent fainted
 					b.checkDead(b.p2, win);
 					//If the attack deals to user, checks if it's not dead
@@ -172,22 +158,10 @@ public class Main implements ActionListener
 						//Checks if the pokémon didn't flinched between turns
 						if (b.getpPkmn(b.p2).getCanAttack())
 						{
-							//If we are in a two turn situation, chooses the previous attack instead.
-							if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
-							{
-								//Forces to choose the two turn attack stocked in the getTwoturnstatus variable.
-								for (int i = 0 ; i < b.getpPkmn(b.p2).getAttacks().size() ; i++)
-								{
-									if (b.getpattack(b.p2,i).getId() == b.getpPkmn(b.p2).getTwoturnstatus())
-									{
-										rdatt = i;
-										break;
-									}
-								}
-							}
-							else if (b.getpPkmn(b.p2).getAttacks().size() == 1)
-								rdatt = 0;
-							win.logTrace(b.useAttack(rdatt,b.p2,b.p1,1));
+							if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+								win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
+							else
+								win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
 							//Checks if the player fainted
 							b.checkDead(b.p1, win);
 							b.checkDead(b.p2, win);
@@ -203,17 +177,10 @@ public class Main implements ActionListener
 				 */
 				else
 				{
-					//If we are in a two turn situation, chooses the previous attack instead.
-					if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
-						for (int i = 0 ; i < b.getpPkmn(b.p2).getAttacks().size() ; i++)
-							if (b.getpattack(b.p2,i).getId() == b.getpPkmn(b.p2).getTwoturnstatus())
-							{
-								rdatt = i;
-								break;
-							}
-					else if (b.getpPkmn(b.p2).getAttacks().size() == 1)
-						rdatt = 0;
-					win.logTrace(b.useAttack(rdatt,b.p2,b.p1,0));
+					if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+						win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
+					else
+						win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
 					//Checks if the player fainted
 					b.checkDead(b.p1, win);
 					if (b.checkDead(b.p2, win))
@@ -222,8 +189,12 @@ public class Main implements ActionListener
 					{
 						if (b.getpPkmn(b.p1).getCanAttack())
 						{
-							win.logTrace(b.useAttack(Integer.parseInt(choice)-1,b.p1,b.p2,1));
-							//Checks if the opponent fainted
+							//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
+							if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+								win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p1).getTwoturnstatus()],b.p1,b.p2,0));
+							else
+								win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
+							//Checks if someone fainted
 							b.checkDead(b.p2, win);
 							b.checkDead(b.p1, win);
 						}
@@ -249,11 +220,10 @@ public class Main implements ActionListener
 				}
 				//Trap checking
 				
-				b.checkSeed(b.p1,b.p2,win);
-				b.checkSeed(b.p2,b.p1,win);
-				
-				b.checkDead(b.p1, win);
-				b.checkDead(b.p2, win);
+				if (b.checkSeed(b.p1,b.p2,win))
+					b.checkDead(b.p1, win);
+				if (b.checkSeed(b.p2,b.p1,win))
+					b.checkDead(b.p2, win);
 				
 				//Shows attacks if both player and opponent are not dead
 				if (b.getpPkmn(b.p2).getStatus() != 9 && b.getpPkmn(b.p1).getStatus() != 9)
