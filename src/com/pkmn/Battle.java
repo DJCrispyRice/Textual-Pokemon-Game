@@ -184,7 +184,14 @@ public class Battle
 						this.checkHpLeft(att);
 					}
 					else
+					{
 						this.s = this.s + this.getpPkmn(att).getName() + " missed !";
+						if (iAtt.getStatus() == 50)
+						{
+							getpPkmn(att).setCurrentHp(0);
+							this.checkHpLeft(att);
+						}
+					}
 				}
 			}
 			//If a move is disabled, lowers the disable counter. Should occur only if an attack is used
@@ -622,6 +629,7 @@ public class Battle
 				gd.randomAttack(rdatt);
 				this.useAttack(gd.randomAttack(rdatt), att, def, i);
 				break;
+			//Mimic
 			case 78 : 
 				break;
 			case 80 : 

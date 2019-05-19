@@ -238,7 +238,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Mega Drain","User recovers half the HP inflicted on opponent.",74,40,15,false,this.allTypes[10],44,100,100); i++;
 		this.allAtks[i] = new Attack ("Mega Kick","Standard attack",75,120,5,true,this.allTypes[0],0,0,75); i++;
 		this.allAtks[i] = new Attack ("Mega Punch","Standard attack",76,80,20,true,this.allTypes[0],0,0,85); i++;
-		this.allAtks[i] = new Attack ("Metronome","User performs almost any move in the game at random.",77,0,10,false,this.allTypes[0],54,0,100); i++; // To code
+		this.allAtks[i] = new Attack ("Metronome","User performs almost any move in the game at random.",77,0,10,false,this.allTypes[0],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Mimic","Copies the opponent's last move.",78,0,10,false,this.allTypes[0],54,0,100); i++; // To code
 		this.allAtks[i] = new Attack ("Minimize","Sharply raises user's Evasiveness.",79,0,10,false,this.allTypes[0],41,0,100); i++;
 		this.allAtks[i] = new Attack ("Mirror Move","User performs the opponent's last move.",80,0,20,false,this.allTypes[2],54,0,100); i++; //To code
@@ -486,7 +486,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[77]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[78]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);
