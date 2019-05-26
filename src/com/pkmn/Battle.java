@@ -194,6 +194,7 @@ public class Battle
 					}
 				}
 			}
+			getpPkmn(def).setLastattacksuffered(iAtt);
 			//If a move is disabled, lowers the disable counter. Should occur only if an attack is used
 			if (this.getpPkmn(att).getCountDisable() > 0)
 			{
@@ -631,9 +632,26 @@ public class Battle
 				break;
 			//Mimic
 			case 78 : 
+				if (getpPkmn(att).getLastattacksuffered().getName() != null)
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " learned " + getpPkmn(att).getLastattacksuffered().getName() + " !";
+					getpPkmn(att).getAttacks().remove(iAtt);
+					getpPkmn(att).getAttacks().add(getpPkmn(att).getLastattacksuffered());
+				}
+				else
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " missed !";
+				}
 				break;
-			case 80 : 
+			//Mirror Move
+			case 80 :
+				this.useAttack(getpPkmn(att).getLastattacksuffered(), att, def, i);
 				break;
+			//Petal Dance
 			case 84 : 
 				break;
 			case 96 : 
@@ -650,6 +668,7 @@ public class Battle
 				break;
 			case 132 : 
 				break;
+			//Thrash
 			case 140 : 
 				break;
 			case 147 : 
@@ -965,7 +984,6 @@ public class Battle
 			getpPkmn(atk).setCurrentHp(0);
 			this.checkHpLeft(atk);
 		}
-		getpPkmn(def).setLastattacksuffered(iAtt);
 		getpPkmn(def).setLastdamagesuffered(damage);
 		return damage;
 	}

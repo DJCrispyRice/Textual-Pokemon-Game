@@ -125,6 +125,8 @@ public class Main implements ActionListener
 						b.getpPkmn(b.p1).setPrio(false);
 					else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 22)
 						b.getpPkmn(b.p1).setPrio(false);
+					else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 80)
+						b.getpPkmn(b.p1).setPrio(false);
 					else
 						b.getpPkmn(b.p1).setPrio(true);
 				}
@@ -134,6 +136,8 @@ public class Main implements ActionListener
 						b.getpPkmn(b.p1).setPrio(true);
 					else if (b.getpattack(b.p2, rdatt).getId() == 22)
 						b.getpPkmn(b.p1).setPrio(true);
+					else if (b.getpattack(b.p2, Integer.parseInt(choice)-1).getId() == 80)
+						b.getpPkmn(b.p1).setPrio(false);
 					else
 						b.getpPkmn(b.p1).setPrio(false);
 				}
@@ -229,6 +233,8 @@ public class Main implements ActionListener
 				if (b.getpPkmn(b.p2).getStatus() != 9 && b.getpPkmn(b.p1).getStatus() != 9)
 					win.logTrace(b.showAttacks());
 				b.reinitPrio();
+				b.getpPkmn(b.p1).setLastattacksuffered(new Attack());
+				b.getpPkmn(b.p2).setLastattacksuffered(new Attack());
 			}
 			catch (NullPointerException e1)
 			{
