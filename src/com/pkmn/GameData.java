@@ -245,7 +245,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Night Shade","Inflicts damage equal to user's level.",81,50,15,false,this.allTypes[7],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Pay Day","Standard attack",82,40,20,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Peck","Standard attack",83,35,35,true,this.allTypes[2],0,0,100); i++;
-		this.allAtks[i] = new Attack ("Petal Dance","User attacks for 2-3 turns but then becomes confused.",84,120,10,false,this.allTypes[10],54,0,100); i++; // To code - same as 140
+		this.allAtks[i] = new Attack ("Petal Dance","User attacks for 2-3 turns but then becomes confused.",84,120,10,false,this.allTypes[10],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Pin Missile","Hits 2-5 times in one turn.",85,25,20,true,this.allTypes[6],46,0,95); i++;
 		this.allAtks[i] = new Attack ("Poison Gas","Poisons opponent.",86,0,40,false,this.allTypes[3],3,100,90); i++;
 		this.allAtks[i] = new Attack ("Poison Powder","Poisons opponent.",87,0,35,false,this.allTypes[3],3,100,75); i++;
@@ -301,7 +301,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Tackle","Standard attack",137,40,35,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Tail Whip","Lowers opponent's Defense.",138,0,30,false,this.allTypes[0],16,100,100); i++;
 		this.allAtks[i] = new Attack ("Take Down","User receives recoil damage.",139,90,20,true,this.allTypes[0],49,0,85); i++;
-		this.allAtks[i] = new Attack ("Thrash","User attacks for 2-3 turns but then becomes confused.",140,120,10,true,this.allTypes[0],54,0,100); i++; // To code - same as 84
+		this.allAtks[i] = new Attack ("Thrash","User attacks for 2-3 turns but then becomes confused.",140,120,10,true,this.allTypes[0],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Thunder","May paralyze opponent.",141,110,10,false,this.allTypes[11],1,30,70); i++;
 		this.allAtks[i] = new Attack ("Thunder Punch","May paralyze opponent.",142,75,15,true,this.allTypes[11],1,10,100); i++;
 		this.allAtks[i] = new Attack ("Thunder Shock","May paralyze opponent.",143,40,30,false,this.allTypes[11],1,10,100); i++;
@@ -486,7 +486,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[80]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[120]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);

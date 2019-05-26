@@ -37,6 +37,7 @@ public class Pokemon implements Cloneable
 	int countTrap = 0; 
 	int countBide = 0;
 	int countDisable = 0;
+	int countThrash = 0;
 	int totalBideDmg = 0;
 	boolean canAttack = true;
 	boolean prio = false;
@@ -346,6 +347,15 @@ public class Pokemon implements Cloneable
 	public void setTotalBideDmg(int totalBideDmg) 
 	{
 		this.totalBideDmg = totalBideDmg;
+	}
+	
+	public int getCountThrash() 
+	{
+		return countThrash;
+	}
+	public void setCountThrash(int countThrash) 
+	{
+		this.countThrash = countThrash;
 	}
 	
 	public int getCountDisable() 

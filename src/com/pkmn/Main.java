@@ -96,7 +96,7 @@ public class Main implements ActionListener
 			{
 				//If choice is empty, checks if we are in a twoturn or bind situation.
 				if (choice.equals("") && b.getpPkmn(b.p1).getTwoturnstatus() == 0)
-						throw new NullPointerException();
+					throw new NullPointerException();
 				//If not, checks the choice to see if it's valid
 				else if (!choice.equals("") && Integer.parseInt(choice) > b.getpPkmn(b.p1).getAttacks().size())
 					throw new NullPointerException();
@@ -123,6 +123,8 @@ public class Main implements ActionListener
 				{
 					if (b.getpattack(b.p2, rdatt).getStatus() == 51)
 						b.getpPkmn(b.p1).setPrio(false);
+					else if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+						b.getpPkmn(b.p1).setPrio(true);
 					else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 22)
 						b.getpPkmn(b.p1).setPrio(false);
 					else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 80)
@@ -136,7 +138,7 @@ public class Main implements ActionListener
 						b.getpPkmn(b.p1).setPrio(true);
 					else if (b.getpattack(b.p2, rdatt).getId() == 22)
 						b.getpPkmn(b.p1).setPrio(true);
-					else if (b.getpattack(b.p2, Integer.parseInt(choice)-1).getId() == 80)
+					else if (b.getpattack(b.p2, rdatt).getId() == 80)
 						b.getpPkmn(b.p1).setPrio(false);
 					else
 						b.getpPkmn(b.p1).setPrio(false);

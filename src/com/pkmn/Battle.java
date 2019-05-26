@@ -36,7 +36,7 @@ public class Battle
 	public String showAttacks()
 	{
 		this.s = new String();
-		if (getpPkmn(p1).getTwoturnstatus() == 0 && getpPkmn(p1).getCountBide() == 0)
+		if (getpPkmn(p1).getTwoturnstatus() == 0 && getpPkmn(p1).getCountBide() == 0 && getpPkmn(p1).getCountThrash() == 0)
 		{
 			if (this.getpPkmn(p1).getStatus()!=0)
 			{
@@ -160,9 +160,12 @@ public class Battle
 				this.s = this.doSpecialAttack(iAtt, att, def, i);
 			else
 			{
-				if (att.getName().equals("Opponent"))
-					this.s = this.s + "Enemy ";
-				this.s = this.s + this.getpPkmn(att).getName()+" used "+iAtt.getName()+". ";
+				if (getpPkmn(att).getCountThrash() == 0)
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "Enemy ";
+					this.s = this.s + this.getpPkmn(att).getName()+" used "+iAtt.getName()+". ";
+				}
 					
 				if (checkHit(iAtt,this.getpPkmn(att),this.getpPkmn(def)))
 				{
@@ -273,7 +276,7 @@ public class Battle
 				this.s = this.s + "Enemy ";
 			this.s = this.s + getpPkmn(att).getName();
 			//Switch to trace the attack
-			switch (iAtt.getStatus())
+			switch (iAtt.getId())
 			{
 				case 26 :
 					this.s = this.s + " dug a hole !";
@@ -653,7 +656,29 @@ public class Battle
 				break;
 			//Petal Dance
 			case 84 : 
+				if (getpPkmn(att).getCountThrash() > 0)
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + "'s thrashing about !\n";
+					getpPkmn(att).setCountThrash(getpPkmn(att).getCountThrash() - 1);
+				}
+				else
+				{
+					getpPkmn(att).setCountThrash(ThreadLocalRandom.current().nextInt(2,3));
+					getpPkmn(att).setTwoturnstatus(84);
+				}
+				deal(att,def,iAtt);
+				if (getpPkmn(att).getCountThrash() == 0)
+				{
+					getpPkmn(att).setTwoturnstatus(0);
+					getpPkmn(att).setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " became confused !";
+				}
 				break;
+			//Razor Wind	
 			case 96 : 
 				break;
 			case 99 : 
@@ -669,7 +694,28 @@ public class Battle
 			case 132 : 
 				break;
 			//Thrash
-			case 140 : 
+			case 140 :
+				if (getpPkmn(att).getCountThrash() > 0)
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + "'s thrashing about !\n";
+					getpPkmn(att).setCountThrash(getpPkmn(att).getCountThrash() - 1);
+				}
+				else
+				{
+					getpPkmn(att).setCountThrash(ThreadLocalRandom.current().nextInt(2,3));
+					getpPkmn(att).setTwoturnstatus(140);
+				}
+				deal(att,def,iAtt);
+				if (getpPkmn(att).getCountThrash() == 0)
+				{
+					getpPkmn(att).setTwoturnstatus(0);
+					getpPkmn(att).setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " became confused !";
+				}
 				break;
 			case 147 : 
 				break;
