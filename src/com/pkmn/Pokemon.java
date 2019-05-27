@@ -32,6 +32,7 @@ public class Pokemon implements Cloneable
 	Stat special;
 	Stat accuracy = new Stat("Accuracy", 100);
 	Stat evasion = new Stat("Evasion", 100);
+	int hpSubstitute = 0;
 	int countSleep = 0;
 	int countConfusion = 0;
 	int countTrap = 0; 
@@ -297,6 +298,16 @@ public class Pokemon implements Cloneable
 	public void setEvasion(Stat st)
 	{
 		this.evasion = st;
+	}
+	
+	public int getHpSubstitute() 
+	{
+		return hpSubstitute;
+	}
+	
+	public void setHpSubstitute(int hpSubstitute) 
+	{
+		this.hpSubstitute = hpSubstitute;
 	}
 	
 	public int getCountConfusion() 

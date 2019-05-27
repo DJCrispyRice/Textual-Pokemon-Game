@@ -267,6 +267,16 @@ public class Battle
 		else if (getpPkmn(att).getTwoturnstatus() != 0)
 		{
 			deal(att,def,iAtt);
+			if (iAtt.getId() == 112)
+			{
+				if (i==0)
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "Enemy ";
+					this.s = this.s + this.getpPkmn(def).getName() + " flinched !";
+					def.getCurrentPkmn().setCanAttack(false);
+				}
+			}
 			getpPkmn(att).setTwoturnstatus(0);
 		}
 		//Checks if the attack is a two-turn attack. If so, sets twoturnstatus to the id of this attack
@@ -287,6 +297,8 @@ public class Battle
 				case 111 :
 					this.s = this.s + " lowered its head !";
 					break;
+				case 112 :
+					this.s = this.s + " is glowing !";
 				case 120 : 
 					this.s = this.s + " is shining !";
 					break;
@@ -300,7 +312,7 @@ public class Battle
 		//Checks if the status alteration hits using the accu_status.
 		int randomstat1 = ThreadLocalRandom.current().nextInt(0,100);
 		if (randomstat1 >= 100 - iAtt.getAccu_status())
-		{
+		{	
 			switch (iAtt.getStatus())
 			{
 				//Attack drop for opponent
@@ -538,7 +550,7 @@ public class Battle
 			//Clamp
 			case 16 : 
 				deal(att,def,iAtt);
-				if (att.getName().equals("Opponent"))
+				if (def.getName().equals("Opponent"))
 					this.s = this.s + "\nEnemy ";
 				this.s = this.s + getpPkmn(def).getName() + " was CLAMPED by " + getpPkmn(att).getName() + " !";
 				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
@@ -584,7 +596,7 @@ public class Battle
 					int rdatt = r.nextInt(getpPkmn(def).getAttacks().size());
 					getpPkmn(def).getAttacks().get(rdatt).setEnabled(false);
 					getpPkmn(def).setCountDisable(ThreadLocalRandom.current().nextInt(2,8));
-					if (att.getName().equals("Opponent"))
+					if (def.getName().equals("Opponent"))
 						this.s = this.s + "\nEnemy ";
 					this.s = this.s  + getpPkmn(def).getName() + "'s " + getpPkmn(def).getAttacks().get(rdatt).getName() + " was disabled !";
 				}
@@ -594,7 +606,7 @@ public class Battle
 			//Fire spin
 			case 42 : 
 				deal(att,def,iAtt);
-				if (att.getName().equals("Opponent"))
+				if (def.getName().equals("Opponent"))
 					this.s = this.s + "\nEnemy ";
 				this.s = this.s + getpPkmn(def).getName() + " was trapped !";
 				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
@@ -616,7 +628,7 @@ public class Battle
 				break;
 			//Leech Seed
 			case 67 : 
-				if (att.getName().equals("Opponent"))
+				if (def.getName().equals("Opponent"))
 					this.s = this.s + "\nEnemy ";
 				if (getpPkmn(def).getSeeded())
 					this.s = this.s + getpPkmn(def).getName() + " is already seeded !";
@@ -678,20 +690,71 @@ public class Battle
 					this.s = this.s + getpPkmn(att).getName() + " became confused !";
 				}
 				break;
-			//Razor Wind	
-			case 96 : 
-				break;
+			//Rest
 			case 99 : 
+				if (getpPkmn(att).getCurrentHp() != getpPkmn(att).getBaseHp())
+				{
+					getpPkmn(att).setStatus(2);
+					getpPkmn(att).setCountSleep(2);
+					getpPkmn(att).setCurrentHp(getpPkmn(att).getBaseHp());
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " started sleeping and regained health !";
+				}
+				else
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " missed !";
+				}
 				break;
-			case 100 : 
+			//Roar
+			case 100 :
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				this.s = this.s + getpPkmn(def).getName() + " got scared  and ran away.";
+				def.setCurrentPkmn(def.getTeam().get(ThreadLocalRandom.current().nextInt(0,5)));
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "\nYour opponent sent ";
+				else
+					this.s = this.s + "\n You sent ";
+				this.s = this.s + getpPkmn(def).getName() + " !";
 				break;
-			case 112 : 
+			//Struggle
+			case 128 :
+				if (checkHit(iAtt,getpPkmn(att),getpPkmn(def)))
+				{
+					deal(att,def,iAtt);
+					getpPkmn(att).setCurrentHp(getpPkmn(att).getCurrentHp() - (getpPkmn(att).getLastdamagesuffered()/4));
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " lost " + (getpPkmn(att).getLastdamagesuffered()/4) + " HP due to recoil.";
+					checkHpLeft(att);
+				}
 				break;
-			case 128 : 
+			//Substitute
+			case 131 :
+				if (att.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				if (getpPkmn(att).getCurrentHp() > (getpPkmn(att).getBaseHp()/4))
+				{
+					damage = getpPkmn(att).getBaseHp()/4;
+					getpPkmn(att).setCurrentHp(getpPkmn(att).getCurrentHp() - damage);
+					getpPkmn(att).setHpSubstitute(damage + 1);
+					this.s = this.s + getpPkmn(att).getName() + " lost " + damage + " HP to create a substitue !";
+					this.checkHpLeft(att);
+				}
+				else
+					this.s = this.s + getpPkmn(att).getName() + " missed !";
 				break;
-			case 131 : 
-				break;
-			case 132 : 
+			//Super Fang	
+			case 132 :
+				damage = getpPkmn(def).getCurrentHp()/2;
+				getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - damage );
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "Enemy ";
+				this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
+				this.checkHpLeft(def);
 				break;
 			//Thrash
 			case 140 :
@@ -707,7 +770,8 @@ public class Battle
 					getpPkmn(att).setCountThrash(ThreadLocalRandom.current().nextInt(2,3));
 					getpPkmn(att).setTwoturnstatus(140);
 				}
-				deal(att,def,iAtt);
+				if (checkHit(iAtt,getpPkmn(att),getpPkmn(def)))
+					deal(att,def,iAtt);
 				if (getpPkmn(att).getCountThrash() == 0)
 				{
 					getpPkmn(att).setTwoturnstatus(0);
@@ -721,7 +785,17 @@ public class Battle
 				break;
 			case 148 : 
 				break;
-			case 154 : 
+			//Whirlwind
+			case 154 :
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				this.s = this.s + getpPkmn(def).getName() + " was blown away.";
+				def.setCurrentPkmn(def.getTeam().get(ThreadLocalRandom.current().nextInt(0,5)));
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "\nYour opponent sent ";
+				else
+					this.s = this.s + "\n You sent ";
+				this.s = this.s + getpPkmn(def).getName() + " !";
 				break;
 			//Wrap
 			case 157 : 
@@ -742,8 +816,7 @@ public class Battle
 		//Swift can't fail whatever the case, if it's currently biding it can't also fail
 		if (atk.getName().equals("Swift") || att.getCountBide() > 0)
 			return true;
-		//Will automatically fail if the user is in the air or underground except if earthquake + underground
-		//... Unless the used attack is two-turn move (first turn using it)
+		//Will automatically succeed if it's the first part of a two-turn move
 		if (atk.getStatus() == 48 && att.getTwoturnstatus() == 0)
 			return true;
 		//If the defender is already trapped, the attack will miss
@@ -907,7 +980,7 @@ public class Battle
 	private boolean checkCrit(Attack att, Pokemon pk)
 	{
 		//Check if the attack has high critical ratio
-		if (att.getStatus() == 47)
+		if (att.getStatus() == 47 || att.getId() == 96)
 		{
 			int T = pk.getSpeed("base") * 4;
 			int P = ThreadLocalRandom.current().nextInt(0,256);

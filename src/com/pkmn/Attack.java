@@ -96,7 +96,7 @@ public class Attack
 		this.setAccu_status(accu_status);
 		this.setAccuracy(accuracy);
 		//If the attack "applies" something, puts self at true
-		if (status == 9 || status == 10 || status == 13 || status == 14 || status == 17 || status == 18 || status == 21 || status == 22 || status == 25 || status == 26 || status == 29 || status == 30 || status == 33 || status == 34 || status == 37 || status == 38 || status == 41 || status == 42)
+		if (status == 9 || status == 10 || status == 13 || status == 14 || status == 17 || status == 18 || status == 21 || status == 22 || status == 25 || status == 26 || status == 29 || status == 30 || status == 33 || status == 34 || status == 37 || status == 38 || status == 41 || status == 42 || id == 132)
 			this.setSelf(true);
 	}
 	

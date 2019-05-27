@@ -183,7 +183,7 @@ public class Main implements ActionListener
 				 */
 				else
 				{
-					if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+					if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
 						win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
 					else
 						win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));

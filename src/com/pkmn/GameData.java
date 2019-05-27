@@ -257,11 +257,11 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Quick Attack","User attacks first.",93,40,30,true,this.allTypes[0],51,0,100); i++;
 		this.allAtks[i] = new Attack ("Rage","Raises user's Attack when hit.",94,20,20,true,this.allTypes[0],9,100,100); i++;
 		this.allAtks[i] = new Attack ("Razor Leaf","High critical hit ratio.",95,55,25,true,this.allTypes[10],47,100,95); i++;
-		this.allAtks[i] = new Attack ("Razor Wind","Charges on first turn, attacks on second. High critical hit ratio.",96,80,10,false,this.allTypes[0],54,0,100); i++; // To code
+		this.allAtks[i] = new Attack ("Razor Wind","Charges on first turn, attacks on second. High critical hit ratio.",96,80,10,false,this.allTypes[0],48,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Recover","User recovers half its max HP.",97,0,10,false,this.allTypes[0],45,100,100); i++;
 		this.allAtks[i] = new Attack ("Reflect","Halves damage from Physical attacks for 5 turns.",98,0,20,false,this.allTypes[12],52,100,100); i++;
-		this.allAtks[i] = new Attack ("Rest","User sleeps for 2 turns, but user is fully healed.",99,0,10,false,this.allTypes[12],54,0,100); i++; // To code
-		this.allAtks[i] = new Attack ("Roar","In battles, the opponent switches. In the wild, the Pokémon runs.",100,0,20,false,this.allTypes[0],54,100,100); i++; // To code
+		this.allAtks[i] = new Attack ("Rest","User sleeps for 2 turns, but user is fully healed.",99,0,10,false,this.allTypes[12],54,0,100); i++; // OK
+		this.allAtks[i] = new Attack ("Roar","In battles, the opponent switches. In the wild, the Pokémon runs.",100,0,20,false,this.allTypes[0],54,100,85); i++; // OK
 		this.allAtks[i] = new Attack ("Rock Slide","May cause flinching.",101,75,10,true,this.allTypes[5],43,30,90); i++;
 		this.allAtks[i] = new Attack ("Rock Throw","Standard attack",102,50,15,true,this.allTypes[5],0,0,90); i++;
 		this.allAtks[i] = new Attack ("Rolling Kick","May cause flinching.",103,60,15,true,this.allTypes[1],43,30,85); i++;
@@ -273,7 +273,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Sharpen","Raises user's Attack.",109,0,30,false,this.allTypes[0],9,0,100); i++;
 		this.allAtks[i] = new Attack ("Sing","Puts opponent to sleep.",110,0,15,false,this.allTypes[0],2,100,55); i++;
 		this.allAtks[i] = new Attack ("Skull Bash","Charges on first turn, attacks on second.",111,130,10,true,this.allTypes[0],48,0,100); i++;
-		this.allAtks[i] = new Attack ("Sky Attack","Charges on first turn, attacks on second. May cause flinching.",112,140,5,true,this.allTypes[2],54,30,90); i++; // To code
+		this.allAtks[i] = new Attack ("Sky Attack","Charges on first turn, attacks on second. May cause flinching.",112,140,5,true,this.allTypes[2],48,100,90); i++; // OK
 		this.allAtks[i] = new Attack ("Slam","Standard attack",113,80,20,true,this.allTypes[0],0,0,75); i++;
 		this.allAtks[i] = new Attack ("Slash","High critical hit ratio.",114,70,20,true,this.allTypes[0],47,0,100); i++;
 		this.allAtks[i] = new Attack ("Sleep Powder","Puts opponent to sleep.",115,0,15,false,this.allTypes[10],2,100,75); i++;
@@ -289,11 +289,11 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Stomp","May cause flinching.",125,65,20,true,this.allTypes[0],43,30,100); i++;
 		this.allAtks[i] = new Attack ("Strength","Standard attack",126,80,15,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("String Shot","Sharply lowers opponent's Speed.",127,0,40,false,this.allTypes[6],28,100,95); i++;
-		this.allAtks[i] = new Attack ("Struggle","Only usable when all PP are gone. Hurts the user.",128,50,1000,true,this.allTypes[0],54,0,100); i++; // To code
+		this.allAtks[i] = new Attack ("Struggle","Only usable when all PP are gone. Hurts the user.",128,50,1000,true,this.allTypes[0],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Stun Spore","Paralyzes opponent.",129,0,30,false,this.allTypes[10],1,100,75); i++;
 		this.allAtks[i] = new Attack ("Submission","User receives recoil damage.",130,80,20,true,this.allTypes[1],49,0,80); i++;
 		this.allAtks[i] = new Attack ("Substitute","Uses HP to create a decoy that takes hits.",131,0,10,false,this.allTypes[0],54,0,100); i++; // To code
-		this.allAtks[i] = new Attack ("Super Fang","Always takes off half of the opponent's HP.",132,0,10,true,this.allTypes[0],54,0,90); i++; // To code
+		this.allAtks[i] = new Attack ("Super Fang","Always takes off half of the opponent's HP.",132,0,10,true,this.allTypes[0],54,0,90); i++; // OK
 		this.allAtks[i] = new Attack ("Supersonic","Confuses opponent.",133,0,20,false,this.allTypes[0],6,100,55); i++;
 		this.allAtks[i] = new Attack ("Surf","Standard attack.",134,90,15,false,this.allTypes[9],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Swift","Ignores Accuracy and Evasiveness.",135,60,20,false,this.allTypes[0],0,0,100); i++;
@@ -315,7 +315,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Vine Whip","Standard attack",151,45,25,true,this.allTypes[10],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Water Gun","Standard attack",152,40,25,false,this.allTypes[9],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Waterfall","May cause flinching.",153,80,15,true,this.allTypes[9],43,20,100); i++;
-		this.allAtks[i] = new Attack ("Whirlwind","In battles, the opponent switches. In the wild, the Pokémon runs.",154,0,20,false,this.allTypes[0],54,0,100); i++; // To code - same as 100
+		this.allAtks[i] = new Attack ("Whirlwind","In battles, the opponent switches. In the wild, the Pokémon runs.",154,0,20,false,this.allTypes[0],54,100,85); i++; // OK
 		this.allAtks[i] = new Attack ("Wing Attack","Standard attack",155,60,35,true,this.allTypes[2],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Withdraw","Raises user's Defense.",156,0,40,false,this.allTypes[9],17,100,100); i++;
 		this.allAtks[i] = new Attack ("Wrap","Traps opponent, damaging them for 2-5 turns.",157,15,20,true,this.allTypes[0],54,0,90); i++; // OK
@@ -486,7 +486,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[120]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[131]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);
