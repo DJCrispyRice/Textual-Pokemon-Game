@@ -33,6 +33,7 @@ public class Pokemon implements Cloneable
 	Stat accuracy = new Stat("Accuracy", 100);
 	Stat evasion = new Stat("Evasion", 100);
 	int hpSubstitute = 0;
+	boolean sub = false;
 	int countSleep = 0;
 	int countConfusion = 0;
 	int countTrap = 0; 
@@ -152,19 +153,26 @@ public class Pokemon implements Cloneable
 		return currentHp;
 	}
 
-	public void setCurrentHp(int currentHp) 
+	public void setCurrentHp(int damage) 
 	{
-		if (currentHp > 0)
+		if (this.getHpSubstitute() > 0)
 		{
-			if  (currentHp > this.getBaseHp())
-				this.currentHp = this.getBaseHp();
-			else
-				this.currentHp = currentHp;
+			if (damage < 0)
+				this.setHpSubstitute(damage);
 		}
 		else
 		{
-			this.currentHp = 0;
-			this.setStatus(9);
+			this.currentHp = this.currentHp + damage;
+			if (currentHp > 0)
+			{
+				if  (currentHp > this.getBaseHp())
+					this.currentHp = this.getBaseHp();
+			}
+			else
+			{
+				this.currentHp = 0;
+				this.setStatus(9);
+			}
 		}
 	}
 	
@@ -305,11 +313,24 @@ public class Pokemon implements Cloneable
 		return hpSubstitute;
 	}
 	
-	public void setHpSubstitute(int hpSubstitute) 
+	public void setHpSubstitute(int hp) 
 	{
-		this.hpSubstitute = hpSubstitute;
+		this.hpSubstitute = this.hpSubstitute + hp;
+		if (this.hpSubstitute < 0)
+		{
+			this.hpSubstitute = 0;
+		}
 	}
 	
+	public boolean getSub() 
+	{
+		return sub;
+	}
+	
+	public void setSub(boolean sub) 
+	{
+		this.sub = sub;
+	}
 	public int getCountConfusion() 
 	{
 		return countConfusion;

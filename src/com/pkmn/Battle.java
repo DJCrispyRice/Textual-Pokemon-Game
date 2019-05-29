@@ -140,7 +140,7 @@ public class Battle
 					if (att.getName().equals("Opponent"))
 						this.s = this.s + "Enemy ";
 					this.s = this.s + this.getpPkmn(att).getName() + " hurts himself in confusion and lost "+damage+" HP.";
-					this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - damage);
+					this.getpPkmn(att).setCurrentHp(-damage);
 					this.checkHpLeft(att);
 					atkok = false;
 				}
@@ -183,7 +183,7 @@ public class Battle
 					{
 						int damage = getpPkmn(att).getBaseHp()/8;
 						this.s = this.s + getpPkmn(att).getName() + " crashed and lost " + damage + " HP.";
-						getpPkmn(att).setCurrentHp(getpPkmn(att).getCurrentHp() - damage);
+						getpPkmn(att).setCurrentHp(-damage);
 						this.checkHpLeft(att);
 					}
 					else
@@ -191,7 +191,7 @@ public class Battle
 						this.s = this.s + this.getpPkmn(att).getName() + " missed !";
 						if (iAtt.getStatus() == 50)
 						{
-							getpPkmn(att).setCurrentHp(0);
+							getpPkmn(att).setCurrentHp(getpPkmn(att).getBaseHp());
 							this.checkHpLeft(att);
 						}
 					}
@@ -219,7 +219,7 @@ public class Battle
 			if (att.getName().equals("Opponent"))
 				this.s = this.s + "\nEnemy ";
 			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to poison.";
-			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
+			this.getpPkmn(att).setCurrentHp(-this.getpPkmn(att).getBaseHp()/16);
 			this.checkHpLeft(att);
 		}
 		//If the pokémon is burn, lose 1/16 of its HP.
@@ -228,7 +228,7 @@ public class Battle
 			if (att.getName().equals("Opponent"))
 				this.s = this.s + "\nEnemy ";
 			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to burn.";
-			this.getpPkmn(att).setCurrentHp(this.getpPkmn(att).getCurrentHp() - this.getpPkmn(att).getBaseHp()/16);
+			this.getpPkmn(att).setCurrentHp(-this.getpPkmn(att).getBaseHp()/16);
 			this.checkHpLeft(att);
 		}
 		//To avoid *** being shown multiple times when Metronome is used
@@ -467,7 +467,7 @@ public class Battle
 					if (iAtt.getId() == 97 || iAtt.getId() == 119)
 					{
 						int heal = att.getCurrentPkmn().getBaseHp() / 2;
-						att.getCurrentPkmn().setCurrentHp(att.getCurrentPkmn().getCurrentHp() + heal);
+						att.getCurrentPkmn().setCurrentHp(heal);
 						if (att.getName().equals("Opponent"))
 							this.s = this.s + "\nEnemy ";
 						else
@@ -536,7 +536,7 @@ public class Battle
 						this.s = this.s + getpPkmn(att).getName() + " unleashed energy !\n";
 						//Damage calculation here
 						damage = getpPkmn(att).getTotalBideDmg() * 2;
-						getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - damage );
+						getpPkmn(def).setCurrentHp(-damage);
 						if (def.getName().equals("Opponent"))
 							this.s = this.s + "Enemy ";
 						this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
@@ -568,7 +568,7 @@ public class Battle
 				if (getpPkmn(att).getLastattacksuffered().getPhy() && getpPkmn(att).getLastdamagesuffered() > 0)
 				{
 					damage = getpPkmn(att).getLastdamagesuffered() * 2;
-					getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - damage );
+					getpPkmn(def).setCurrentHp(-damage);
 					if (def.getName().equals("Opponent"))
 						this.s = this.s + "Enemy ";
 					this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
@@ -601,7 +601,22 @@ public class Battle
 					this.s = this.s  + getpPkmn(def).getName() + "'s " + getpPkmn(def).getAttacks().get(rdatt).getName() + " was disabled !";
 				}
 				break;
+			//Dream Eater
 			case 34 : 
+				if (getpPkmn(def).getStatus() == 2)
+				{
+					deal(att,def,iAtt);
+					getpPkmn(att).setCurrentHp(getpPkmn(def).getLastdamagesuffered()/2);
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + this.getpPkmn(att).getName() + " healed "+ getpPkmn(def).getLastdamagesuffered()/2 +" HP and now has "+att.getCurrentPkmn().getCurrentHp() +"/" + att.getCurrentPkmn().getBaseHp()+".";
+				}
+				else
+				{
+					if (att.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					this.s = this.s + getpPkmn(att).getName() + " missed !";
+				}
 				break;
 			//Fire spin
 			case 42 : 
@@ -725,7 +740,7 @@ public class Battle
 				if (checkHit(iAtt,getpPkmn(att),getpPkmn(def)))
 				{
 					deal(att,def,iAtt);
-					getpPkmn(att).setCurrentHp(getpPkmn(att).getCurrentHp() - (getpPkmn(att).getLastdamagesuffered()/4));
+					getpPkmn(att).setCurrentHp(-(getpPkmn(att).getLastdamagesuffered()/4));
 					if (att.getName().equals("Opponent"))
 						this.s = this.s + "\nEnemy ";
 					this.s = this.s + getpPkmn(att).getName() + " lost " + (getpPkmn(att).getLastdamagesuffered()/4) + " HP due to recoil.";
@@ -736,11 +751,12 @@ public class Battle
 			case 131 :
 				if (att.getName().equals("Opponent"))
 					this.s = this.s + "\nEnemy ";
-				if (getpPkmn(att).getCurrentHp() > (getpPkmn(att).getBaseHp()/4))
+				if (getpPkmn(att).getCurrentHp() > (getpPkmn(att).getBaseHp()/4) && !getpPkmn(att).getSub())
 				{
 					damage = getpPkmn(att).getBaseHp()/4;
-					getpPkmn(att).setCurrentHp(getpPkmn(att).getCurrentHp() - damage);
+					getpPkmn(att).setCurrentHp(-damage);
 					getpPkmn(att).setHpSubstitute(damage + 1);
+					getpPkmn(att).setSub(true);
 					this.s = this.s + getpPkmn(att).getName() + " lost " + damage + " HP to create a substitue !";
 					this.checkHpLeft(att);
 				}
@@ -750,7 +766,7 @@ public class Battle
 			//Super Fang	
 			case 132 :
 				damage = getpPkmn(def).getCurrentHp()/2;
-				getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - damage );
+				getpPkmn(def).setCurrentHp(-damage );
 				if (def.getName().equals("Opponent"))
 					this.s = this.s + "Enemy ";
 				this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
@@ -1072,7 +1088,7 @@ public class Battle
 					heal = def.getCurrentPkmn().getCurrentHp()/2;
 				else
 					heal = damage/2;
-				atk.getCurrentPkmn().setCurrentHp(atk.getCurrentPkmn().getCurrentHp()+heal);
+				atk.getCurrentPkmn().setCurrentHp(heal);
 				if (atk.getName().equals("Opponent"))
 					this.s = this.s + "\nEnemy ";
 				else
@@ -1082,7 +1098,7 @@ public class Battle
 			if (getpPkmn(def).getCountBide() > 0)
 				getpPkmn(def).setTotalBideDmg(getpPkmn(def).getTotalBideDmg() + damage);
 		}
-		def.getCurrentPkmn().setCurrentHp(def.getCurrentPkmn().getCurrentHp() - damage);
+		def.getCurrentPkmn().setCurrentHp(-damage);
 		this.checkHpLeft(def);
 		//Checks if the attack should inflict recoil damages
 		if (iAtt.getStatus() == 49)
@@ -1090,7 +1106,7 @@ public class Battle
 			int recoil = damage/4;
 			if (recoil == 0)
 				recoil = 1;
-			getpPkmn(atk).setCurrentHp(getpPkmn(atk).getCurrentHp() - (recoil));
+			getpPkmn(atk).setCurrentHp(-recoil);
 			this.s = this.s + "\n";
 			if (atk.getName().equals("Opponent"))
 				this.s = this.s + "Enemy ";
@@ -1100,7 +1116,7 @@ public class Battle
 		//Checks if the attack should kill its user (explosion/self-destruct)
 		else if (iAtt.getStatus() == 50)
 		{
-			getpPkmn(atk).setCurrentHp(0);
+			getpPkmn(atk).setCurrentHp(-(getpPkmn(atk).getBaseHp()));
 			this.checkHpLeft(atk);
 		}
 		getpPkmn(def).setLastdamagesuffered(damage);
@@ -1285,7 +1301,7 @@ public class Battle
 			else
 			{
 				int dmg = getpPkmn(p).getCurrentHp()/16;
-				getpPkmn(p).setCurrentHp(getpPkmn(p).getCurrentHp() - dmg);
+				getpPkmn(p).setCurrentHp(-dmg);
 				this.s = this.s + getpPkmn(p).getName() + " lost " + dmg + " HP due to TRAP.";
 				checkHpLeft(p);
 			}
@@ -1300,8 +1316,8 @@ public class Battle
 		if (getpPkmn(def).getSeeded())
 		{
 			seed = getpPkmn(def).getBaseHp()/8;
-			getpPkmn(def).setCurrentHp(getpPkmn(def).getCurrentHp() - seed);
-			getpPkmn(att).setCurrentHp(getpPkmn(att).getCurrentHp() + (seed/2));
+			getpPkmn(def).setCurrentHp(-seed);
+			getpPkmn(att).setCurrentHp(seed/2);
 			this.s = this.s + "\n" + getpPkmn(def).getName() + " lost " + seed + " HP from LEECH SIDE.\n";
 			this.s = this.s + getpPkmn(att).getName() + " was healed " + seed/2 + " HP from LEECH SIDE.";
 			checkHpLeft(def);
