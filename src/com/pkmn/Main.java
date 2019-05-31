@@ -1,6 +1,6 @@
 /*
  * TO DO :
- * - Finish special attacks
+ * - Finish special attacks > OK
  * - Enable switching in battle
  * - Better pokémon selection
  * - Sound (cries, music)
@@ -94,149 +94,162 @@ public class Main implements ActionListener
 			//Try/catch to check if the number is a valid choice
 			try
 			{
-				//If choice is empty, checks if we are in a twoturn or bind situation.
-				if (choice.equals("") && b.getpPkmn(b.p1).getTwoturnstatus() == 0)
-					throw new NullPointerException();
-				//If not, checks the choice to see if it's valid
-				else if (!choice.equals("") && Integer.parseInt(choice) > b.getpPkmn(b.p1).getAttacks().size())
-					throw new NullPointerException();
-				
-				//Choosing the attack of the opponent
-				
-				int rdatt;
-				if (b.getpPkmn(b.p2).getAttacks().size() == 1)
-					rdatt = 0;
+				//Check if the user asks for a switch
+				if (choice.equals("0") && b.getpPkmn(b.p1).getTwoturnstatus() == 0)
+				{
+					win.whatToChoose = "swap";
+					win.logTrace("Please choose another Pokémon from your team.");
+					win.logTrace("0  - Cancel");
+					for (int i = 0; i < b.p1.getTeam().size(); i++)
+					{
+						win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
+					}
+					win.logTrace("*********************** ");
+				}
 				else
 				{
-					Random r = new Random();
-					rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-					while (rdatt == b.checkDisabledAttack(b.p2))
+					//If choice is empty, checks if we are in a twoturn or bind situation.
+					if (choice.equals("") && b.getpPkmn(b.p1).getTwoturnstatus() == 0)
+						throw new NullPointerException();
+					//If not, checks the choice to see if it's valid
+					else if (!choice.equals("") && Integer.parseInt(choice) > b.getpPkmn(b.p1).getAttacks().size())
+						throw new NullPointerException();
+					
+					//Choosing the attack of the opponent
+					
+					int rdatt;
+					if (b.getpPkmn(b.p2).getAttacks().size() == 1)
+						rdatt = 0;
+					else
+					{
+						Random r = new Random();
 						rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-				}
-				//To avoid a disabled attack being a choice
-				
-				if (!choice.equals("") && Integer.parseInt(choice) - 1 == b.checkDisabledAttack(b.p1))
-					throw new AlreadyBoundException();
-				
-				//Checking prioritary using speed and moves used
-				if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current"))
-				{
-					if (b.getpattack(b.p2, rdatt).getStatus() == 51)
-						b.getpPkmn(b.p1).setPrio(false);
-					else if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
-						b.getpPkmn(b.p1).setPrio(true);
-					else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 22)
-						b.getpPkmn(b.p1).setPrio(false);
-					else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 80)
-						b.getpPkmn(b.p1).setPrio(false);
-					else
-						b.getpPkmn(b.p1).setPrio(true);
-				}
-				else
-				{
-					if (!choice.equals("") && b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
-						b.getpPkmn(b.p1).setPrio(true);
-					else if (b.getpattack(b.p2, rdatt).getId() == 22)
-						b.getpPkmn(b.p1).setPrio(true);
-					else if (b.getpattack(b.p2, rdatt).getId() == 80)
-						b.getpPkmn(b.p1).setPrio(false);
-					else
-						b.getpPkmn(b.p1).setPrio(false);
-				}
-				
-				/*
-				* Case : player faster
-				*/
-				if (b.getpPkmn(b.p1).getPrio())
-				{
-					//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
-					if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
-						win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p1).getTwoturnstatus()],b.p1,b.p2,0));
-					else
-						win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
-					//Checks if the opponent fainted
-					b.checkDead(b.p2, win);
-					//If the attack deals to user, checks if it's not dead
-					if (b.checkDead(b.p1, win))
-						b.getpPkmn(b.p2).setCanAttack(false);
-					if (b.getpPkmn(b.p2).getStatus() != 9)
-					{
-						//Checks if the pokémon didn't flinched between turns
-						if (b.getpPkmn(b.p2).getCanAttack())
-						{
-							if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
-								win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
-							else
-								win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
-							//Checks if the player fainted
-							b.checkDead(b.p1, win);
-							b.checkDead(b.p2, win);
-						}
-						//... if it flinched, reset canAttack
-						else
-							b.getpPkmn(b.p2).setCanAttack(true);
+						while (rdatt == b.checkDisabledAttack(b.p2))
+							rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
 					}
-				}
-				
-				/*
-				 * Case : opponent faster
-				 */
-				else
-				{
-					if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
-						win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
-					else
-						win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
-					//Checks if the player fainted
-					b.checkDead(b.p1, win);
-					if (b.checkDead(b.p2, win))
-						b.getpPkmn(b.p1).setCanAttack(false);
-					if (b.getpPkmn(b.p1).getStatus() != 9)
+					//To avoid a disabled attack being a choice
+					
+					if (!choice.equals("") && Integer.parseInt(choice) - 1 == b.checkDisabledAttack(b.p1))
+						throw new AlreadyBoundException();
+					
+					//Checking prioritary using speed and moves used
+					if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current"))
 					{
-						if (b.getpPkmn(b.p1).getCanAttack())
-						{
-							//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
-							if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
-								win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p1).getTwoturnstatus()],b.p1,b.p2,0));
-							else
-								win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
-							//Checks if someone fainted
-							b.checkDead(b.p2, win);
-							b.checkDead(b.p1, win);
-						}
+						if (b.getpattack(b.p2, rdatt).getStatus() == 51)
+							b.getpPkmn(b.p1).setPrio(false);
+						else if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+							b.getpPkmn(b.p1).setPrio(true);
+						else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 22)
+							b.getpPkmn(b.p1).setPrio(false);
+						else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 80)
+							b.getpPkmn(b.p1).setPrio(false);
 						else
-							b.getpPkmn(b.p1).setCanAttack(true);
+							b.getpPkmn(b.p1).setPrio(true);
 					}
+					else
+					{
+						if (!choice.equals("") && b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
+							b.getpPkmn(b.p1).setPrio(true);
+						else if (b.getpattack(b.p2, rdatt).getId() == 22)
+							b.getpPkmn(b.p1).setPrio(true);
+						else if (b.getpattack(b.p2, rdatt).getId() == 80)
+							b.getpPkmn(b.p1).setPrio(false);
+						else
+							b.getpPkmn(b.p1).setPrio(false);
+					}
+					/*
+					* Case : player faster
+					*/
+					if (b.getpPkmn(b.p1).getPrio())
+					{
+						//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
+						if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+							win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p1).getTwoturnstatus()],b.p1,b.p2,0));
+						else
+							win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
+						//Checks if the opponent fainted
+						b.checkDead(b.p2, win);
+						//If the attack deals to user, checks if it's not dead
+						if (b.checkDead(b.p1, win))
+							b.getpPkmn(b.p2).setCanAttack(false);
+						if (b.getpPkmn(b.p2).getStatus() != 9)
+						{
+							//Checks if the pokémon didn't flinched between turns
+							if (b.getpPkmn(b.p2).getCanAttack())
+							{
+								if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+									win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
+								else
+									win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
+								//Checks if the player fainted
+								b.checkDead(b.p1, win);
+								b.checkDead(b.p2, win);
+							}
+							//... if it flinched, reset canAttack
+							else
+								b.getpPkmn(b.p2).setCanAttack(true);
+						}
+					}
+					
+					/*
+					 * Case : opponent faster
+					 */
+					else
+					{
+						if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
+							win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
+						else
+							win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
+						//Checks if the player fainted
+						b.checkDead(b.p1, win);
+						if (b.checkDead(b.p2, win))
+							b.getpPkmn(b.p1).setCanAttack(false);
+						if (b.getpPkmn(b.p1).getStatus() != 9)
+						{
+							if (b.getpPkmn(b.p1).getCanAttack())
+							{
+								//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
+								if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+									win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p1).getTwoturnstatus()],b.p1,b.p2,0));
+								else
+									win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
+								//Checks if someone fainted
+								b.checkDead(b.p2, win);
+								b.checkDead(b.p1, win);
+							}
+							else
+								b.getpPkmn(b.p1).setCanAttack(true);
+						}
+					}
+					/*
+					 * Checks after attacks were used
+					*/
+					if (b.p1.getCountWall() > 0)
+					{
+						b.p1.setCountWall(b.p1.getCountWall() - 1);
+						if (b.p1.getCountWall() == 0)
+							win.logTrace("The wall of protection vanished !");
+					}
+					if (b.p2.getCountWall() > 0)
+					{
+						b.p2.setCountWall(b.p1.getCountWall() - 1);
+						if (b.p2.getCountWall() == 0)
+							win.logTrace("The enemy's wall of protection vanished !");
+					}
+					//Trap checking
+					
+					if (b.checkSeed(b.p1,b.p2,win))
+						b.checkDead(b.p1, win);
+					if (b.checkSeed(b.p2,b.p1,win))
+						b.checkDead(b.p2, win);
+					
+					//Shows attacks if both player and opponent are not dead
+					if (b.getpPkmn(b.p2).getStatus() != 9 && b.getpPkmn(b.p1).getStatus() != 9)
+						win.logTrace(b.showAttacks());
+					b.reinitPrio();
+					b.getpPkmn(b.p1).setLastattacksuffered(new Attack());
+					b.getpPkmn(b.p2).setLastattacksuffered(new Attack());
 				}
-				
-				/*
-				 * Checks after attacks were used
-				*/
-				if (b.p1.getCountWall() > 0)
-				{
-					b.p1.setCountWall(b.p1.getCountWall() - 1);
-					if (b.p1.getCountWall() == 0)
-						win.logTrace("The wall of protection vanished !");
-				}
-				if (b.p2.getCountWall() > 0)
-				{
-					b.p2.setCountWall(b.p1.getCountWall() - 1);
-					if (b.p2.getCountWall() == 0)
-						win.logTrace("The enemy's wall of protection vanished !");
-				}
-				//Trap checking
-				
-				if (b.checkSeed(b.p1,b.p2,win))
-					b.checkDead(b.p1, win);
-				if (b.checkSeed(b.p2,b.p1,win))
-					b.checkDead(b.p2, win);
-				
-				//Shows attacks if both player and opponent are not dead
-				if (b.getpPkmn(b.p2).getStatus() != 9 && b.getpPkmn(b.p1).getStatus() != 9)
-					win.logTrace(b.showAttacks());
-				b.reinitPrio();
-				b.getpPkmn(b.p1).setLastattacksuffered(new Attack());
-				b.getpPkmn(b.p2).setLastattacksuffered(new Attack());
 			}
 			catch (NullPointerException e1)
 			{
@@ -253,18 +266,35 @@ public class Main implements ActionListener
 			try
 			{
 				//Throws a NPE if the number is not a valid choice
-				if (Integer.parseInt(choice) > b.p1.getTeam().size() || Integer.parseInt(choice) == 0)
+				if (Integer.parseInt(choice) > b.p1.getTeam().size())
 					throw  new NullPointerException();
-				b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
-				b.p1.setCurrentStats(true);
-				win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+" !");
-				win.whatToChoose = "attack";
-				choice = null;
-				win.logTrace(b.showAttacks());
+				else if (Integer.parseInt(choice) == 0)
+				{
+					if (b.getpPkmn(b.p1).getStatus() != 9)
+					{
+						win.logTrace(b.showAttacks());
+						win.whatToChoose = "attack";
+					}
+					else
+						throw  new NullPointerException();
+				}
+				else
+				{
+					b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
+					b.p1.setCurrentStats(false);
+					win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+" !");
+					win.whatToChoose = "attack";
+					choice = null;
+					win.logTrace(b.showAttacks());
+				}
 			}
-			catch (Exception e10)
+			catch (NullPointerException e10)
 			{
 				win.logTrace("Woops ! That doesn't look like a valid Pokémon in your team !");
+			}
+			catch (AlreadyBoundException e12)
+			{
+				win.logTrace("Woops ! This Pokémon is already battling !");
 			}
 		}
 		else if (win.whatToChoose.equals("continue"))

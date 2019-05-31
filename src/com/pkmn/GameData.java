@@ -308,8 +308,8 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Thunder Wave","Paralyzes opponent.",144,0,20,false,this.allTypes[11],1,100,90); i++;
 		this.allAtks[i] = new Attack ("Thunderbolt","May paralyze opponent.",145,90,15,false,this.allTypes[11],1,10,100); i++;
 		this.allAtks[i] = new Attack ("Toxic","Badly poisons opponent.",146,0,10,false,this.allTypes[3],3,100,90); i++;
-		this.allAtks[i] = new Attack ("Transform","User takes on the form and attacks of the opponent.",147,0,10,false,this.allTypes[0],54,0,100); i++; // To code
-		this.allAtks[i] = new Attack ("Tri Attack","May paralyze, burn or freeze opponent.",148,80,10,false,this.allTypes[0],54,0,100); i++; // To code
+		this.allAtks[i] = new Attack ("Transform","User takes on the form and attacks of the opponent.",147,0,10,false,this.allTypes[0],54,0,100); i++; // OK
+		this.allAtks[i] = new Attack ("Tri Attack","May paralyze, burn or freeze opponent.",148,80,10,false,this.allTypes[0],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Twineedle","Hits twice in one turn. May poison opponent.",149,25,20,true,this.allTypes[6],46,20,100); i++;
 		this.allAtks[i] = new Attack ("Vice Grip","Standard attack",150,55,30,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Vine Whip","Standard attack",151,45,25,true,this.allTypes[10],0,0,100); i++;
@@ -486,7 +486,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[10]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[148]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);

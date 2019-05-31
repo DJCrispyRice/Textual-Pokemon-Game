@@ -123,7 +123,7 @@ public class Pokemon implements Cloneable
 		return attacks;
 	}
 
-	private void setAttacks(ArrayList<Attack> attacks) 
+	public void setAttacks(ArrayList<Attack> attacks) 
 	{
 		this.attacks = attacks;
 	}

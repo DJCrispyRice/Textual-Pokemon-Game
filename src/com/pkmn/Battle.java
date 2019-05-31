@@ -818,8 +818,7 @@ public class Battle
 					getpPkmn(att).setCountThrash(ThreadLocalRandom.current().nextInt(2,3));
 					getpPkmn(att).setTwoturnstatus(140);
 				}
-				if (checkHit(iAtt,getpPkmn(att),getpPkmn(def)))
-					deal(att,def,iAtt);
+				deal(att,def,iAtt);
 				if (getpPkmn(att).getCountThrash() == 0)
 				{
 					getpPkmn(att).setTwoturnstatus(0);
@@ -838,9 +837,29 @@ public class Battle
 				else
 					this.s = this.s + "\n";
 				this.s = this.s + getpPkmn(att).getName() + " transformed into " + getpPkmn(def).getName() + " !";
+				getpPkmn(att).setName(getpPkmn(def).getName() + " (" + getpPkmn(att).getName() + ")");
+				getpPkmn(att).setAttack(getpPkmn(def).getAttack());
+				getpPkmn(att).setDefense(getpPkmn(def).getDefense());
+				getpPkmn(att).setSpecial(getpPkmn(def).getSpecial());
+				getpPkmn(att).setSpeed(getpPkmn(def).getSpeed());
+				getpPkmn(att).setAttacks(getpPkmn(def).getAttacks());
 				break;
 			//Tri-Attack
 			case 148 : 
+				deal(att,def,iAtt);
+				int random = ThreadLocalRandom.current().nextInt(0,100);
+				if (random > 80 && getpPkmn(def).getStatus() != 0)
+				{
+					int status;
+					random = ThreadLocalRandom.current().nextInt(0,100);
+					if (random > 66)
+						status = 1;
+					else if (random > 33)
+						status = 4;
+					else
+						status = 5;
+					statusModifier(def,status);
+				}
 				break;
 			//Whirlwind
 			case 154 :
@@ -1415,7 +1434,7 @@ public class Battle
 					if (p.getTeam().size()==1)
 						p.setCurrentPkmn(p.getTeam().get(0));
 					p.setCurrentPkmn(p.getTeam().get(ThreadLocalRandom.current().nextInt(0, p.getTeam().size() - 1)));
-					p.setCurrentStats(true);
+					p.setCurrentStats(false);
 					win.logTrace("Your opponent sent "+getpPkmn(p).getName()+" !");
 					getpPkmn(p).setCanAttack(false);
 				}

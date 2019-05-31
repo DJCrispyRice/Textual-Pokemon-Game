@@ -92,7 +92,7 @@ public class Player
 	//stat is used because haze should not reset status.
 	public void setCurrentStats(boolean status)
 	{
-		currentPkmn.setCurrentHp(currentPkmn.getBaseHp());
+		currentPkmn.setCurrentHp(currentPkmn.getCurrentHp());
 		currentPkmn.getAttack().setStage(0);
 		currentPkmn.getDefense().setStage(0);
 		currentPkmn.getSpecial().setStage(0);
