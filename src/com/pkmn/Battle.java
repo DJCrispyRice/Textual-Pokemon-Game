@@ -498,7 +498,7 @@ public class Battle
 		{
 			//Checks if the status alteration hits using the accu_status.
 			int randomstat2 = ThreadLocalRandom.current().nextInt(0,100);
-			if (randomstat2 >= 100 - iAtt.getAccu_status())
+			if (randomstat2 >= 100 - iAtt.getAccu_status() && !getpPkmn(def).getSub())
 				statusModifier(def,iAtt.getStatus());
 		}
 		//Shows the "avoid attack" message if the purpose of the move is only status alteration. Exception with healing move that does not hit opponent
@@ -797,8 +797,13 @@ public class Battle
 					this.s = this.s + getpPkmn(att).getName() + " became confused !";
 				}
 				break;
-			case 147 : 
+			//Transform
+			case 147 :
+				if (att.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				this.s = this.s + getpPkmn(att).getName() + " transformed into " + getpPkmn(def).getName() + " !";
 				break;
+			//Tri-Attack
 			case 148 : 
 				break;
 			//Whirlwind
@@ -985,11 +990,26 @@ public class Battle
 		}
 		else
 		{
-			if (def.getName().equals("Opponent"))
-				this.s = this.s + "\nEnemy ";
+			if (getpPkmn(def).getSub())
+			{
+				if (getpPkmn(def).getHpSubstitute() <= 0)
+				{
+					getpPkmn(def).setSub(false);
+					if (def.getName().equals("Opponent"))
+						this.s = this.s + "\nEnemy ";
+					else
+						this.s = this.s + "\n";
+					this.s = this.s + def.getCurrentPkmn().getName()+"'s substitute broke.";
+				}
+			}
 			else
-				this.s = this.s + "\n";
-			this.s = this.s + def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP. ";
+			{
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				else
+					this.s = this.s + "\n";
+				this.s = this.s + def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP. ";
+			}
 		}
 	}
 		
@@ -1116,6 +1136,8 @@ public class Battle
 		//Checks if the attack should kill its user (explosion/self-destruct)
 		else if (iAtt.getStatus() == 50)
 		{
+			getpPkmn(atk).setHpSubstitute(0);
+			getpPkmn(atk).setSub(false);
 			getpPkmn(atk).setCurrentHp(-(getpPkmn(atk).getBaseHp()));
 			this.checkHpLeft(atk);
 		}
@@ -1126,49 +1148,55 @@ public class Battle
 	//Applies status alteration and prints the result
 	private void statusModifier(Player p, int status)
 	{
-		getpPkmn(p).setStatus(status);
-		if (p.getName().equals("Opponent"))
-			this.s = this.s + "\nEnemy ";
-		else
-			this.s = this.s + "\n";
-		switch (status)
+		if (!getpPkmn(p).getSub())
 		{
-			case 1 :
-				this.s = this.s + getpPkmn(p).getName() + " is paralysed ! It may not be able to attack !";
-				getpPkmn(p).getSpeed().setCurrent((int) (getpPkmn(p).getSpeed("base")*0.25));
-				break;
-			case 2 :
-				this.s = this.s + getpPkmn(p).getName() + " felt asleep !";
-				getpPkmn(p).setCountSleep(ThreadLocalRandom.current().nextInt(1,7));
-				break;
-			case 3 :
-				//Type poison pokemons cannot be poisonned
-				if (getpPkmn(p).getType1().getName() != "Poison")
-				{
-					this.s = this.s + getpPkmn(p).getName() + " is poisonned !";
-				}
-				else if (getpPkmn(p).getType2() != null)
-				{
-					if (getpPkmn(p).getType2().getName() != "Poison")
+			if (p.getName().equals("Opponent"))
+				this.s = this.s + "\nEnemy ";
+			else
+				this.s = this.s + "\n";
+			switch (status)
+			{
+				case 1 :
+					this.s = this.s + getpPkmn(p).getName() + " is paralysed ! It may not be able to attack !";
+					getpPkmn(p).getSpeed().setCurrent((int) (getpPkmn(p).getSpeed("base")*0.25));
+					getpPkmn(p).setStatus(status);
+					break;
+				case 2 :
+					this.s = this.s + getpPkmn(p).getName() + " felt asleep !";
+					getpPkmn(p).setCountSleep(ThreadLocalRandom.current().nextInt(1,7));
+					getpPkmn(p).setStatus(status);
+					break;
+				case 3 :
+					//Type poison pokemons cannot be poisonned
+					if (getpPkmn(p).getType1().getName() != "Poison")
+					{
 						this.s = this.s + getpPkmn(p).getName() + " is poisonned !";
-				}
-				else
-				{
-					this.s = this.s + getpPkmn(p).getName() + " avoid the attack !";
-					getpPkmn(p).setStatus(0);
-				}
-				break;
-			case 4 :
-				this.s = this.s + getpPkmn(p).getName() + " got burnt !";
-				break;
-			case 5 :
-				this.s = this.s + getpPkmn(p).getName() + " was frozen solid !";
-				break;
-			case 6 :
-				this.s = this.s + getpPkmn(p).getName() + " became confused !";
-				getpPkmn(p).setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
-				getpPkmn(p).setStatus(0);
-				break;
+						getpPkmn(p).setStatus(status);
+					}
+					else if (getpPkmn(p).getType2() != null)
+					{
+						if (getpPkmn(p).getType2().getName() != "Poison")
+						{
+							this.s = this.s + getpPkmn(p).getName() + " is poisonned !";
+							getpPkmn(p).setStatus(status);
+						}
+					}
+					else
+						this.s = this.s + getpPkmn(p).getName() + " avoid the attack !";
+					break;
+				case 4 :
+					this.s = this.s + getpPkmn(p).getName() + " got burnt !";
+					getpPkmn(p).setStatus(status);
+					break;
+				case 5 :
+					this.s = this.s + getpPkmn(p).getName() + " was frozen solid !";
+					getpPkmn(p).setStatus(status);
+					break;
+				case 6 :
+					this.s = this.s + getpPkmn(p).getName() + " became confused !";
+					getpPkmn(p).setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
+					break;
+			}
 		}
 	}
 	

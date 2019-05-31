@@ -317,9 +317,7 @@ public class Pokemon implements Cloneable
 	{
 		this.hpSubstitute = this.hpSubstitute + hp;
 		if (this.hpSubstitute < 0)
-		{
 			this.hpSubstitute = 0;
-		}
 	}
 	
 	public boolean getSub() 
