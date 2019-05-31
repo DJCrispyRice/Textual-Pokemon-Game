@@ -195,7 +195,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Double Team","Raises user's Evasiveness.",31,0,15,false,this.allTypes[0],41,0,100); i++;
 		this.allAtks[i] = new Attack ("Double-Edge","User receives recoil damage.",32,100,15,true,this.allTypes[0],49,0,100); i++;
 		this.allAtks[i] = new Attack ("Dragon Rage","Always inflicts 40 HP.",33,40,10,false,this.allTypes[14],53,0,100); i++;
-		this.allAtks[i] = new Attack ("Dream Eater","User recovers half the HP inflicted on a sleeping opponent.",34,100,15,false,this.allTypes[12],54,0,100); i++; //To code
+		this.allAtks[i] = new Attack ("Dream Eater","User recovers half the HP inflicted on a sleeping opponent.",34,100,15,false,this.allTypes[12],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Drill Peck","Standard attack",35,80,20,true,this.allTypes[2],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Earthquake","Power is doubled if opponent is underground from using Dig.",36,100,10,true,this.allTypes[4],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Egg Bomb","Standard attack",37,100,10,true,this.allTypes[0],0,0,75); i++;
@@ -292,7 +292,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Struggle","Only usable when all PP are gone. Hurts the user.",128,50,1000,true,this.allTypes[0],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Stun Spore","Paralyzes opponent.",129,0,30,false,this.allTypes[10],1,100,75); i++;
 		this.allAtks[i] = new Attack ("Submission","User receives recoil damage.",130,80,20,true,this.allTypes[1],49,0,80); i++;
-		this.allAtks[i] = new Attack ("Substitute","Uses HP to create a decoy that takes hits.",131,0,10,false,this.allTypes[0],54,0,100); i++; // To code
+		this.allAtks[i] = new Attack ("Substitute","Uses HP to create a decoy that takes hits.",131,0,10,false,this.allTypes[0],54,0,100); i++; // OK
 		this.allAtks[i] = new Attack ("Super Fang","Always takes off half of the opponent's HP.",132,0,10,true,this.allTypes[0],54,0,90); i++; // OK
 		this.allAtks[i] = new Attack ("Supersonic","Confuses opponent.",133,0,20,false,this.allTypes[0],6,100,55); i++;
 		this.allAtks[i] = new Attack ("Surf","Standard attack.",134,90,15,false,this.allTypes[9],0,0,100); i++;
@@ -486,7 +486,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[131]); i++;
+		this.allPkmn[i].getAttacks().add(this.allAtks[10]); i++;
 		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);
