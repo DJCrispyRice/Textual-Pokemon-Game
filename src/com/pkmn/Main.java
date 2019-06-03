@@ -1,8 +1,8 @@
 /*
  * TO DO :
  * - Finish special attacks > OK
- * - Enable switching in battle
- * - Better pokémon selection
+ * - Enable switching in battle > OK
+ * - Better pokémon selection > OK
  * - Sound (cries, music)
  * - Graphics (not sure if it suits this project yet)
  */
@@ -11,11 +11,13 @@ package com.pkmn;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.nio.channels.AlreadyBoundException;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Main implements ActionListener
+public class Main implements ActionListener, KeyListener
 {
 	Window win;
 	GameData gd;
@@ -27,13 +29,36 @@ public class Main implements ActionListener
 		gd = new GameData(win);
 		win.clear();
 		win.jtf.addActionListener(this);
-		win.logTrace("Welcome in the Pokémon Textual Game !\nType 1 and Enter to start.");
+		win.jtf.addKeyListener(this);
+		win.jtf.setFocusTraversalKeysEnabled(false);
+		win.logTrace("Welcome in the Pokémon Textual Battle Game !\nType 1 and Enter to start.");
 	}
 	
 	public static void main(String[] args) throws InterruptedException
 	{
 		@SuppressWarnings("unused")
 		Main m = new Main();
+	}
+	
+	//Autocompletion using TAB key
+	public void keyPressed(KeyEvent event) 
+	{
+		if (event.getKeyChar() == KeyEvent.VK_TAB && win.whatToChoose.equals("team")) 
+		{
+			choice = win.jtf.getText();
+			if (!choice.equals(""))
+			{
+				choice = choice.toUpperCase();
+				for (int i = 1; i < 152 ; i++)
+				{
+					if (this.gd.allPkmn[i].getName().startsWith(choice))
+					{
+						win.jtf.setText(this.gd.allPkmn[i].getName());
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -45,7 +70,7 @@ public class Main implements ActionListener
 		if (choice.equals("1") && win.whatToChoose.equals("start"))
 		{
 			win.logTrace("A new battle will begin ! Please choose your team.");
-			win.logTrace("To do so, type the number of your Pokémon and Enter. You can refer to the Pokédex if needed.");
+			win.logTrace("To do so, type the number of your Pokémon or its name and press Enter.\nYou can refer to the Pokédex if needed by typing \"POKEDEX\".");
 			win.whatToChoose = "team";
 		}
 		//Part that is used to select your team
@@ -56,36 +81,103 @@ public class Main implements ActionListener
 				//To avoid MissingNo being a choice
 				if (choice.equals("0") || Integer.parseInt(choice) == 0)
 					throw  new NullPointerException();
-				b.p1.setTeam(gd.allPkmn[Integer.parseInt(choice)].clone());
-				win.logTrace("You chose "+gd.allPkmn[Integer.parseInt(choice)].getName()+" !");
-				//Checking if the party is full
-				if (b.p1.getTeam().size() == 6)
-				{
-					win.logTrace("There you go ! Your party is full.");
-					win.logTrace("Hold on, your opponant is choosing his team...");
-					//b.p2.setTeam((Pokemon) gd.allPkmn[1].clone());
-					//Randomly choosing 6 pokémons for the opponent.
-					for (int i = 1 ;i<=6;i++)
-					{
-						b.p2.setTeam((Pokemon) gd.allPkmn[ThreadLocalRandom.current().nextInt(1, 151 + 1)].clone());
-						win.logTrace("Pokémon "+i+" is... "+b.p2.getTeam().get(i-1).getName()+" !");
-					}
-					win.logTrace("Your opponent chose his team, now let's the battle begin !");
-					win.whatToChoose = "attack";
-					b.p1.currentPkmn = b.p1.getTeam().get(0);
-					b.p2.currentPkmn = b.p2.getTeam().get(0);
-					win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !\n***********************");
-					win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
-					win.logTrace(b.showAttacks());
-				}
-				//... Otherwise showing how many pokémons are left to choose
 				else
-					win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose.");
+				{
+					b.p1.setTeam(gd.allPkmn[Integer.parseInt(choice)].clone());
+					win.logTrace("You chose "+gd.allPkmn[Integer.parseInt(choice)].getName()+" !");
+					//Checking if the party is full
+					if (b.p1.getTeam().size() == 6)
+					{
+						win.logTrace("There you go ! Your party is full.");
+						win.logTrace("Hold on, your opponant is choosing his team...");
+						//Randomly choosing 6 pokémons for the opponent.
+						for (int i = 1 ;i<=6;i++)
+						{
+							b.p2.setTeam((Pokemon) gd.allPkmn[ThreadLocalRandom.current().nextInt(1, 151 + 1)].clone());
+							win.logTrace("Pokémon "+i+" is... "+b.p2.getTeam().get(i-1).getName()+" !");
+						}
+						win.logTrace("Your opponent chose his team, now let's the battle begin !");
+						win.whatToChoose = "attack";
+						b.p1.currentPkmn = b.p1.getTeam().get(0);
+						b.p2.currentPkmn = b.p2.getTeam().get(0);
+						win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !\n***********************");
+						win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
+						win.logTrace(b.showAttacks());
+					}
+					//... Otherwise showing how many pokémons are left to choose
+					else
+						win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose.");
+				}
+			}
+			//Case the user didn't type a number
+			catch (NumberFormatException nfe)
+			{
+				boolean ok = false;
+				choice = choice.toUpperCase();
+				if (choice.equals("POKEDEX"))
+					gd.showPokedex(win);
+				else
+				{
+					for (int i = 1; i < 152; i++)
+					{
+						if (this.gd.allPkmn[i].getName().equals(choice))
+						{
+							try 
+							{
+								b.p1.setTeam(gd.allPkmn[i].clone());
+								win.logTrace("You chose "+gd.allPkmn[i].getName()+" !");
+								ok = true;
+								break;
+							} 
+							catch (CloneNotSupportedException e) 
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+					if (!ok)
+						win.logTrace("Woops ! That doesn't look like a valid Pokémon !");
+					else if (b.p1.getTeam().size() == 6)
+					{
+						win.logTrace("There you go ! Your party is full.");
+						win.logTrace("Hold on, your opponant is choosing his team...");
+						//b.p2.setTeam((Pokemon) gd.allPkmn[1].clone());
+						//Randomly choosing 6 pokémons for the opponent.
+						for (int j = 1 ; j <= 6; j++)
+						{
+							try 
+							{
+								b.p2.setTeam((Pokemon) gd.allPkmn[ThreadLocalRandom.current().nextInt(1, 151 + 1)].clone());
+							} catch (CloneNotSupportedException e) 
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							win.logTrace("Pokémon "+j+" is... "+b.p2.getTeam().get(j-1).getName()+" !");
+						}
+						win.logTrace("Your opponent chose his team, now let's the battle begin !");
+						win.whatToChoose = "attack";
+						b.p1.currentPkmn = b.p1.getTeam().get(0);
+						b.p2.currentPkmn = b.p2.getTeam().get(0);
+						win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !\n***********************");
+						win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
+						win.logTrace(b.showAttacks());
+					}
+					//... Otherwise showing how many pokémons are left to choose
+					else
+						win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose.");
+				}
 			}
 			//If what the user type is not a pokémon (not a number, something higher than 151...)
-			catch (Exception e)
+			catch (NullPointerException e)
 			{
 				win.logTrace("Woops ! That doesn't look like a valid Pokémon !");
+			} 
+			catch (CloneNotSupportedException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		//Selecting the attack
@@ -97,7 +189,7 @@ public class Main implements ActionListener
 				//Check if the user asks for a switch
 				if (choice.equals("0") && b.getpPkmn(b.p1).getTwoturnstatus() == 0)
 				{
-					win.whatToChoose = "swap";
+					win.whatToChoose = "switch";
 					win.logTrace("Please choose another Pokémon from your team.");
 					win.logTrace("0  - Cancel");
 					for (int i = 0; i < b.p1.getTeam().size(); i++)
@@ -261,7 +353,7 @@ public class Main implements ActionListener
 				win.logTrace("This move is disabled. Please choose another one.");
 			}
 		}
-		else if (win.whatToChoose.equals("swap"))
+		else if (win.whatToChoose.equals("swap") || win.whatToChoose.equals("switch"))
 		{
 			try
 			{
@@ -283,6 +375,35 @@ public class Main implements ActionListener
 					b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
 					b.p1.setCurrentStats(false);
 					win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+" !");
+					//If it's a switch (requested swap), the enemy will attack like normal
+					if (win.whatToChoose.equals("switch"))
+					{
+						if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
+							win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
+						else
+						{
+							//Choosing the attack of the opponent
+							int rdatt;
+							if (b.getpPkmn(b.p2).getAttacks().size() == 1)
+								rdatt = 0;
+							else
+							{
+								Random r = new Random();
+								rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
+								while (rdatt == b.checkDisabledAttack(b.p2))
+									rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
+							}
+							win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
+							//Checks if someone fainted
+							b.checkDead(b.p2, win);
+							b.checkDead(b.p1, win);
+							if (b.checkSeed(b.p1,b.p2,win))
+								b.checkDead(b.p1, win);
+							if (b.checkSeed(b.p2,b.p1,win))
+								b.checkDead(b.p2, win);
+							b.reinitPrio();
+						}
+					}
 					win.whatToChoose = "attack";
 					choice = null;
 					win.logTrace(b.showAttacks());
@@ -316,7 +437,7 @@ public class Main implements ActionListener
 				}
 				else
 				{
-					win.logTrace("Ok then. See you later.");
+					win.logTrace("Okay then. See you later.");
 					Thread.sleep(1000);
 					System.exit(0);
 				}
@@ -326,5 +447,17 @@ public class Main implements ActionListener
 				win.logTrace("Woops ! That choice is not valid.");
 			}
 		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

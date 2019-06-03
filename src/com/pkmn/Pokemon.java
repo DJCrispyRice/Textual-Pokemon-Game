@@ -462,4 +462,14 @@ public class Pokemon implements Cloneable
 	{
 		return (Pokemon) super.clone();
 	}
+	
+	public String getTypes()
+	{
+		String s = this.getType1().getName();
+		if (this.getType2()!=null)
+		{
+			s = s + "/" + this.getType2().getName();
+		}
+		return s;
+	}
 }

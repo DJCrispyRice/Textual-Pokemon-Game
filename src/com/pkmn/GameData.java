@@ -1088,4 +1088,11 @@ public final class GameData
 		this.createAttacks();
 		return this.allAtks[i];
 	}
+
+	public void showPokedex(Window win) 
+	{
+		win.logTrace("Here is every Pokédex entry.");
+		for (int i = 1; i < 152; i++)
+			win.logTrace(i +" - " + this.allPkmn[i].getName() + ". Type : " +this.allPkmn[i].getTypes());
+	}
 }
