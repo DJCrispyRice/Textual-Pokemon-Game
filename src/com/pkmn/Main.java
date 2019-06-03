@@ -31,7 +31,7 @@ public class Main implements ActionListener, KeyListener
 		win.jtf.addActionListener(this);
 		win.jtf.addKeyListener(this);
 		win.jtf.setFocusTraversalKeysEnabled(false);
-		win.logTrace("Welcome in the Pokémon Textual Battle Game !\nType 1 and Enter to start.");
+		win.logTrace("Welcome in the Pokémon Textual Battle Game !\nPress Enter to start.");
 	}
 	
 	public static void main(String[] args) throws InterruptedException
@@ -43,19 +43,15 @@ public class Main implements ActionListener, KeyListener
 	//Autocompletion using TAB key
 	public void keyPressed(KeyEvent event) 
 	{
-		if (event.getKeyChar() == KeyEvent.VK_TAB && win.whatToChoose.equals("team")) 
+		choice = win.jtf.getText().toUpperCase();
+		if (event.getKeyChar() == KeyEvent.VK_TAB && win.whatToChoose.equals("team") && !choice.equals("")) 
 		{
-			choice = win.jtf.getText();
-			if (!choice.equals(""))
+			for (int i = 1; i < 152 ; i++)
 			{
-				choice = choice.toUpperCase();
-				for (int i = 1; i < 152 ; i++)
+				if (this.gd.allPkmn[i].getName().startsWith(choice))
 				{
-					if (this.gd.allPkmn[i].getName().startsWith(choice))
-					{
-						win.jtf.setText(this.gd.allPkmn[i].getName());
-						break;
-					}
+					win.jtf.setText(this.gd.allPkmn[i].getName());
+					break;
 				}
 			}
 		}
@@ -64,10 +60,10 @@ public class Main implements ActionListener, KeyListener
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
-		choice = win.jtf.getText();
+		choice = win.jtf.getText().toUpperCase();
 		win.jtf.setText("");
 		//Checking the 1 to start the game
-		if (choice.equals("1") && win.whatToChoose.equals("start"))
+		if (win.whatToChoose.equals("start"))
 		{
 			win.logTrace("A new battle will begin ! Please choose your team.");
 			win.logTrace("To do so, type the number of your Pokémon or its name and press Enter.\nYou can refer to the Pokédex if needed by typing \"POKEDEX\".");
@@ -113,7 +109,6 @@ public class Main implements ActionListener, KeyListener
 			catch (NumberFormatException nfe)
 			{
 				boolean ok = false;
-				choice = choice.toUpperCase();
 				if (choice.equals("POKEDEX"))
 					gd.showPokedex(win);
 				else

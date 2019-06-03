@@ -486,11 +486,10 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
-		this.allPkmn[i].getAttacks().add(this.allAtks[148]); i++;
-		/*this.allPkmn[i].getAttacks().add(this.allAtks[95]);
+		this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);
-		this.allPkmn[i].getAttacks().add(this.allAtks[146]);i++;*/
+		this.allPkmn[i].getAttacks().add(this.allAtks[146]);i++;
 		this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[32]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[115]);
