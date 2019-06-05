@@ -3,6 +3,7 @@
  * - Finish special attacks > OK
  * - Enable switching in battle > OK
  * - Better pokémon selection > OK
+ * - Add IA
  * - Sound (cries, music)
  * - Graphics (not sure if it suits this project yet)
  */
@@ -67,6 +68,7 @@ public class Main implements ActionListener, KeyListener
 		{
 			win.logTrace("A new battle will begin ! Please choose your team.");
 			win.logTrace("To do so, type the number of your Pokémon or its name and press Enter.\nYou can refer to the Pokédex if needed by typing \"POKEDEX\".");
+			win.logTrace("You can auto-complete your input by pressing TAB after the beginning of a Pokémon's name.");
 			win.whatToChoose = "team";
 		}
 		//Part that is used to select your team
