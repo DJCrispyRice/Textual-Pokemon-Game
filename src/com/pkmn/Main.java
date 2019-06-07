@@ -3,6 +3,7 @@
  * - Finish special attacks > OK
  * - Enable switching in battle > OK
  * - Better pokémon selection > OK
+ * - Better code organisation > Started
  * - Add IA
  * - Sound (cries, music)
  * - Graphics (not sure if it suits this project yet)

@@ -11,14 +11,14 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Battle 
 {
 	Player p1;
-	Player p2;
+	Ia p2;
 	String s = new String();
 	GameData gd;
 	
 	public Battle(GameData gd)
 	{
 		this.p1 = new Player("Player");
-		this.p2 = new Player("Opponent");
+		this.p2 = new Ia();
 		this.gd = new GameData();
 	}
 	
