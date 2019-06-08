@@ -32,51 +32,6 @@ public class Battle
 		return p.getCurrentPkmn().getAttacks().get(i);
 	}
 	
-	//Shows attacks that can be used by your pokémon
-	public String showAttacks()
-	{
-		this.s = new String();
-		if (getpPkmn(p1).getTwoturnstatus() == 0 && getpPkmn(p1).getCountBide() == 0 && getpPkmn(p1).getCountThrash() == 0)
-		{
-			if (this.getpPkmn(p1).getStatus()!=0)
-			{
-				this.s = this.s + "+++" + this.getpPkmn(p1).getName() + " is ";
-				switch (this.getpPkmn(p1).getStatus())
-				{
-					case 1 :
-						this.s = this.s + "paralysed.+++\n";
-						break;
-					case 2 :
-						this.s = this.s + "asleep.+++\n";
-						break;
-					case 3 :
-						this.s = this.s + "poisoned.+++\n";
-						break;
-					case 4 :
-						this.s = this.s + "burning.+++\n";
-						break;
-					case 5 :
-						this.s = this.s + "frozen.+++\n";
-						break;
-				}
-			}
-			s = s + "What should "+this.getpPkmn(p1).getName()+" do ?";
-			s = s + "\n 0. Swap Pokémon";
-			for (int i=0;i<this.getpPkmn(p1).getAttacks().size();i++)
-			{
-				if (getpPkmn(p1).getAttacks().get(i).getEnabled())
-					s = s + "\n "+Integer.toString(i+1)+". ";  
-				else
-					s = s + "\n DISABLED. ";
-				s = s + this.getpattack(this.p1, i).getType().getName() + " - " + this.getpattack(this.p1,i).getName()+" - "+this.getpattack(this.p1,i).getDescription();
-			}
-			s = s + "\n***********************";
-		}
-		else
-			s = s + "***********************\nPress enter to proceed to next turn.\n***********************";
-		return s;
-	}
-	
 	//Is used whatever an attack is launched by a pokemon. att is the attacker, def is the defender
 	//i is used to see if it's the first or the second attack in this turn
 	public String useAttack (Attack iAtt, Player att, Player def, int i)
@@ -141,7 +96,7 @@ public class Battle
 						this.s = this.s + "Enemy ";
 					this.s = this.s + this.getpPkmn(att).getName() + " hurts himself in confusion and lost "+damage+" HP.";
 					this.getpPkmn(att).setCurrentHp(-damage);
-					this.checkHpLeft(att);
+					this.s = this.s + att.checkHpLeft();
 					atkok = false;
 				}
 			}
@@ -184,7 +139,7 @@ public class Battle
 						int damage = getpPkmn(att).getBaseHp()/8;
 						this.s = this.s + getpPkmn(att).getName() + " crashed and lost " + damage + " HP.";
 						getpPkmn(att).setCurrentHp(-damage);
-						this.checkHpLeft(att);
+						this.s = this.s + att.checkHpLeft();
 					}
 					else
 					{
@@ -192,7 +147,7 @@ public class Battle
 						if (iAtt.getStatus() == 50)
 						{
 							getpPkmn(att).setCurrentHp(getpPkmn(att).getBaseHp());
-							this.checkHpLeft(att);
+							this.s = this.s + att.checkHpLeft();
 						}
 					}
 				}
@@ -203,7 +158,7 @@ public class Battle
 			{
 				if (this.getpPkmn(att).getCountDisable()==1)
 				{
-					this.getpPkmn(att).getAttacks().get(checkDisabledAttack(att)).setEnabled(true);
+					this.getpPkmn(att).getAttacks().get(att.checkDisabledAttack()).setEnabled(true);
 					this.s = this.s + "\nThe effect of DISABLE whore off !";
 				}
 				this.getpPkmn(att).setCountDisable(this.getpPkmn(att).getCountDisable() - 1);
@@ -216,20 +171,22 @@ public class Battle
 		//If the pokémon is poisoned, lose 1/16 of its HP
 		if (this.getpPkmn(att).getStatus()==3 && iAtt.getId() != 77)
 		{
+			this.s = this.s + "\n";
 			if (att.getName().equals("Opponent"))
-				this.s = this.s + "\nEnemy ";
-			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to poison.";
+				this.s = this.s + "Enemy ";
+			this.s = this.s +this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to poison.";
 			this.getpPkmn(att).setCurrentHp(-this.getpPkmn(att).getBaseHp()/16);
-			this.checkHpLeft(att);
+			this.s = this.s + att.checkHpLeft();
 		}
 		//If the pokémon is burn, lose 1/16 of its HP.
 		else if (this.getpPkmn(att).getStatus()==4 && iAtt.getId() != 77)
 		{
+			this.s = this.s + "\n";
 			if (att.getName().equals("Opponent"))
-				this.s = this.s + "\nEnemy ";
-			this.s = this.s + "\n"+this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to burn.";
+				this.s = this.s + "Enemy ";
+			this.s = this.s + this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to burn.";
 			this.getpPkmn(att).setCurrentHp(-this.getpPkmn(att).getBaseHp()/16);
-			this.checkHpLeft(att);
+			this.s = this.s + att.checkHpLeft();
 		}
 		//To avoid *** being shown multiple times when Metronome is used
 		if (iAtt.getId() != 77)
@@ -476,8 +433,8 @@ public class Battle
 					}
 					else
 					{
-						att.setCurrentStats(false);
-						def.setCurrentStats(false);
+						getpPkmn(att).setCurrentStats(false);
+						getpPkmn(def).setCurrentStats(false);
 						this.s = this.s + "All status changes were eliminated !";
 					}
 					break;
@@ -541,7 +498,7 @@ public class Battle
 							this.s = this.s + "Enemy ";
 						this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
 						getpPkmn(att).setTotalBideDmg(0);
-						this.checkHpLeft(def);
+						this.s = this.s + def.checkHpLeft();
 					}
 					else
 						this.s = this.s + getpPkmn(att).getName() + " is still storing energy !";
@@ -574,7 +531,7 @@ public class Battle
 					if (def.getName().equals("Opponent"))
 						this.s = this.s + "Enemy ";
 					this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
-					this.checkHpLeft(def);
+					this.s = this.s + def.checkHpLeft();
 				}
 				else
 				{
@@ -772,7 +729,7 @@ public class Battle
 					else
 						this.s = this.s + "\n";
 					this.s = this.s + getpPkmn(att).getName() + " lost " + (getpPkmn(att).getLastdamagesuffered()/4) + " HP due to recoil.";
-					checkHpLeft(att);
+					this.s = this.s + att.checkHpLeft();
 				}
 				break;
 			//Substitute
@@ -788,7 +745,7 @@ public class Battle
 					getpPkmn(att).setHpSubstitute(damage + 1);
 					getpPkmn(att).setSub(true);
 					this.s = this.s + getpPkmn(att).getName() + " lost " + damage + " HP to create a substitue !";
-					this.checkHpLeft(att);
+					this.s = this.s + att.checkHpLeft();
 				}
 				else
 					this.s = this.s + getpPkmn(att).getName() + " missed !";
@@ -800,7 +757,7 @@ public class Battle
 				if (def.getName().equals("Opponent"))
 					this.s = this.s + "Enemy ";
 				this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
-				this.checkHpLeft(def);
+				this.s = this.s + def.checkHpLeft();
 				break;
 			//Thrash
 			case 140 :
@@ -1035,48 +992,7 @@ public class Battle
 		return rt;
 	}
 	
-	//To write how many hp left the pokémon has. Def is the player who is being checked.
-	public void checkHpLeft(Player def)
-	{
-		//Checks if the pokemon is dead.
-		if (def.getCurrentPkmn().getStatus() == 9)
-		{
-			this.s = this.s + "\n***********************\n"+def.getCurrentPkmn().getName()+" fainted !";
-			if (def.getName().equals("Player"))
-			{
-				this.p1.getTeam().remove(def.getCurrentPkmn());
-				this.s = this.s + "\nYou have "+this.p1.getTeam().size()+" pokémon left.";
-			}
-			else
-			{
-				this.p2.getTeam().remove(def.getCurrentPkmn());
-				this.s = this.s + "\nYour opponent has "+this.p2.getTeam().size()+" pokémon left.";
-			}
-		}
-		else
-		{
-			if (getpPkmn(def).getSub())
-			{
-				if (getpPkmn(def).getHpSubstitute() <= 0)
-				{
-					getpPkmn(def).setSub(false);
-					if (def.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
-					else
-						this.s = this.s + "\n";
-					this.s = this.s + def.getCurrentPkmn().getName()+"'s substitute broke.";
-				}
-			}
-			else
-			{
-				if (def.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
-				else
-					this.s = this.s + "\n";
-				this.s = this.s + def.getCurrentPkmn().getName()+" has "+def.getCurrentPkmn().getCurrentHp()+"/"+def.getCurrentPkmn().getBaseHp()+" HP. ";
-			}
-		}
-	}
+	
 		
 	private boolean checkCrit(Attack att, Pokemon pk)
 	{
@@ -1184,7 +1100,7 @@ public class Battle
 				getpPkmn(def).setTotalBideDmg(getpPkmn(def).getTotalBideDmg() + damage);
 		}
 		def.getCurrentPkmn().setCurrentHp(-damage);
-		this.checkHpLeft(def);
+		this.s = this.s + def.checkHpLeft();
 		//Checks if the attack should inflict recoil damages
 		if (iAtt.getStatus() == 49)
 		{
@@ -1196,7 +1112,7 @@ public class Battle
 			if (atk.getName().equals("Opponent"))
 				this.s = this.s + "Enemy ";
 			this.s = this.s + getpPkmn(atk).getName() + "'s hit with recoil ! It lost "+ recoil +" HP. ";
-			this.checkHpLeft(atk);
+			this.s = this.s + atk.checkHpLeft();
 		}
 		//Checks if the attack should kill its user (explosion/self-destruct)
 		else if (iAtt.getStatus() == 50)
@@ -1204,7 +1120,7 @@ public class Battle
 			getpPkmn(atk).setHpSubstitute(0);
 			getpPkmn(atk).setSub(false);
 			getpPkmn(atk).setCurrentHp(-(getpPkmn(atk).getBaseHp()));
-			this.checkHpLeft(atk);
+			this.s = this.s + atk.checkHpLeft();
 		}
 		getpPkmn(def).setLastdamagesuffered(damage);
 		return damage;
@@ -1396,7 +1312,7 @@ public class Battle
 				int dmg = getpPkmn(p).getCurrentHp()/16;
 				getpPkmn(p).setCurrentHp(-dmg);
 				this.s = this.s + getpPkmn(p).getName() + " lost " + dmg + " HP due to TRAP.";
-				checkHpLeft(p);
+				this.s = this.s + p.checkHpLeft();
 			}
 			s = s + "\n***********************";
 			win.logTrace(s);
@@ -1413,58 +1329,10 @@ public class Battle
 			getpPkmn(att).setCurrentHp(seed/2);
 			this.s = this.s + "\n" + getpPkmn(def).getName() + " lost " + seed + " HP from LEECH SIDE.\n";
 			this.s = this.s + getpPkmn(att).getName() + " was healed " + seed/2 + " HP from LEECH SIDE.";
-			checkHpLeft(def);
-			checkHpLeft(att);
+			this.s = this.s + def.checkHpLeft();
+			this.s = this.s + att.checkHpLeft();
 			this.s = this.s + "\n***********************";
 			win.logTrace(s);
-			return true;
-		}
-		else
-			return false;
-	}
-	
-	public boolean checkDead(Player p, Window win)
-	{
-		if (p.getCurrentPkmn().getStatus()==9)
-		{
-			if (p.getName().equals("Opponent"))
-			{				
-				if (p.getTeam().size()>0)
-				{
-					if (p.getTeam().size()==1)
-						p.setCurrentPkmn(p.getTeam().get(0));
-					p.setCurrentPkmn(p.getTeam().get(ThreadLocalRandom.current().nextInt(0, p.getTeam().size() - 1)));
-					p.setCurrentStats(false);
-					win.logTrace("Your opponent sent "+getpPkmn(p).getName()+" !");
-					getpPkmn(p).setCanAttack(false);
-				}
-				else
-				{
-					win.logTrace("You won ! :-D");
-					win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
-					win.whatToChoose = "continue";
-				}
-			}
-			else
-			{
-				if (p.getTeam().size()>0)
-				{
-					win.logTrace("Please choose another Pokémon from your team.");
-					for (int i = 0; i < p.getTeam().size(); i++)
-					{
-						win.logTrace(Integer.toString(i+1)+" - "+p.getTeam().get(i).getName());
-					}
-					win.logTrace("*********************** ");
-					win.whatToChoose = "swap";
-					getpPkmn(p).setCanAttack(false);
-				}
-				else
-				{
-					win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
-					win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
-					win.whatToChoose = "continue";
-				}
-			}
 			return true;
 		}
 		else
@@ -1475,17 +1343,5 @@ public class Battle
 	{
 		getpPkmn(p1).setPrio(false);
 		getpPkmn(p2).setPrio(false);
-	}
-	
-	public int checkDisabledAttack(Player p)
-	{
-		for (int i = 0;i < getpPkmn(p).getAttacks().size();i++)
-		{
-			if (!getpPkmn(p).getAttacks().get(i).getEnabled())
-			{
-				return i;
-			}
-		}	
-		return 5;
 	}
 }

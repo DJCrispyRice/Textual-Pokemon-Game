@@ -472,4 +472,68 @@ public class Pokemon implements Cloneable
 		}
 		return s;
 	}
+	
+	//stat is used because haze should not reset status.
+	public void setCurrentStats(boolean status)
+	{
+		this.setCurrentHp(this.getCurrentHp());
+		this.getAttack().setStage(0);
+		this.getDefense().setStage(0);
+		this.getSpecial().setStage(0);
+		this.getSpeed().setStage(0);
+		this.getAccuracy().setStage(0);
+		this.getEvasion().setStage(0);
+		this.setSeeded(false);
+		if (status)
+			this.setStatus(0);
+		this.setTwoturnstatus(0);
+		this.setSeeded(false);
+		this.setCanAttack(true);
+		this.setCountTrap(0);
+	}
+	
+	//Shows attacks that can be used by your pokémon
+		public String showAttacks()
+		{
+			String s = new String();
+			if (this.getTwoturnstatus() == 0 && this.getCountBide() == 0 && this.getCountThrash() == 0)
+			{
+				if (this.getStatus()!=0)
+				{
+					s = s + "+++" + this.getName() + " is ";
+					switch (this.getStatus())
+					{
+						case 1 :
+							s = s + "paralysed.+++\n";
+							break;
+						case 2 :
+							s = s + "asleep.+++\n";
+							break;
+						case 3 :
+							s = s + "poisoned.+++\n";
+							break;
+						case 4 :
+							s = s + "burning.+++\n";
+							break;
+						case 5 :
+							s = s + "frozen.+++\n";
+							break;
+					}
+				}
+				s = s + "What should "+this.getName()+" do ?";
+				s = s + "\n 0. Swap Pokémon";
+				for (int i=0;i<this.getAttacks().size();i++)
+				{
+					if (this.getAttacks().get(i).getEnabled())
+						s = s + "\n "+Integer.toString(i+1)+". ";  
+					else
+						s = s + "\n DISABLED. ";
+					s = s + this.getAttacks().get(i).getType().getName() + " - " + getAttacks().get(i).getName()+" - "+getAttacks().get(i).getDescription();
+				}
+				s = s + "\n***********************";
+			}
+			else
+				s = s + "***********************\nPress enter to proceed to next turn.\n***********************";
+			return s;
+		}
 }

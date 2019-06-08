@@ -16,8 +16,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.nio.channels.AlreadyBoundException;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Main implements ActionListener, KeyListener
 {
@@ -77,95 +75,12 @@ public class Main implements ActionListener, KeyListener
 		{
 			try
 			{
-				//To avoid MissingNo being a choice
-				if (choice.equals("0") || Integer.parseInt(choice) == 0)
-					throw  new NullPointerException();
-				else
-				{
-					b.p1.setTeam(gd.allPkmn[Integer.parseInt(choice)].clone());
-					win.logTrace("You chose "+gd.allPkmn[Integer.parseInt(choice)].getName()+" !");
-					//Checking if the party is full
-					if (b.p1.getTeam().size() == 6)
-					{
-						win.logTrace("There you go ! Your party is full.");
-						win.logTrace("Hold on, your opponant is choosing his team...");
-						//Randomly choosing 6 pokémons for the opponent.
-						for (int i = 1 ;i<=6;i++)
-						{
-							b.p2.setTeam((Pokemon) gd.allPkmn[ThreadLocalRandom.current().nextInt(1, 151 + 1)].clone());
-							win.logTrace("Pokémon "+i+" is... "+b.p2.getTeam().get(i-1).getName()+" !");
-						}
-						win.logTrace("Your opponent chose his team, now let's the battle begin !");
-						win.whatToChoose = "attack";
-						b.p1.currentPkmn = b.p1.getTeam().get(0);
-						b.p2.currentPkmn = b.p2.getTeam().get(0);
-						win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !\n***********************");
-						win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
-						win.logTrace(b.showAttacks());
-					}
-					//... Otherwise showing how many pokémons are left to choose
-					else
-						win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose.");
-				}
+				b.p1.chooseByNumber(choice, gd, win);
 			}
 			//Case the user didn't type a number
 			catch (NumberFormatException nfe)
 			{
-				boolean ok = false;
-				if (choice.equals("POKEDEX"))
-					gd.showPokedex(win);
-				else
-				{
-					for (int i = 1; i < 152; i++)
-					{
-						if (this.gd.allPkmn[i].getName().equals(choice))
-						{
-							try 
-							{
-								b.p1.setTeam(gd.allPkmn[i].clone());
-								win.logTrace("You chose "+gd.allPkmn[i].getName()+" !");
-								ok = true;
-								break;
-							} 
-							catch (CloneNotSupportedException e) 
-							{
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					}
-					if (!ok)
-						win.logTrace("Woops ! That doesn't look like a valid Pokémon !");
-					else if (b.p1.getTeam().size() == 6)
-					{
-						win.logTrace("There you go ! Your party is full.");
-						win.logTrace("Hold on, your opponant is choosing his team...");
-						//b.p2.setTeam((Pokemon) gd.allPkmn[1].clone());
-						//Randomly choosing 6 pokémons for the opponent.
-						for (int j = 1 ; j <= 6; j++)
-						{
-							try 
-							{
-								b.p2.setTeam((Pokemon) gd.allPkmn[ThreadLocalRandom.current().nextInt(1, 151 + 1)].clone());
-							} catch (CloneNotSupportedException e) 
-							{
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							win.logTrace("Pokémon "+j+" is... "+b.p2.getTeam().get(j-1).getName()+" !");
-						}
-						win.logTrace("Your opponent chose his team, now let's the battle begin !");
-						win.whatToChoose = "attack";
-						b.p1.currentPkmn = b.p1.getTeam().get(0);
-						b.p2.currentPkmn = b.p2.getTeam().get(0);
-						win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !\n***********************");
-						win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
-						win.logTrace(b.showAttacks());
-					}
-					//... Otherwise showing how many pokémons are left to choose
-					else
-						win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose.");
-				}
+				b.p1.chooseByName(choice, gd, win);
 			}
 			//If what the user type is not a pokémon (not a number, something higher than 151...)
 			catch (NullPointerException e)
@@ -173,10 +88,22 @@ public class Main implements ActionListener, KeyListener
 				win.logTrace("Woops ! That doesn't look like a valid Pokémon !");
 			} 
 			catch (CloneNotSupportedException e) 
+			{}
+			if (b.p1.getTeam().size() == 6)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				win.logTrace("There you go ! Your party is full.");
+				win.logTrace("Hold on, your opponant is choosing his team...");
+				//Randomly choosing 6 pokémons for the opponent.
+				b.p2.createTeam(gd, win);
+				win.whatToChoose = "attack";
+				b.p1.currentPkmn = b.p1.getTeam().get(0);
+				b.p2.currentPkmn = b.p2.getTeam().get(0);
+				win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !");
+				win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
+				win.logTrace(b.getpPkmn(b.p1).showAttacks());
 			}
+			else
+				win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose.");
 		}
 		//Selecting the attack
 		else if (win.whatToChoose.equals("attack"))
@@ -189,7 +116,7 @@ public class Main implements ActionListener, KeyListener
 				{
 					win.whatToChoose = "switch";
 					win.logTrace("Please choose another Pokémon from your team.");
-					win.logTrace("0  - Cancel");
+					win.logTrace("0 - Cancel");
 					for (int i = 0; i < b.p1.getTeam().size(); i++)
 					{
 						win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
@@ -206,20 +133,10 @@ public class Main implements ActionListener, KeyListener
 						throw new NullPointerException();
 					
 					//Choosing the attack of the opponent
-					
-					int rdatt;
-					if (b.getpPkmn(b.p2).getAttacks().size() == 1)
-						rdatt = 0;
-					else
-					{
-						Random r = new Random();
-						rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-						while (rdatt == b.checkDisabledAttack(b.p2))
-							rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-					}
+					int rdatt = b.p2.chooseAttack();
 					//To avoid a disabled attack being a choice
 					
-					if (!choice.equals("") && Integer.parseInt(choice) - 1 == b.checkDisabledAttack(b.p1))
+					if (!choice.equals("") && Integer.parseInt(choice) - 1 == b.p1.checkDisabledAttack())
 						throw new AlreadyBoundException();
 					
 					//Checking prioritary using speed and moves used
@@ -258,9 +175,9 @@ public class Main implements ActionListener, KeyListener
 						else
 							win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
 						//Checks if the opponent fainted
-						b.checkDead(b.p2, win);
+						b.p2.checkDead(win);
 						//If the attack deals to user, checks if it's not dead
-						if (b.checkDead(b.p1, win))
+						if (b.p1.checkDead(win))
 							b.getpPkmn(b.p2).setCanAttack(false);
 						if (b.getpPkmn(b.p2).getStatus() != 9)
 						{
@@ -272,8 +189,8 @@ public class Main implements ActionListener, KeyListener
 								else
 									win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
 								//Checks if the player fainted
-								b.checkDead(b.p1, win);
-								b.checkDead(b.p2, win);
+								b.p1.checkDead(win);
+								b.p2.checkDead(win);
 							}
 							//... if it flinched, reset canAttack
 							else
@@ -291,8 +208,8 @@ public class Main implements ActionListener, KeyListener
 						else
 							win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
 						//Checks if the player fainted
-						b.checkDead(b.p1, win);
-						if (b.checkDead(b.p2, win))
+						b.p1.checkDead(win);
+						if (b.p2.checkDead(win))
 							b.getpPkmn(b.p1).setCanAttack(false);
 						if (b.getpPkmn(b.p1).getStatus() != 9)
 						{
@@ -304,8 +221,8 @@ public class Main implements ActionListener, KeyListener
 								else
 									win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
 								//Checks if someone fainted
-								b.checkDead(b.p2, win);
-								b.checkDead(b.p1, win);
+								b.p2.checkDead(win);
+								b.p1.checkDead(win);
 							}
 							else
 								b.getpPkmn(b.p1).setCanAttack(true);
@@ -327,15 +244,14 @@ public class Main implements ActionListener, KeyListener
 							win.logTrace("The enemy's wall of protection vanished !");
 					}
 					//Trap checking
-					
 					if (b.checkSeed(b.p1,b.p2,win))
-						b.checkDead(b.p1, win);
+						b.p1.checkDead(win);
 					if (b.checkSeed(b.p2,b.p1,win))
-						b.checkDead(b.p2, win);
+						b.p2.checkDead(win);
 					
 					//Shows attacks if both player and opponent are not dead
 					if (b.getpPkmn(b.p2).getStatus() != 9 && b.getpPkmn(b.p1).getStatus() != 9)
-						win.logTrace(b.showAttacks());
+						win.logTrace(b.getpPkmn(b.p1).showAttacks());
 					b.reinitPrio();
 					b.getpPkmn(b.p1).setLastattacksuffered(new Attack());
 					b.getpPkmn(b.p2).setLastattacksuffered(new Attack());
@@ -362,7 +278,7 @@ public class Main implements ActionListener, KeyListener
 				{
 					if (b.getpPkmn(b.p1).getStatus() != 9)
 					{
-						win.logTrace(b.showAttacks());
+						win.logTrace(b.getpPkmn(b.p1).showAttacks());
 						win.whatToChoose = "attack";
 					}
 					else
@@ -371,7 +287,7 @@ public class Main implements ActionListener, KeyListener
 				else
 				{
 					b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
-					b.p1.setCurrentStats(false);
+					b.getpPkmn(b.p1).setCurrentStats(false);
 					win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+" !");
 					//If it's a switch (requested swap), the enemy will attack like normal
 					if (win.whatToChoose.equals("switch"))
@@ -381,30 +297,21 @@ public class Main implements ActionListener, KeyListener
 						else
 						{
 							//Choosing the attack of the opponent
-							int rdatt;
-							if (b.getpPkmn(b.p2).getAttacks().size() == 1)
-								rdatt = 0;
-							else
-							{
-								Random r = new Random();
-								rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-								while (rdatt == b.checkDisabledAttack(b.p2))
-									rdatt = r.nextInt(b.getpPkmn(b.p2).getAttacks().size());
-							}
+							int rdatt = b.p2.chooseAttack();
 							win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
 							//Checks if someone fainted
-							b.checkDead(b.p2, win);
-							b.checkDead(b.p1, win);
+							b.p2.checkDead(win);
+							b.p1.checkDead(win);
 							if (b.checkSeed(b.p1,b.p2,win))
-								b.checkDead(b.p1, win);
+								b.p1.checkDead(win);
 							if (b.checkSeed(b.p2,b.p1,win))
-								b.checkDead(b.p2, win);
+								b.p2.checkDead(win);
 							b.reinitPrio();
 						}
 					}
 					win.whatToChoose = "attack";
 					choice = null;
-					win.logTrace(b.showAttacks());
+					win.logTrace(b.getpPkmn(b.p1).showAttacks());
 				}
 			}
 			catch (NullPointerException e10)
@@ -448,14 +355,10 @@ public class Main implements ActionListener, KeyListener
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void keyReleased(KeyEvent arg0) {		
 	}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void keyTyped(KeyEvent arg0) {		
 	}
 }
