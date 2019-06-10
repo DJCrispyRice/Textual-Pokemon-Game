@@ -1,6 +1,7 @@
 package com.pkmn;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 /* 
  * This class contains our favorite little monsters. They have a name, an Id (basically number in Pokédex), at least one type (the second may be null), attacks
@@ -51,24 +52,24 @@ public class Pokemon implements Cloneable
 	//Empty constructor only for the fake index 0 Pokémon
 	public Pokemon()
 	{
-		this.setName("MissingNo");
-		this.setId(0);
+		setName("MissingNo");
+		setId(0);
 	}
 	//Constructor to instantiate a pokémon through the GameData class. Since current stats are the same as base's initially and status is always 0 at the beginning, those variables are not in the constructor.
 	//Also Accuracy is 100 by default as stated in the descriptor.
 	public Pokemon(String name, int id, Type type1, Type type2, int baseHp, int baseAtk,  int baseDef,  int baseSpd, int baseSpe)
 	{
-		this.setName(name.toUpperCase());
-		this.setId(id);
-		this.setType1(type1);
-		this.setType2(type2);
+		setName(name.toUpperCase());
+		setId(id);
+		setType1(type1);
+		setType2(type2);
 		this.attacks = new ArrayList<Attack>(); // We will add attacks after the Pokémon is created
-		this.setBaseHp(baseHp);
-		this.setCurrentHp(baseHp);
-		this.setAttack(new Stat("Attack",baseAtk));
-		this.setDefense(new Stat("Defense",baseDef));
-		this.setSpeed(new Stat("Speed",baseSpd));
-		this.setSpecial(new Stat("Special",baseSpe));
+		setBaseHp(baseHp);
+		setCurrentHp(baseHp);
+		setAttack(new Stat("Attack",baseAtk));
+		setDefense(new Stat("Defense",baseDef));
+		setSpeed(new Stat("Speed",baseSpd));
+		setSpecial(new Stat("Special",baseSpe));
 	}
 	
 	//Getters/Setters
@@ -158,7 +159,7 @@ public class Pokemon implements Cloneable
 		if (this.getHpSubstitute() > 0)
 		{
 			if (damage < 0)
-				this.setHpSubstitute(damage);
+				setHpSubstitute(damage);
 		}
 		else
 		{
@@ -171,7 +172,7 @@ public class Pokemon implements Cloneable
 			else
 			{
 				this.currentHp = 0;
-				this.setStatus(9);
+				setStatus(9);
 			}
 		}
 	}
@@ -222,46 +223,46 @@ public class Pokemon implements Cloneable
 	
 	public Stat getSpeed()
 	{
-		return this.speed;
+		return speed;
 	}
 	
 	public int getSpeed(String s)
 	{
 		if (s.equals("current"))
-			return this.speed.getCurrent();
+			return speed.getCurrent();
 		else if (s.equals("base"))
-			return this.speed.getBase();
+			return speed.getBase();
 		else if (s.equals("stage"))
-			return this.speed.getStage();
+			return speed.getStage();
 		else
 			return 0;
 	}
 	
 	public void setSpeed(Stat st)
 	{
-		this.speed = st;
+		speed = st;
 	}
 	
 	public Stat getSpecial()
 	{
-		return this.special;
+		return special;
 	}
 	
 	public int getSpecial(String s)
 	{
 		if (s.equals("current"))
-			return this.special.getCurrent();
+			return special.getCurrent();
 		else if (s.equals("base"))
-			return this.special.getBase();
+			return special.getBase();
 		else if (s.equals("stage"))
-			return this.special.getStage();
+			return special.getStage();
 		else
 			return 0;
 	}
 	
 	public void setSpecial(Stat st)
 	{
-		this.special = st;
+		special = st;
 	}
 	
 	public Stat getAccuracy()
@@ -476,64 +477,266 @@ public class Pokemon implements Cloneable
 	//stat is used because haze should not reset status.
 	public void setCurrentStats(boolean status)
 	{
-		this.setCurrentHp(this.getCurrentHp());
+		setCurrentHp(this.getCurrentHp());
 		this.getAttack().setStage(0);
 		this.getDefense().setStage(0);
 		this.getSpecial().setStage(0);
 		this.getSpeed().setStage(0);
 		this.getAccuracy().setStage(0);
 		this.getEvasion().setStage(0);
-		this.setSeeded(false);
+		setSeeded(false);
 		if (status)
-			this.setStatus(0);
-		this.setTwoturnstatus(0);
-		this.setSeeded(false);
-		this.setCanAttack(true);
-		this.setCountTrap(0);
+			setStatus(0);
+		setTwoturnstatus(0);
+		setSeeded(false);
+		setCanAttack(true);
+		setCountTrap(0);
 	}
 	
 	//Shows attacks that can be used by your pokémon
-		public String showAttacks()
+	public String showAttacks()
+	{
+		String s = new String();
+		if (this.getTwoturnstatus() == 0 && this.getCountBide() == 0 && this.getCountThrash() == 0)
 		{
-			String s = new String();
-			if (this.getTwoturnstatus() == 0 && this.getCountBide() == 0 && this.getCountThrash() == 0)
+			if (this.getStatus()!=0)
 			{
-				if (this.getStatus()!=0)
+				s = s + "+++" + this.getName() + " is ";
+				switch (this.getStatus())
 				{
-					s = s + "+++" + this.getName() + " is ";
-					switch (this.getStatus())
+					case 1 :
+						s = s + "paralysed.+++\n";
+						break;
+					case 2 :
+						s = s + "asleep.+++\n";
+						break;
+					case 3 :
+						s = s + "poisoned.+++\n";
+						break;
+					case 4 :
+						s = s + "burning.+++\n";
+						break;
+					case 5 :
+						s = s + "frozen.+++\n";
+						break;
+				}
+			}
+			s = s + "What should "+this.getName()+" do ?";
+			s = s + "\n 0. Swap Pokémon";
+			for (int i=0;i<this.getAttacks().size();i++)
+			{
+				if (this.getAttacks().get(i).getEnabled())
+					s = s + "\n "+Integer.toString(i+1)+". ";  
+				else
+					s = s + "\n DISABLED. ";
+				s = s + this.getAttacks().get(i).getType().getName() + " - " + getAttacks().get(i).getName()+" - "+getAttacks().get(i).getDescription();
+			}
+			s = s + "\n***********************";
+		}
+		else
+			s = s + "***********************\nPress enter to proceed to next turn.\n***********************";
+		return s;
+	}
+	
+	public int checkDisabledAttack()
+	{
+		for (int i = 0;i < this.getAttacks().size();i++)
+		{
+			if (!this.getAttacks().get(i).getEnabled())
+				return i;
+		}	
+		return 5;
+	}
+	
+	//Applies status alteration and prints the result
+	public String statusModifier(int status)
+	{
+		String s = new String();
+		if (!this.getSub())
+		{
+			s = s + "\n";
+			switch (status)
+			{
+				case 1 :
+					s = s + this.getName() + " is paralysed ! It may not be able to attack !";
+					this.getSpeed().setCurrent((int) (this.getSpeed("base")*0.25));
+					setStatus(status);
+					break;
+				case 2 :
+					s = s + this.getName() + " felt asleep !";
+					setCountSleep(ThreadLocalRandom.current().nextInt(2,7));
+					setStatus(status);
+					break;
+				case 3 :
+					//Type poison pokemons cannot be poisonned
+					if (this.getType1().getName() != "Poison")
 					{
-						case 1 :
-							s = s + "paralysed.+++\n";
-							break;
-						case 2 :
-							s = s + "asleep.+++\n";
-							break;
-						case 3 :
-							s = s + "poisoned.+++\n";
-							break;
-						case 4 :
-							s = s + "burning.+++\n";
-							break;
-						case 5 :
-							s = s + "frozen.+++\n";
-							break;
+						s = s + this.getName() + " is poisonned !";
+						setStatus(status);
 					}
-				}
-				s = s + "What should "+this.getName()+" do ?";
-				s = s + "\n 0. Swap Pokémon";
-				for (int i=0;i<this.getAttacks().size();i++)
-				{
-					if (this.getAttacks().get(i).getEnabled())
-						s = s + "\n "+Integer.toString(i+1)+". ";  
+					else if (this.getType2() != null)
+					{
+						if (this.getType2().getName() != "Poison")
+						{
+							s = s + this.getName() + " is poisonned !";
+							setStatus(status);
+						}
+					}
 					else
-						s = s + "\n DISABLED. ";
-					s = s + this.getAttacks().get(i).getType().getName() + " - " + getAttacks().get(i).getName()+" - "+getAttacks().get(i).getDescription();
-				}
-				s = s + "\n***********************";
+						s = s + this.getName() + " avoid the attack !";
+					break;
+				case 4 :
+					s = s + this.getName() + " got burnt !";
+					setStatus(status);
+					break;
+				case 5 :
+					s = s + this.getName() + " was frozen solid !";
+					setStatus(status);
+					break;
+				case 6 :
+					s = s + this.getName() + " became confused !";
+					setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
+					break;
+			}
+		}
+		return s;
+	}
+	
+	public String checkTrap(Player p)
+	{
+		String s = new String();
+		if (this.getCountTrap() > 0)
+		{
+			setCountTrap(this.getCountTrap() - 1);
+			if (this.getCountTrap() == 0)
+			{
+				s = s + this.getName() + " was released from TRAP !";
 			}
 			else
-				s = s + "***********************\nPress enter to proceed to next turn.\n***********************";
+			{
+				int dmg = this.getCurrentHp()/16;
+				setCurrentHp(-dmg);
+				s = s + this.getName() + " lost " + dmg + " HP due to TRAP.";
+				s = s + p.checkHpLeft();
+			}
+			s = s + "\n***********************";
 			return s;
 		}
+		return null;
+	}
+	
+	//Applies stats alteration and prints the result
+	public String statModifier(Player p, String stat, int modifier)
+	{
+		String s = new String();
+		boolean min = false;
+		boolean max = false;
+		switch (stat)
+		{
+			case "attack" :
+				if (this.getAttack("stage") >= 6)
+				{
+					max = true;
+					break;
+				}
+				else if (this.getAttack("stage") <= -6)
+				{
+					min = true;
+					break;
+				}
+				this.getAttack().setStage(this.getAttack("stage") + modifier);
+				break;
+			case "defense" :
+				if (this.getDefense("stage")>=6)
+				{
+					max = true;
+					break;
+				}
+				else if (this.getDefense("stage")<=-6)
+				{
+					min = true;
+					break;
+				}
+				this.getDefense().setStage(this.getDefense("stage") + modifier);
+				break;
+			case "speed" :
+				if (this.getSpeed("stage")>=6)
+				{
+					max = true;
+					break;
+				}
+				else if (this.getSpeed("stage")<=-6)
+				{
+					min = true;
+					break;
+				}
+				this.getSpeed().setStage(this.getSpeed("stage") + modifier);
+				break;
+			case "special" :
+				if (this.getSpecial("stage")>=6)
+				{
+					max = true;
+					break;
+				}
+				else if (this.getSpecial("stage")<=-6)
+				{
+					min = true;
+					break;
+				}
+				this.getSpecial().setStage(this.getSpecial("current") + modifier);
+				break;
+			case "accuracy" :
+				if (this.getAccuracy("stage")>=6)
+				{
+					max = true;
+					break;
+				}
+				else if (this.getAccuracy("stage")<=-6)
+				{
+					min = true;
+					break;
+				}
+				this.getAccuracy().setStage(this.getAccuracy("stage") + modifier);
+				break;
+			case "evasion" :
+				if (this.getEvasion("stage")>=6)
+				{
+					max = true;
+					break;
+				}
+				else if (this.getEvasion("stage")<=-6)
+				{
+					min = true;
+					break;
+				}
+				this.getEvasion().setStage(this.getEvasion("stage") + modifier);
+				break;
+			case "wall" :
+				p.setWall(modifier);
+				p.setCountWall(5);
+		}
+		if (p.getName().equals("Opponent"))
+			s = s + "Enemy ";
+		if (!stat.equals("wall"))
+			s = s + this.getName()+"'s " + stat;
+		if (max)
+			s = s + " won't go higher !";
+		else if (min)
+			s = s + " won't go lower !";
+		else
+		{
+			//Should not occur if a wall was used
+			if (modifier > 0 && !stat.equals("wall"))
+				s = s + " rose !";
+			else if (modifier < 0 && !stat.equals("wall"))
+				s = s + " fell !";
+			//If a wall was used - light screen
+			else if (modifier == 70)
+				s = s + this.getName() + "'s protected against special attacks !";
+			//If a wall was used - reflect
+			else if (modifier == 98)
+				s = s + this.getName() + " gained armor !";
+		}
+		return s;
+	}
 }

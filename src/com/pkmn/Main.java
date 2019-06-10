@@ -3,7 +3,7 @@
  * - Finish special attacks > OK
  * - Enable switching in battle > OK
  * - Better pokémon selection > OK
- * - Better code organisation > Started
+ * - Better code organisation > OK
  * - Add IA
  * - Sound (cries, music)
  * - Graphics (not sure if it suits this project yet)
@@ -115,13 +115,7 @@ public class Main implements ActionListener, KeyListener
 				if (choice.equals("0") && b.getpPkmn(b.p1).getTwoturnstatus() == 0)
 				{
 					win.whatToChoose = "switch";
-					win.logTrace("Please choose another Pokémon from your team.");
-					win.logTrace("0 - Cancel");
-					for (int i = 0; i < b.p1.getTeam().size(); i++)
-					{
-						win.logTrace(Integer.toString(i+1)+" - "+b.p1.getTeam().get(i).getName());
-					}
-					win.logTrace("*********************** ");
+					b.p1.showTeam(win);
 				}
 				else
 				{
@@ -136,7 +130,7 @@ public class Main implements ActionListener, KeyListener
 					int rdatt = b.p2.chooseAttack();
 					//To avoid a disabled attack being a choice
 					
-					if (!choice.equals("") && Integer.parseInt(choice) - 1 == b.p1.checkDisabledAttack())
+					if (!choice.equals("") && Integer.parseInt(choice) - 1 == b.getpPkmn(b.p1).checkDisabledAttack())
 						throw new AlreadyBoundException();
 					
 					//Checking prioritary using speed and moves used
@@ -184,7 +178,7 @@ public class Main implements ActionListener, KeyListener
 							//Checks if the pokémon didn't flinched between turns
 							if (b.getpPkmn(b.p2).getCanAttack())
 							{
-								if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
+								if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
 									win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
 								else
 									win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
@@ -228,33 +222,8 @@ public class Main implements ActionListener, KeyListener
 								b.getpPkmn(b.p1).setCanAttack(true);
 						}
 					}
-					/*
-					 * Checks after attacks were used
-					*/
-					if (b.p1.getCountWall() > 0)
-					{
-						b.p1.setCountWall(b.p1.getCountWall() - 1);
-						if (b.p1.getCountWall() == 0)
-							win.logTrace("The wall of protection vanished !");
-					}
-					if (b.p2.getCountWall() > 0)
-					{
-						b.p2.setCountWall(b.p1.getCountWall() - 1);
-						if (b.p2.getCountWall() == 0)
-							win.logTrace("The enemy's wall of protection vanished !");
-					}
-					//Trap checking
-					if (b.checkSeed(b.p1,b.p2,win))
-						b.p1.checkDead(win);
-					if (b.checkSeed(b.p2,b.p1,win))
-						b.p2.checkDead(win);
-					
-					//Shows attacks if both player and opponent are not dead
-					if (b.getpPkmn(b.p2).getStatus() != 9 && b.getpPkmn(b.p1).getStatus() != 9)
-						win.logTrace(b.getpPkmn(b.p1).showAttacks());
-					b.reinitPrio();
-					b.getpPkmn(b.p1).setLastattacksuffered(new Attack());
-					b.getpPkmn(b.p2).setLastattacksuffered(new Attack());
+					//Checks after attacks were used
+					b.endOfTurn(win);
 				}
 			}
 			catch (NullPointerException e1)
@@ -286,6 +255,8 @@ public class Main implements ActionListener, KeyListener
 				}
 				else
 				{
+					if (b.p1.getCurrentPkmn().equals(b.p1.getTeam().get(Integer.parseInt(choice)-1)))
+						throw new AlreadyBoundException();
 					b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
 					b.getpPkmn(b.p1).setCurrentStats(false);
 					win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+" !");
@@ -317,10 +288,17 @@ public class Main implements ActionListener, KeyListener
 			catch (NullPointerException e10)
 			{
 				win.logTrace("Woops ! That doesn't look like a valid Pokémon in your team !");
+				b.p1.showTeam(win);
+			}
+			catch (NumberFormatException e10)
+			{
+				win.logTrace("Woops ! Please type a number to choose your Pokémon !");
+				b.p1.showTeam(win);
 			}
 			catch (AlreadyBoundException e12)
 			{
 				win.logTrace("Woops ! This Pokémon is already battling !");
+				b.p1.showTeam(win);
 			}
 		}
 		else if (win.whatToChoose.equals("continue"))
@@ -355,10 +333,8 @@ public class Main implements ActionListener, KeyListener
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {		
-	}
+	public void keyReleased(KeyEvent arg0) {}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {		
-	}
+	public void keyTyped(KeyEvent arg0) {}
 }

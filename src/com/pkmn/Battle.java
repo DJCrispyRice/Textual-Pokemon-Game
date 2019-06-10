@@ -158,7 +158,7 @@ public class Battle
 			{
 				if (this.getpPkmn(att).getCountDisable()==1)
 				{
-					this.getpPkmn(att).getAttacks().get(att.checkDisabledAttack()).setEnabled(true);
+					this.getpPkmn(att).getAttacks().get(getpPkmn(att).checkDisabledAttack()).setEnabled(true);
 					this.s = this.s + "\nThe effect of DISABLE whore off !";
 				}
 				this.getpPkmn(att).setCountDisable(this.getpPkmn(att).getCountDisable() - 1);
@@ -274,139 +274,139 @@ public class Battle
 			{
 				//Attack drop for opponent
 				case 8 : 
-					statModifier(def,"attack",-1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"attack",-1);
 					break;
 				//Attack boost for user
 				case 9 :
-					statModifier(att,"attack",1);
+					this.s = this.s + getpPkmn(att).statModifier(att,"attack",1);
 					break;
 				//Attack drop for user
 				case 10 :
-					statModifier(def,"attack",-1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"attack",-1);
 					break;
 				//Double attack boost for opponent
 				case 11 :
-					statModifier(def,"attack",2);
+					this.s = this.s + getpPkmn(def).statModifier(def,"attack",2);
 					break;
 				//Double attack drop for opponent
 				case 12 :
-					statModifier(def,"attack",-2);
+					this.s = this.s + getpPkmn(def).statModifier(def,"attack",-2);
 					break;
 				//Double attack boost for user
 				case 13 :
-					statModifier(att,"attack",2);
+					this.s = this.s + getpPkmn(att).statModifier(att,"attack",2);
 					break;
 				//Defense boost for opponent
 				case 15:
-					statModifier(def,"defense",1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"defense",1);
 					break;
 				//Defense drop for opponent
 				case 16:
-					statModifier(def,"defense",-1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"defense",-1);
 					break;
 				//Defense boost for user
 				case 17:
-					statModifier(att,"defense",1);
+					this.s = this.s + getpPkmn(att).statModifier(att,"defense",1);
 					break;
 				//Defense drop for user
 				case 18:
-					statModifier(att,"defense",-1);
+					this.s = this.s + getpPkmn(att).statModifier(att,"defense",-1);
 					break;
 				//Double defense boost for opponent
 				case 19:
-					statModifier(def,"defense",2);
+					this.s = this.s + getpPkmn(def).statModifier(def,"defense",2);
 					break;
 				//Double defense drop for opponent
 				case 20:
-					statModifier(def,"defense",-2);
+					this.s = this.s + getpPkmn(def).statModifier(def,"defense",-2);
 					break;
 				//Double defense drop for user
 				case 21:
-					statModifier(att,"defense",2);
+					this.s = this.s + getpPkmn(att).statModifier(att,"defense",2);
 					break;
 				//Double defense drop for user
 				case 22:
-					statModifier(att,"defense",-2);
+					this.s = this.s + getpPkmn(att).statModifier(att,"defense",-2);
 					break;
 				//speed boost for opponent
 				case 23:
-					statModifier(def,"speed",1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"speed",1);
 					break;
 				//speed drop for opponent
 				case 24:
-					statModifier(def,"speed",-1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"speed",-1);
 					break;
 				//speed boost for user
 				case 25:
-					statModifier(att,"speed",1);
+					this.s = this.s + getpPkmn(att).statModifier(att,"speed",1);
 					break;
 				//speed drop for user
 				case 26:
-					statModifier(att,"speed",-1);
+					this.s = this.s + getpPkmn(att).statModifier(att,"speed",-1);
 					break;
 				//Double speed boost for opponent
 				case 27:
-					statModifier(def,"speed",2);
+					this.s = this.s + getpPkmn(def).statModifier(def,"speed",2);
 					break;
 				//Double speed drop for opponent
 				case 28:
-					statModifier(def,"speed",-2);
+					this.s = this.s + getpPkmn(def).statModifier(def,"speed",-2);
 					break;
 				//Double speed drop for user
 				case 29:
-					statModifier(att,"speed",2);
+					this.s = this.s + getpPkmn(att).statModifier(att,"speed",2);
 					break;
 				//Double speed drop for user
 				case 30:
-					statModifier(att,"speed",-2);
+					this.s = this.s + getpPkmn(att).statModifier(att,"speed",-2);
 					break;
 					//speed boost for opponent
 				case 31:
-					statModifier(def,"special",1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"special",1);
 					break;
 				//special drop for opponent
 				case 32:
-					statModifier(def,"special",-1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"special",-1);
 					break;
 				//special boost for user
 				case 33:
-					statModifier(att,"special",1);
+					this.s = this.s + getpPkmn(att).statModifier(att,"special",1);
 					break;
 				//special drop for user
 				case 34:
-					statModifier(att,"special",-1);
+					this.s = this.s + getpPkmn(att).statModifier(att,"special",-1);
 					break;
 				//Double special boost for opponent
 				case 35:
-					statModifier(def,"special",2);
+					this.s = this.s + getpPkmn(def).statModifier(def,"special",2);
 					break;
 				//Double special drop for opponent
 				case 36:
-					statModifier(def,"special",-2);
+					this.s = this.s + getpPkmn(def).statModifier(def,"special",-2);
 					break;
 				//Double special drop for user
 				case 37:
-					statModifier(att,"special",2);
+					this.s = this.s + getpPkmn(att).statModifier(att,"special",2);
 					break;
 				//Double special drop for user
 				case 38:
-					statModifier(att,"special",-2);
+					this.s = this.s + getpPkmn(att).statModifier(att,"special",-2);
 					break;
 				//Accuracy boost for opponent
 				case 39:
-					statModifier(def,"accuracy",1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"accuracy",1);
 					break;
 				//Accuracy drop for opponent
 				case 40:
-					statModifier(def,"accuracy",-1);
+					this.s = this.s + getpPkmn(def).statModifier(def,"accuracy",-1);
 					break;
 				//Evasion boost for user
 				case 41:
-					statModifier(att,"evasion",1);
+					this.s = this.s + getpPkmn(att).statModifier(att,"evasion",1);
 					break;
 				//Evasion drop for user
 				case 42:
-					statModifier(att,"evasion",-1);
+					this.s = this.s + getpPkmn(att).statModifier(att,"evasion",-1);
 					break;
 				//Cause flinching
 				case 43:
@@ -441,7 +441,7 @@ public class Battle
 				//Walls
 				case 52:
 					if (att.getWall() == 0)
-						statModifier(att,"wall",iAtt.getId());
+						this.s = this.s + getpPkmn(att).statModifier(att,"wall",iAtt.getId());
 					else
 					{
 						if (att.getName().equals("Opponent"))
@@ -451,15 +451,15 @@ public class Battle
 			}
 		}
 		//Status change can only occur if the Pokémon is not already altered by another status.
-		if (this.getpPkmn(def).getStatus()==0 && (iAtt.getStatus()>=1 && iAtt.getStatus() < 6))
+		if (this.getpPkmn(def).getStatus()==0 && (iAtt.getStatus()>=1 && iAtt.getStatus() <= 6))
 		{
 			//Checks if the status alteration hits using the accu_status.
 			int randomstat2 = ThreadLocalRandom.current().nextInt(0,100);
 			if (randomstat2 >= 100 - iAtt.getAccu_status() && !getpPkmn(def).getSub())
-				statusModifier(def,iAtt.getStatus());
+				this.s = this.s + getpPkmn(def).statusModifier(iAtt.getStatus());
 		}
 		//Shows the "avoid attack" message if the purpose of the move is only status alteration. Exception with healing move that does not hit opponent
-		else if (iAtt.getPower()==0 && iAtt.getStatus() < 6)
+		else if (iAtt.getPower()==0 && iAtt.getStatus() <= 6)
 		{
 			if (att.getName().equals("Opponent"))
 				this.s = this.s + "Enemy ";
@@ -815,7 +815,7 @@ public class Battle
 						status = 4;
 					else
 						status = 5;
-					statusModifier(def,status);
+					this.s = this.s + getpPkmn(def).statusModifier(status);
 				}
 				break;
 			//Whirlwind
@@ -858,12 +858,12 @@ public class Battle
 			return true;
 		//If the defender is already trapped, the attack will miss
 		if (def.getCountTrap() != 0)
-		{
 			return false;
-		}
+		//If the attack is self-applied, it will succeed no matter what.
+		if (atk.getSelf())
+			return true;
 		//If the opponent is in the sky or underground, will automatically fail unless earthquake + underground
-		//But if the move is a status boost for the user, it shouldn't fail
-		else if (((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45) && !atk.getSelf())
+		else if (((def.getTwoturnstatus() == 26 && atk.getId() != 36) || def.getTwoturnstatus() == 45))
 		{
 			if (att.getTwoturnstatus() != 0)
 				att.setTwoturnstatus(0);
@@ -991,8 +991,6 @@ public class Battle
 		}
 		return rt;
 	}
-	
-	
 		
 	private boolean checkCrit(Attack att, Pokemon pk)
 	{
@@ -1078,9 +1076,18 @@ public class Battle
 		}
 		if (damage != 0)
 		{
-			if (def.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
-			this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
+			if (getpPkmn(def).getHpSubstitute()>0)
+			{
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "Enemy's ";
+				this.s = this.s + "Substitue lost " + Integer.toString(damage)+" HP. ";
+			}
+			else 
+			{	
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "Enemy ";
+				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
+			}
 			//Checking if the attack should steal HP
 			if (iAtt.getStatus()==44)
 			{
@@ -1126,199 +1133,6 @@ public class Battle
 		return damage;
 	}
 	
-	//Applies status alteration and prints the result
-	private void statusModifier(Player p, int status)
-	{
-		if (!getpPkmn(p).getSub())
-		{
-			if (p.getName().equals("Opponent"))
-				this.s = this.s + "\nEnemy ";
-			else
-				this.s = this.s + "\n";
-			switch (status)
-			{
-				case 1 :
-					this.s = this.s + getpPkmn(p).getName() + " is paralysed ! It may not be able to attack !";
-					getpPkmn(p).getSpeed().setCurrent((int) (getpPkmn(p).getSpeed("base")*0.25));
-					getpPkmn(p).setStatus(status);
-					break;
-				case 2 :
-					this.s = this.s + getpPkmn(p).getName() + " felt asleep !";
-					getpPkmn(p).setCountSleep(ThreadLocalRandom.current().nextInt(1,7));
-					getpPkmn(p).setStatus(status);
-					break;
-				case 3 :
-					//Type poison pokemons cannot be poisonned
-					if (getpPkmn(p).getType1().getName() != "Poison")
-					{
-						this.s = this.s + getpPkmn(p).getName() + " is poisonned !";
-						getpPkmn(p).setStatus(status);
-					}
-					else if (getpPkmn(p).getType2() != null)
-					{
-						if (getpPkmn(p).getType2().getName() != "Poison")
-						{
-							this.s = this.s + getpPkmn(p).getName() + " is poisonned !";
-							getpPkmn(p).setStatus(status);
-						}
-					}
-					else
-						this.s = this.s + getpPkmn(p).getName() + " avoid the attack !";
-					break;
-				case 4 :
-					this.s = this.s + getpPkmn(p).getName() + " got burnt !";
-					getpPkmn(p).setStatus(status);
-					break;
-				case 5 :
-					this.s = this.s + getpPkmn(p).getName() + " was frozen solid !";
-					getpPkmn(p).setStatus(status);
-					break;
-				case 6 :
-					this.s = this.s + getpPkmn(p).getName() + " became confused !";
-					getpPkmn(p).setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
-					break;
-			}
-		}
-	}
-	
-	//Applies stats alteration and prints the result
-	private void statModifier(Player p, String stat, int modifier)
-	{
-		boolean min = false;
-		boolean max = false;
-		switch (stat)
-		{
-			case "attack" :
-				if (getpPkmn(p).getAttack("stage") >= 6)
-				{
-					max = true;
-					break;
-				}
-				else if (getpPkmn(p).getAttack("stage") <= -6)
-				{
-					min = true;
-					break;
-				}
-				getpPkmn(p).getAttack().setStage(getpPkmn(p).getAttack("stage") + modifier);
-				break;
-			case "defense" :
-				if (getpPkmn(p).getDefense("stage")>=6)
-				{
-					max = true;
-					break;
-				}
-				else if (getpPkmn(p).getDefense("stage")<=-6)
-				{
-					min = true;
-					break;
-				}
-				getpPkmn(p).getDefense().setStage(getpPkmn(p).getDefense("stage") + modifier);
-				break;
-			case "speed" :
-				if (getpPkmn(p).getSpeed("stage")>=6)
-				{
-					max = true;
-					break;
-				}
-				else if (getpPkmn(p).getSpeed("stage")<=-6)
-				{
-					min = true;
-					break;
-				}
-				getpPkmn(p).getSpeed().setStage(getpPkmn(p).getSpeed("stage") + modifier);
-				break;
-			case "special" :
-				if (getpPkmn(p).getSpecial("stage")>=6)
-				{
-					max = true;
-					break;
-				}
-				else if (getpPkmn(p).getSpecial("stage")<=-6)
-				{
-					min = true;
-					break;
-				}
-				getpPkmn(p).getSpecial().setStage(getpPkmn(p).getSpecial("current") + modifier);
-				break;
-			case "accuracy" :
-				if (getpPkmn(p).getAccuracy("stage")>=6)
-				{
-					max = true;
-					break;
-				}
-				else if (getpPkmn(p).getAccuracy("stage")<=-6)
-				{
-					min = true;
-					break;
-				}
-				getpPkmn(p).getAccuracy().setStage(getpPkmn(p).getAccuracy("stage") + modifier);
-				break;
-			case "evasion" :
-				if (getpPkmn(p).getEvasion("stage")>=6)
-				{
-					max = true;
-					break;
-				}
-				else if (getpPkmn(p).getEvasion("stage")<=-6)
-				{
-					min = true;
-					break;
-				}
-				getpPkmn(p).getEvasion().setStage(getpPkmn(p).getEvasion("stage") + modifier);
-				break;
-			case "wall" :
-				p.setWall(modifier);
-				p.setCountWall(5);
-			
-		}
-		if (p.getName().equals("Opponent"))
-			this.s = this.s + "Enemy ";
-		if (!stat.equals("wall"))
-			this.s = this.s + getpPkmn(p).getName()+"'s " + stat;
-		if (max)
-			this.s = this.s + " won't go higher !";
-		else if (min)
-			this.s = this.s + " won't go lower !";
-		else
-		{
-			//Should not occur if a wall was used
-			if (modifier > 0 && !stat.equals("wall"))
-				this.s = this.s + " rose !";
-			else if (modifier < 0 && !stat.equals("wall"))
-				this.s = this.s + " fell !";
-			//If a wall was used - light screen
-			else if (modifier == 70)
-				this.s = this.s + getpPkmn(p).getName() + "'s protected against special attacks !";
-			//If a wall was used - reflect
-			else if (modifier == 98)
-				this.s = this.s + getpPkmn(p).getName() + " gained armor !";
-		}
-	}
-	
-	public void checkTrap(Player p,Window win)
-	{
-		this.s = "";
-		if (getpPkmn(p).getCountTrap() > 0)
-		{
-			getpPkmn(p).setCountTrap(getpPkmn(p).getCountTrap() - 1);
-			if (p.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
-			if (getpPkmn(p).getCountTrap() == 0)
-			{
-				this.s = this.s + getpPkmn(p).getName() + " was released from TRAP !";
-			}
-			else
-			{
-				int dmg = getpPkmn(p).getCurrentHp()/16;
-				getpPkmn(p).setCurrentHp(-dmg);
-				this.s = this.s + getpPkmn(p).getName() + " lost " + dmg + " HP due to TRAP.";
-				this.s = this.s + p.checkHpLeft();
-			}
-			s = s + "\n***********************";
-			win.logTrace(s);
-		}		
-	}
-	
 	public boolean checkSeed(Player att, Player def, Window win)
 	{
 		int seed;
@@ -1343,5 +1157,38 @@ public class Battle
 	{
 		getpPkmn(p1).setPrio(false);
 		getpPkmn(p2).setPrio(false);
+	}
+	
+	public void endOfTurn(Window win)
+	{
+		if (p1.getCountWall() > 0)
+		{
+			p1.setCountWall(p1.getCountWall() - 1);
+			if (p1.getCountWall() == 0)
+				win.logTrace("The wall of protection vanished !");
+		}
+		if (p2.getCountWall() > 0)
+		{
+			p2.setCountWall(p1.getCountWall() - 1);
+			if (p2.getCountWall() == 0)
+				win.logTrace("The enemy's wall of protection vanished !");
+		}
+		//Trap checking
+		if (checkSeed(p1,p2,win))
+			p1.checkDead(win);
+		if (checkSeed(p2,p1,win))
+			p2.checkDead(win);
+		
+		win.logTrace(getpPkmn(p1).checkTrap(p1));
+		p1.checkDead(win);
+		win.logTrace(getpPkmn(p2).checkTrap(p2));
+		p2.checkDead(win);
+		
+		//Shows attacks if both player and opponent are not dead
+		if (getpPkmn(p2).getStatus() != 9 && getpPkmn(p1).getStatus() != 9)
+			win.logTrace(getpPkmn(p1).showAttacks());
+		reinitPrio();
+		getpPkmn(p1).setLastattacksuffered(new Attack());
+		getpPkmn(p2).setLastattacksuffered(new Attack());
 	}
 }

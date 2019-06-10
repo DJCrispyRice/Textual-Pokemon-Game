@@ -5,7 +5,6 @@ package com.pkmn;
  */
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Player 
 {
@@ -128,17 +127,19 @@ public class Player
 		}
 	}
 	
-	public int checkDisabledAttack()
+	public void showTeam(Window win)
 	{
-		for (int i = 0;i < this.getCurrentPkmn().getAttacks().size();i++)
+		win.logTrace("Please choose another Pokémon from your team.");
+		if (win.whatToChoose.equals("switch"))
+			win.logTrace("0 - Cancel");
+		for (int i = 0; i < this.getTeam().size(); i++)
 		{
-			if (!this.getCurrentPkmn().getAttacks().get(i).getEnabled())
-				return i;
-		}	
-		return 5;
+			win.logTrace(Integer.toString(i+1)+" - " + this.getTeam().get(i).getName());
+		}
+		win.logTrace("*********************** ");
 	}
 	
-	//To write how many hp left the pokémon has. Def is the player who is being checked.
+	//To write how many hp left the pokémon has.
 	public String checkHpLeft()
 	{
 		String s = new String();
@@ -146,16 +147,8 @@ public class Player
 		if (this.getCurrentPkmn().getStatus() == 9)
 		{
 			s = s + "\n***********************\n"+this.getCurrentPkmn().getName()+" fainted !";
-			if (this.getName().equals("Player"))
-			{
-				this.getTeam().remove(this.getCurrentPkmn());
-				s = s + "\nYou have "+this.getTeam().size()+" pokémon left.";
-			}
-			else
-			{
-				this.getTeam().remove(this.getCurrentPkmn());
-				s = s + "\nYour opponent has "+this.getTeam().size()+" pokémon left.";
-			}
+			this.getTeam().remove(this.getCurrentPkmn());
+			s = s + "\nYou have "+this.getTeam().size()+" pokémon left.";
 		}
 		else
 		{
@@ -164,21 +157,11 @@ public class Player
 				if (this.getCurrentPkmn().getHpSubstitute() <= 0)
 				{
 					this.getCurrentPkmn().setSub(false);
-					if (this.getName().equals("Opponent"))
-						s = s + "\nEnemy ";
-					else
-						s = s + "\n";
-					s = s + this.getCurrentPkmn().getName()+"'s substitute broke.";
+					s = s + "\n" + this.getCurrentPkmn().getName()+"'s substitute broke.";
 				}
 			}
 			else
-			{
-				if (this.getName().equals("Opponent"))
-					s = s + "\nEnemy ";
-				else
-					s = s + "\n";
-				s = s + this.getCurrentPkmn().getName()+" has "+this.getCurrentPkmn().getCurrentHp()+"/"+this.getCurrentPkmn().getBaseHp()+" HP. ";
-			}
+				s = s + "\n" + this.getCurrentPkmn().getName()+" has "+this.getCurrentPkmn().getCurrentHp()+"/"+this.getCurrentPkmn().getBaseHp()+" HP. ";
 		}
 		return s;
 	}
@@ -187,43 +170,22 @@ public class Player
 	{
 		if (this.getCurrentPkmn().getStatus()==9)
 		{
-			if (this.getName().equals("Opponent"))
-			{				
-				if (this.getTeam().size()>0)
+			if (this.getTeam().size()>0)
+			{
+				win.logTrace("Please choose another Pokémon from your team.");
+				for (int i = 0; i < this.getTeam().size(); i++)
 				{
-					if (this.getTeam().size()==1)
-						this.setCurrentPkmn(this.getTeam().get(0));
-					this.setCurrentPkmn(this.getTeam().get(ThreadLocalRandom.current().nextInt(0, this.getTeam().size() - 1)));
-					this.getCurrentPkmn().setCurrentStats(false);
-					win.logTrace("Your opponent sent "+this.getCurrentPkmn().getName()+" !");
-					this.getCurrentPkmn().setCanAttack(false);
+					win.logTrace(Integer.toString(i+1)+" - "+this.getTeam().get(i).getName());
 				}
-				else
-				{
-					win.logTrace("You won ! :-D");
-					win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
-					win.whatToChoose = "continue";
-				}
+				win.logTrace("*********************** ");
+				win.whatToChoose = "swap";
+				this.getCurrentPkmn().setCanAttack(false);
 			}
 			else
 			{
-				if (this.getTeam().size()>0)
-				{
-					win.logTrace("Please choose another Pokémon from your team.");
-					for (int i = 0; i < this.getTeam().size(); i++)
-					{
-						win.logTrace(Integer.toString(i+1)+" - "+this.getTeam().get(i).getName());
-					}
-					win.logTrace("*********************** ");
-					win.whatToChoose = "swap";
-					this.getCurrentPkmn().setCanAttack(false);
-				}
-				else
-				{
-					win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
-					win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
-					win.whatToChoose = "continue";
-				}
+				win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
+				win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
+				win.whatToChoose = "continue";
 			}
 			return true;
 		}

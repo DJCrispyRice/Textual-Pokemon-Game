@@ -252,7 +252,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Poison Sting","May poison the opponent.",88,15,35,true,this.allTypes[3],3,30,100); i++;
 		this.allAtks[i] = new Attack ("Pound","Standard attack",89,40,35,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Psybeam","May confuse opponent.",90,65,20,false,this.allTypes[12],6,10,100); i++;
-		this.allAtks[i] = new Attack ("Psychic","May lower opponent's SpecialDefense.",91,90,10,false,this.allTypes[12],32,10,100); i++;
+		this.allAtks[i] = new Attack ("Psychic","May lower opponent's Special.",91,90,10,false,this.allTypes[12],32,10,100); i++;
 		this.allAtks[i] = new Attack ("Psywave","Inflicts damage 50-150% of user's level.",92,0,15,false,this.allTypes[12],54,0,80); i++;
 		this.allAtks[i] = new Attack ("Quick Attack","User attacks first.",93,40,30,true,this.allTypes[0],51,0,100); i++;
 		this.allAtks[i] = new Attack ("Rage","Raises user's Attack when hit.",94,20,20,true,this.allTypes[0],9,100,100); i++;
@@ -486,6 +486,7 @@ public final class GameData
 		//Assigning attacks to Pokémons.
 
 		i = 1;
+		//this.allPkmn[i].getAttacks().add(this.allAtks[26]);i++;
 		this.allPkmn[i].getAttacks().add(this.allAtks[95]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[67]);
 		this.allPkmn[i].getAttacks().add(this.allAtks[11]);

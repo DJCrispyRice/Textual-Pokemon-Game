@@ -55,7 +55,10 @@ public class Window extends JFrame
 	
 	public void logTrace(String s)
 	{
-		this.jl.setText(this.jl.getText()+s+"\n");
-		this.jl.setCaretPosition(this.jl.getDocument().getLength());
+		if (s != null)
+		{
+			this.jl.setText(this.jl.getText()+s+"\n");
+			this.jl.setCaretPosition(this.jl.getDocument().getLength());
+		}
 	}
 }
