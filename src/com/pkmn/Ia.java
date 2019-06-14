@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Ia extends Player
 {
-	int level = 0;
+	int level = 0; // 0 = easy, 1 = normal, 2 = hard
 	public Ia() 
 	{
 		super("Opponent");
@@ -33,11 +33,14 @@ public class Ia extends Player
 		win.logTrace("Your opponent chose his team, now let's the battle begin !");
 	}
 	
-	public int chooseAttack()
+	public int chooseAttack(Player def)
 	{
+		int rdatt = 0;
+		/*
+		 * IA is "dumb" and will only choose randomly
+		 */
 		if (level == 0)
 		{
-			int rdatt;
 			if (this.getCurrentPkmn().getAttacks().size() == 1)
 				rdatt = 0;
 			else
@@ -49,8 +52,37 @@ public class Ia extends Player
 			}
 			return rdatt;
 		}
-		else
-			return 0;
+		/*
+		 * IA is "good IA" style in standard Pokémon.
+		 * Will only choose attack by type, but it must deal damages
+		 * If no type is good against the type, will choose randomly
+		 */
+		else if (level == 1)
+		{
+			return rdatt;
+		}
+		
+		/*
+		 * IA is "smart" and will really try to win.
+		 * - Will try to put the player in a status if possible
+		 * - Will check stats and try to be quicker than the player
+		 * - Will choose the attack that inflicts the most damage
+		 * - Will heal if possible (if HP are below 30%)
+		 * - Will explode/self-destructs if HP are below 30%
+		*/
+		else if (level == 2)
+		{
+			int dmg = 0;
+			for (int i = 0; i < this.getCurrentPkmn().getAttacks().size(); i++)
+			{
+				if (calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i)) > dmg)
+				{
+					dmg = calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i));
+					rdatt = i;
+				}
+			}
+		}
+		return rdatt;
 	}
 	
 	public String checkHpLeft()
@@ -103,5 +135,144 @@ public class Ia extends Player
 		}
 		else
 			return false;
+	}
+	
+	private int checkStrWeak(int dmg, Attack att, Pokemon pk)
+	{
+		int rt=dmg;
+		int type=0; // 0 = neutral, 1 = super effective, 2 = not very effective, 3 = useless
+		//Checking Strength first
+		for (int i = 0;i<att.getType().getStrength().size();i++)
+		{
+			if (att.getType().getStrength().get(i).equals(pk.getType1()))
+			{
+				type = 1;
+				rt = dmg*2;
+				break;
+			}
+		}
+		//Checking Strength for type 2
+		for (int i = 0;i<att.getType().getStrength().size();i++)
+		{
+			if (att.getType().getStrength().get(i).equals(pk.getType2()))
+			{
+				if (type == 1)
+					rt = dmg*4;
+				else
+				{
+					type = 1;
+					rt = dmg*2;
+				}
+				break;
+			}
+		}
+		//Checking weakness then
+		for (int i = 0;i<att.getType().getWeak().size();i++)
+		{
+			if (att.getType().getWeak().get(i).equals(pk.getType1()))
+			{
+				type = 2;
+				rt = dmg/2;
+				break;
+			}
+		}
+		//Checking weakness for type 2
+		for (int i = 0;i<att.getType().getWeak().size();i++)
+		{
+			if (att.getType().getWeak().get(i).equals(pk.getType2()))
+			{
+				if (type == 2)
+					rt = dmg/4;
+				else if (type == 1)
+					rt = dmg;
+				else
+				{
+					type = 2;
+					rt = dmg/2;
+				}
+				break;
+			}
+		}
+		//Checking uselessness
+		for (int i = 0;i<att.getType().getUseless().size();i++)
+		{
+			if (att.getType().getUseless().get(i).equals(pk.getType1()))
+			{
+				rt = 0;
+				type = 3;
+				break;
+			}
+		}
+		//Checking uselessness for type 2
+		for (int i = 0;i<att.getType().getUseless().size();i++)
+		{
+			if (att.getType().getUseless().get(i).equals(pk.getType2()))
+			{
+				if (type == 0)
+				{
+					rt = dmg/2;
+					type = 2;
+				}
+				else if (type == 1)
+				{
+					rt = dmg;
+					type = 0;
+				}
+				else if (type == 2)
+				{
+					rt = dmg/4;
+					type = 2;
+				}
+				else
+				{
+					type = 3;
+					rt = 0;
+				}
+				break;
+			}
+		}
+		return rt;
+	}
+	
+	private int calculateDamages(Player def, Attack iAtt)
+	{
+		int damage = 0;
+		int power;
+		power = iAtt.getPower();
+		//Verify if STAB
+		if (iAtt.getType().equals(this.getCurrentPkmn().getType1()) || iAtt.getType().equals(this.getCurrentPkmn().getType2()))
+			power = (int) (power * 1.5);
+		//If the attack is Earthquake and the defender is underground, doubles the power of the attack
+		if (def.getCurrentPkmn().getTwoturnstatus() == 26 && iAtt.getId() == 36)
+			power = power * 2;
+		//Mathematical calculation for damages. Level is 50
+		damage = ((2*50)/5 + 2)*power;
+		//Checking crit to see if we use base or current stats
+		//Checks if the attack inflict fixed damages
+		if (iAtt.getStatus() == 53)
+			damage = iAtt.getPower();
+		else 
+		{
+			if (iAtt.getPhy())
+			{
+				//If protect is on
+				if (def.getWall() == 98)
+					damage = damage * (this.getCurrentPkmn().getAttack("current")/(def.getCurrentPkmn().getDefense("current") * 2));
+				else	
+					damage = damage * (this.getCurrentPkmn().getAttack("current")/def.getCurrentPkmn().getDefense("current"));
+			}
+			else
+			{
+				//If light screen is on
+				if (def.getWall() == 70)
+					damage = damage * (this.getCurrentPkmn().getSpecial("current")/(def.getCurrentPkmn().getSpecial("current") * 2));
+				else
+					damage = damage * (this.getCurrentPkmn().getSpecial("current")/def.getCurrentPkmn().getSpecial("current"));
+			}
+			damage = damage/50 + 2;
+		}
+		//Checks strength/weakness
+		damage = this.checkStrWeak(damage, iAtt, def.getCurrentPkmn());
+		return damage;
 	}
 }

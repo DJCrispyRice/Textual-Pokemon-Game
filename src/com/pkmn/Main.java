@@ -127,7 +127,7 @@ public class Main implements ActionListener, KeyListener
 						throw new NullPointerException();
 					
 					//Choosing the attack of the opponent
-					int rdatt = b.p2.chooseAttack();
+					int rdatt = b.p2.chooseAttack(b.p1);
 					//To avoid a disabled attack being a choice
 					
 					if (!choice.equals("") && Integer.parseInt(choice) - 1 == b.getpPkmn(b.p1).checkDisabledAttack())
@@ -268,7 +268,7 @@ public class Main implements ActionListener, KeyListener
 						else
 						{
 							//Choosing the attack of the opponent
-							int rdatt = b.p2.chooseAttack();
+							int rdatt = b.p2.chooseAttack(b.p1);
 							win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
 							//Checks if someone fainted
 							b.p2.checkDead(win);
