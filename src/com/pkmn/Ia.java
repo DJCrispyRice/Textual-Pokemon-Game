@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Ia extends Player
 {
-	int level = 0; // 0 = easy, 1 = normal, 2 = hard
+	int level = 2; // 0 = easy, 1 = normal, 2 = hard
 	public Ia() 
 	{
 		super("Opponent");
@@ -35,7 +35,7 @@ public class Ia extends Player
 	
 	public int chooseAttack(Player def)
 	{
-		int rdatt = 0;
+		int rdatt = -1;
 		/*
 		 * IA is "dumb" and will only choose randomly
 		 */
@@ -64,21 +64,59 @@ public class Ia extends Player
 		
 		/*
 		 * IA is "smart" and will really try to win.
-		 * - Will try to put the player in a status if possible
-		 * - Will check stats and try to be quicker than the player
-		 * - Will choose the attack that inflicts the most damage
-		 * - Will heal if possible (if HP are below 30%)
-		 * - Will explode/self-destructs if HP are below 30%
+		 * - Will try to put the player in a status if possible : OK
+		 * - Will check stats and try to be quicker than the player : OK
+		 * - Will check stats and try to have more attack or special than the player
+		 * - Will choose the attack that inflicts the most damage : OK
+		 * - Will heal if possible (if HP are below 30%) : OK
+		 * - Will explode/self-destructs if HP are below 30% : OK
 		*/
 		else if (level == 2)
 		{
 			int dmg = 0;
+			int wtc = 0;
+			if (def.getCurrentPkmn().getStatus() == 0)
+				wtc = 1;
+			else if (def.getCurrentPkmn().getSpeed("current") < this.getCurrentPkmn().getSpeed("current"))
+				wtc = 2;
+			else if (def.getCurrentPkmn().getCurrentHp() <= def.getCurrentPkmn().getBaseHp()*0.33)
+				wtc = 3;
 			for (int i = 0; i < this.getCurrentPkmn().getAttacks().size(); i++)
 			{
-				if (calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i)) > dmg)
+				switch (wtc)
 				{
-					dmg = calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i));
-					rdatt = i;
+					case 0 :
+						if (calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i)) > dmg && this.getCurrentPkmn().getAttacks().get(i).getStatus() != 50)
+						{
+							dmg = calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i));
+							rdatt = i;
+							break;
+						}
+					case 1 :
+						if (this.getCurrentPkmn().getAttacks().get(i).getStatus() <= 5 && this.getCurrentPkmn().getAttacks().get(i).getStatus() != 0)
+						{
+							rdatt = i;
+							break;
+						}
+					case 2 : 
+						if (this.getCurrentPkmn().getAttacks().get(i).getStatus() >= 23 && this.getCurrentPkmn().getAttacks().get(i).getStatus() <= 30)
+						{
+							rdatt = i;
+							break;
+						}
+					case 3 :
+						if (this.getCurrentPkmn().getAttacks().get(i).getStatus() == 44 || this.getCurrentPkmn().getAttacks().get(i).getStatus() == 45 || this.getCurrentPkmn().getAttacks().get(i).getStatus() == 50)
+						{
+							rdatt = i;
+							break;
+						}
+				}
+				if (wtc > 0 && rdatt >= 0)
+					break;
+				if (i == this.getCurrentPkmn().getAttacks().size() - 1 && rdatt < 0)
+				{
+					i = -1;
+					wtc = 0;
 				}
 			}
 		}

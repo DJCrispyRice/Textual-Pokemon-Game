@@ -994,12 +994,11 @@ public class Battle
 		
 	private boolean checkCrit(Attack att, Pokemon pk)
 	{
+		int rdc = ThreadLocalRandom.current().nextInt(0,100);
 		//Check if the attack has high critical ratio
 		if (att.getStatus() == 47 || att.getId() == 96)
 		{
-			int T = pk.getSpeed("base") * 4;
-			int P = ThreadLocalRandom.current().nextInt(0,256);
-			if (T > P)
+			if (rdc >= 85)
 			{
 				this.s = this.s + "\nA critical hit ! ";
 				return true;
@@ -1009,9 +1008,7 @@ public class Battle
 		}
 		else
 		{
-			int T = pk.getSpeed("base") / 2;
-			int P = ThreadLocalRandom.current().nextInt(0,256);
-			if (T > P)
+			if (rdc >= 92)
 			{
 				this.s = this.s + "\nA critical hit ! ";
 				return true;
@@ -1027,6 +1024,43 @@ public class Battle
 	{
 		int damage = 0;
 		int power;
+		float a;
+		float d;
+		int level = 50;
+		if (checkCrit(iAtt, atk.getCurrentPkmn()))
+		{
+			if (iAtt.getPhy())
+			{
+				a = atk.getCurrentPkmn().getAttack("base");
+				d = def.getCurrentPkmn().getDefense("base");
+			}
+			else
+			{
+				a = atk.getCurrentPkmn().getSpecial("base");
+				d = def.getCurrentPkmn().getSpecial("base");
+			}
+			level = level * 2;
+		}
+		else
+		{
+			if (iAtt.getPhy())
+			{
+				a = atk.getCurrentPkmn().getAttack("current");
+				if (def.getWall() == 98)
+					d = def.getCurrentPkmn().getDefense("current") * 2;
+				else
+					d = def.getCurrentPkmn().getDefense("current");
+			}
+			else
+			{
+				a = atk.getCurrentPkmn().getSpecial("current");
+				if (def.getWall() == 70)
+					d = def.getCurrentPkmn().getSpecial("current") * 2;
+				else
+					d = def.getCurrentPkmn().getSpecial("current");
+			}
+		}
+		float ad = a/d;
 		power = iAtt.getPower();
 		//Verify if STAB
 		if (iAtt.getType().equals(atk.getCurrentPkmn().getType1()) || iAtt.getType().equals(atk.getCurrentPkmn().getType2()))
@@ -1034,46 +1068,14 @@ public class Battle
 		//If the attack is Earthquake and the defender is underground, doubles the power of the attack
 		if (getpPkmn(def).getTwoturnstatus() == 26 && iAtt.getId() == 36)
 			power = power * 2;
-		//Mathematical calculation for damages. Level is 50
-		damage = ((2*50)/5 + 2)*power;
-		//Checking crit to see if we use base or current stats
-		//Checks if the attack inflict fixed damages
+		//Damage calculation
+		damage = (int) (((( ((2*level)/5)+2) * power * (ad))/50) + 2);
+		//Check strength/weakness
+		damage = this.checkStrWeak(damage, iAtt, def.getCurrentPkmn());
+		//If the attack should inflict fixed damages
 		if (iAtt.getStatus() == 53)
 			damage = iAtt.getPower();
-		else 
-		{
-			if (checkCrit(iAtt, atk.getCurrentPkmn()))
-			{
-				if (iAtt.getPhy())
-					damage = damage * (atk.getCurrentPkmn().getAttack("base")/def.getCurrentPkmn().getDefense("base"));
-				else
-					damage = damage * (atk.getCurrentPkmn().getSpecial("base")/def.getCurrentPkmn().getSpecial("base"));
-				damage = damage/50 + 2;
-				damage = (int) (damage * 1.5);
-			}
-			else
-			{
-				if (iAtt.getPhy())
-				{
-					//If protect is on
-					if (def.getWall() == 98)
-						damage = damage * (atk.getCurrentPkmn().getAttack("current")/(def.getCurrentPkmn().getDefense("current") * 2));
-					else	
-						damage = damage * (atk.getCurrentPkmn().getAttack("current")/def.getCurrentPkmn().getDefense("current"));
-				}
-				else
-				{
-					//If light screen is on
-					if (def.getWall() == 70)
-						damage = damage * (atk.getCurrentPkmn().getSpecial("current")/(def.getCurrentPkmn().getSpecial("current") * 2));
-					else
-						damage = damage * (atk.getCurrentPkmn().getSpecial("current")/def.getCurrentPkmn().getSpecial("current"));
-				}
-				damage = damage/50 + 2;
-			}
-			//Checks strength/weakness
-			damage = this.checkStrWeak(damage, iAtt, def.getCurrentPkmn());
-		}
+		
 		if (damage != 0)
 		{
 			if (getpPkmn(def).getHpSubstitute()>0)
@@ -1173,22 +1175,29 @@ public class Battle
 			if (p2.getCountWall() == 0)
 				win.logTrace("The enemy's wall of protection vanished !");
 		}
-		//Trap checking
-		if (checkSeed(p1,p2,win))
+		//Seed checking
+		if (checkSeed(p1,p2,win) && p1.getCurrentPkmn().getStatus() != 9)
 			p1.checkDead(win);
-		if (checkSeed(p2,p1,win))
+		if (checkSeed(p2,p1,win) && p2.getCurrentPkmn().getStatus() != 9)
 			p2.checkDead(win);
 		
-		win.logTrace(getpPkmn(p1).checkTrap(p1));
-		p1.checkDead(win);
-		win.logTrace(getpPkmn(p2).checkTrap(p2));
-		p2.checkDead(win);
-		
+		//Trap checking
+		if (getpPkmn(p1).getStatus() != 9)
+		{
+			win.logTrace(getpPkmn(p1).checkTrap(p1));
+			p1.checkDead(win);
+		}
+		if (getpPkmn(p2).getStatus() != 9)
+		{
+			win.logTrace(getpPkmn(p2).checkTrap(p2));
+			p2.checkDead(win);
+		}
 		//Shows attacks if both player and opponent are not dead
 		if (getpPkmn(p2).getStatus() != 9 && getpPkmn(p1).getStatus() != 9)
 			win.logTrace(getpPkmn(p1).showAttacks());
 		reinitPrio();
 		getpPkmn(p1).setLastattacksuffered(new Attack());
 		getpPkmn(p2).setLastattacksuffered(new Attack());
+		p2.getCurrentPkmn().setCanAttack(true);
 	}
 }

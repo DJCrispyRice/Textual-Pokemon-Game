@@ -328,7 +328,7 @@ public final class GameData
 		this.allPkmn = new Pokemon[152]; //Pokémon at index 0 will be null to simplify further researches in the array (index will be exactly the pokédex's number)
 		int i = 0;
 		this.allPkmn[i] = new Pokemon(); i++;
-		// Name - id - Type1 - Type2 (may be null) - HP - Attacks - Defense - Speed - Special
+		// Name - id - Type1 - Type2 (may be null) - HP - Attack - Defense - Speed - Special
 		//First we create all the pokémon, then we will assign them their attacks.
 		this.allPkmn[i] = new Pokemon("Bulbasaur",i,this.allTypes[10],this.allTypes[3],132,80,81,77,97); i++;
 		this.allPkmn[i] = new Pokemon("Ivysaur",i,this.allTypes[10],this.allTypes[3],141,87,89,85,106);i++;
