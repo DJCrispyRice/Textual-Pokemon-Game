@@ -11,7 +11,7 @@ public class Window extends JFrame
 	public JTextArea jl;
 	public JTextField jtf;
 	public JScrollPane sp;
-	String whatToChoose = "start";
+	String whatToChoose = "level";
 	public Window()
 	{
 		this.setLayout(null);

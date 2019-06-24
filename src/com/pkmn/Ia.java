@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Ia extends Player
 {
-	int level = 2; // 0 = easy, 1 = normal, 2 = hard
+	int level = 3; // 0 = easy, 1 = normal, 2 = hard
 	public Ia() 
 	{
 		super("Opponent");
@@ -116,7 +116,7 @@ public class Ia extends Player
 				if (i == this.getCurrentPkmn().getAttacks().size() - 1 && rdatt < 0)
 				{
 					i = -1;
-					wtc = 0;
+					wtc--;
 				}
 			}
 		}
@@ -312,5 +312,15 @@ public class Ia extends Player
 		//Checks strength/weakness
 		damage = this.checkStrWeak(damage, iAtt, def.getCurrentPkmn());
 		return damage;
+	}
+
+	public int getLevel() 
+	{
+		return level;
+	}
+
+	public void setLevel(int level) 
+	{
+		this.level = level;
 	}
 }

@@ -62,13 +62,61 @@ public class Main implements ActionListener, KeyListener
 	{
 		choice = win.jtf.getText().toUpperCase();
 		win.jtf.setText("");
-		//Checking the 1 to start the game
-		if (win.whatToChoose.equals("start"))
+		//Choosing the difficulty
+		if (win.whatToChoose.equals("level"))
 		{
-			win.logTrace("A new battle will begin ! Please choose your team.");
-			win.logTrace("To do so, type the number of your Pokémon or its name and press Enter.\nYou can refer to the Pokédex if needed by typing \"POKEDEX\".");
-			win.logTrace("You can auto-complete your input by pressing TAB after the beginning of a Pokémon's name.");
-			win.whatToChoose = "team";
+			try
+			{
+				if (choice.equals("HELP"))
+				{
+					win.clear();
+					win.logTrace("Easy difficulty means the IA will randomly choose its attack.");
+					win.logTrace("Medium difficuly means the IA will work as \"good IA\" in original pokémon games, meaning it will choose by type.");
+					win.logTrace("Hard difficulty means the IA will try to beat you using status moves, healing, pokémon's stats...");
+				}
+				if (choice.equals("EASY") || Integer.parseInt(choice) == 0)
+				{
+					b.p2.setLevel(0);
+					win.logTrace("Difficulty set to EASY.");
+				}
+				else if (choice.equals("MEDIUM") || Integer.parseInt(choice) == 1)
+				{
+					b.p2.setLevel(1);
+					win.logTrace("Difficulty set to MEDIUM.");
+				}
+				else if (choice.equals("HARD") || Integer.parseInt(choice) == 2)
+				{
+					b.p2.setLevel(2);
+					win.logTrace("Difficulty set to HARD.");
+				}
+				else
+					throw new NegativeArraySizeException();
+				if (b.p2.getLevel() != 3)
+				{
+					win.logTrace("A new battle will begin ! Please choose your team.");
+					win.logTrace("To do so, type the number of your Pokémon or its name and press Enter.\nYou can refer to the Pokédex if needed by typing \"POKEDEX\".");
+					win.logTrace("You can auto-complete your input by pressing TAB after the beginning of a Pokémon's name.");
+					win.whatToChoose = "team";
+				}
+				else
+				{
+					win.logTrace("Please choose your difficulty.");
+					win.logTrace("0. Easy");
+					win.logTrace("1. Medium");
+					win.logTrace("2. Hard");
+					win.logTrace("Type the number next to the difficulty you want (or the difficulty directly)");
+					win.logTrace("For help, type HELP.");
+				}
+			}
+			catch (Exception eee)
+			{
+				win.logTrace("Please choose your difficulty.");
+				win.logTrace("0. Easy");
+				win.logTrace("1. Medium");
+				win.logTrace("2. Hard");
+				win.logTrace("Type the number next to the difficulty you want (or the difficulty directly)");
+				win.logTrace("For help, type HELP.");
+			}
 		}
 		//Part that is used to select your team
 		else if (win.whatToChoose.equals("team"))
