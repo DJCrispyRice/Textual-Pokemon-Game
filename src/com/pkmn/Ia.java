@@ -36,6 +36,7 @@ public class Ia extends Player
 	public int chooseAttack(Player def)
 	{
 		int rdatt = -1;
+		int dmg = 0;
 		/*
 		 * IA is "dumb" and will only choose randomly
 		 */
@@ -59,6 +60,28 @@ public class Ia extends Player
 		 */
 		else if (level == 1)
 		{
+			for (int i = 0; i < this.getCurrentPkmn().getAttacks().size(); i++)
+			{
+				//Checks if the attack is super effective
+				if ((checkStrWeak(1,this.getCurrentPkmn().getAttacks().get(i),def.getCurrentPkmn()) == 2 || checkStrWeak(1,this.getCurrentPkmn().getAttacks().get(i),def.getCurrentPkmn()) == 4) && this.getCurrentPkmn().checkDisabledAttack() != i)
+				{
+					rdatt = i;
+					//Checks if the attack is the most powerfull available
+					if (calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i)) > dmg && this.getCurrentPkmn().getAttacks().get(i).getStatus() != 50)
+					{
+						dmg = calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i));
+						rdatt = i;
+					}
+				}	
+			}
+			//Checks if no attack were chosen (i.e. no super effective attack). If so, chooses a random attack
+			if (rdatt < 0)
+			{
+				Random r = new Random();
+				rdatt = r.nextInt(this.getCurrentPkmn().getAttacks().size());
+				while (rdatt == this.getCurrentPkmn().checkDisabledAttack())
+					rdatt = r.nextInt(this.getCurrentPkmn().getAttacks().size());
+			}
 			return rdatt;
 		}
 		
@@ -73,7 +96,6 @@ public class Ia extends Player
 		*/
 		else if (level == 2)
 		{
-			int dmg = 0;
 			int wtc = 0;
 			if (def.getCurrentPkmn().getStatus() == 0)
 				wtc = 1;
@@ -83,33 +105,36 @@ public class Ia extends Player
 				wtc = 3;
 			for (int i = 0; i < this.getCurrentPkmn().getAttacks().size(); i++)
 			{
-				switch (wtc)
+				if (this.getCurrentPkmn().checkDisabledAttack() != i)
 				{
-					case 0 :
-						if (calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i)) > dmg && this.getCurrentPkmn().getAttacks().get(i).getStatus() != 50)
-						{
-							dmg = calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i));
-							rdatt = i;
-							break;
-						}
-					case 1 :
-						if (this.getCurrentPkmn().getAttacks().get(i).getStatus() <= 5 && this.getCurrentPkmn().getAttacks().get(i).getStatus() != 0)
-						{
-							rdatt = i;
-							break;
-						}
-					case 2 : 
-						if (this.getCurrentPkmn().getAttacks().get(i).getStatus() >= 23 && this.getCurrentPkmn().getAttacks().get(i).getStatus() <= 30)
-						{
-							rdatt = i;
-							break;
-						}
-					case 3 :
-						if (this.getCurrentPkmn().getAttacks().get(i).getStatus() == 44 || this.getCurrentPkmn().getAttacks().get(i).getStatus() == 45 || this.getCurrentPkmn().getAttacks().get(i).getStatus() == 50)
-						{
-							rdatt = i;
-							break;
-						}
+					switch (wtc)
+					{
+						case 0 :
+							if (calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i)) > dmg && this.getCurrentPkmn().getAttacks().get(i).getStatus() != 50)
+							{
+								dmg = calculateDamages(def,this.getCurrentPkmn().getAttacks().get(i));
+								rdatt = i;
+								break;
+							}
+						case 1 :
+							if (def.getCurrentPkmn().getStatus() == 0 && this.getCurrentPkmn().getAttacks().get(i).getStatus() <= 5 && this.getCurrentPkmn().getAttacks().get(i).getStatus() != 0)
+							{
+								rdatt = i;
+								break;
+							}
+						case 2 : 
+							if (this.getCurrentPkmn().getAttacks().get(i).getStatus() >= 23 && this.getCurrentPkmn().getAttacks().get(i).getStatus() <= 30)
+							{
+								rdatt = i;
+								break;
+							}
+						case 3 :
+							if (this.getCurrentPkmn().getAttacks().get(i).getStatus() == 44 || this.getCurrentPkmn().getAttacks().get(i).getStatus() == 45 || this.getCurrentPkmn().getAttacks().get(i).getStatus() == 50)
+							{
+								rdatt = i;
+								break;
+							}
+					}
 				}
 				if (wtc > 0 && rdatt >= 0)
 					break;
