@@ -4,7 +4,7 @@
  * - Enable switching in battle > OK
  * - Better pokémon selection > OK
  * - Better code organisation > OK
- * - Add IA
+ * - Add IA > OK
  * - Sound (cries, music)
  * - Graphics (not sure if it suits this project yet)
  */
@@ -22,10 +22,14 @@ public class Main implements ActionListener, KeyListener
 	Window win;
 	GameData gd;
 	String choice;
+	Sound music;
+	Sound se;
 	Battle b = new Battle(this.gd);
 	public Main() throws InterruptedException
 	{
 		win = new Window();
+		this.music = new Sound("res/audio/menu.wav");
+		this.music.playLoop();
 		gd = new GameData(win);
 		win.clear();
 		win.jtf.addActionListener(this);
@@ -140,6 +144,7 @@ public class Main implements ActionListener, KeyListener
 			if (b.p1.getTeam().size() == 6)
 			{
 				win.logTrace("There you go ! Your party is full.");
+				music.stop();
 				win.logTrace("Hold on, your opponant is choosing his team...");
 				//Randomly choosing 6 pokémons for the opponent.
 				b.p2.createTeam(gd, win);
@@ -149,6 +154,7 @@ public class Main implements ActionListener, KeyListener
 				win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !");
 				win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
 				win.logTrace(b.getpPkmn(b.p1).showAttacks());
+				this.music = new Sound("res/audio/battle.wav");
 			}
 			else
 				win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose.");
