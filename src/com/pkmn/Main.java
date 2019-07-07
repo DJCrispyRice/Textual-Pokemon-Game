@@ -155,6 +155,7 @@ public class Main implements ActionListener, KeyListener
 				win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
 				win.logTrace(b.getpPkmn(b.p1).showAttacks());
 				this.music = new Sound("res/audio/battle.wav");
+				music.playLoop();
 			}
 			else
 				win.logTrace("You have "+ Integer.toString(6 - b.p1.getTeam().size())+" Pokémon left to choose.");
