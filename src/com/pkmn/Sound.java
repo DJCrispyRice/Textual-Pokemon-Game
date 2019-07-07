@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 //To play sound.
 
 public class Sound 
@@ -27,6 +28,13 @@ public class Sound
 		this.clip.start();
 	}
 	
+	public void setVolume(double d) 
+	{
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+	    float dB = (float) (Math.log(d) / Math.log(10.0) * 20.0);
+	    gainControl.setValue(dB);
+	}
+
 	public void playLoop()
 	{
 		this.clip.start();

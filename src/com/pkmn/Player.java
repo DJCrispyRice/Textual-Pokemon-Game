@@ -95,8 +95,19 @@ public class Player
 			throw  new NullPointerException();
 		else
 		{
+			win.music.stop();
+			win.se = new Sound("res/cries/"+choice.toString()+".wav");
+			win.se.play();
 			setTeam(gd.allPkmn[Integer.parseInt(choice)].clone());
 			win.logTrace("You chose "+gd.allPkmn[Integer.parseInt(choice)].getName()+" !");
+			try 
+			{
+				Thread.sleep(500);
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+			win.music.playLoop();
 		}
 	}
 	
@@ -113,8 +124,19 @@ public class Player
 				{
 					try 
 					{
+						win.music.stop();
+						win.se = new Sound("res/cries/"+i+".wav");
+						win.se.play();
 						setTeam(gd.allPkmn[i].clone());
 						win.logTrace("You chose "+gd.allPkmn[i].getName()+" !");
+						try 
+						{
+							Thread.sleep(500);
+						} catch (InterruptedException e) 
+						{
+							e.printStackTrace();
+						}
+						win.music.playLoop();
 						ok = true;
 						break;
 					} 
@@ -170,6 +192,17 @@ public class Player
 	{
 		if (this.getCurrentPkmn().getStatus()==9)
 		{
+			win.music.stop();
+			win.se = new Sound("res/cries/"+this.getCurrentPkmn().getId()+".wav");
+			win.se.play();
+			try 
+			{
+				Thread.sleep(500);
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+			win.music.playLoop();
 			if (this.getTeam().size()>0)
 			{
 				win.logTrace("Please choose another Pokémon from your team.");

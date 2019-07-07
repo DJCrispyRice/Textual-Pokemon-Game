@@ -11,6 +11,8 @@ public class Window extends JFrame
 	public JTextArea jl;
 	public JTextField jtf;
 	public JScrollPane sp;
+	public Sound music;
+	public Sound se;
 	String whatToChoose = "level";
 	public Window()
 	{
@@ -28,6 +30,8 @@ public class Window extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
+		this.music = new Sound("res/audio/menu.wav");
+		this.music.playLoop();
 	}
 	
 	private void setJl(JTextArea jl)
