@@ -5,31 +5,41 @@ import javax.swing.*;
  * Contains graphics of the game which is basically text. Corresponds to the view in MVC architecture.
  */
 
-public class Window extends JFrame 
+public class Window extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	public JLabel jl;
+	public JTextArea jl;
 	public JTextField jtf;
+	public JScrollPane sp;
+	public Sound music;
+	public Sound se;
+	String whatToChoose = "level";
 	public Window()
 	{
 		this.setLayout(null);
-		this.setJl(new JLabel("<html>Loading...<br>"));
-		this.jl.setBounds(15,15,450,700);
+		this.setJl(new JTextArea("Loading...\n"));
+		this.sp = new JScrollPane(jl);
+		this.sp.setBounds(15,15,450,600);
 		this.setJtf(new JTextField(2));
-		this.jtf.setBounds(15,725,450,30);
+		this.jtf.setBounds(15,625,450,30);
 		this.add(this.jtf);
-		this.add(jl);
-		this.setTitle("Textual Pokémon game");
-		this.setSize(500, 800);
+		this.add(sp);
+		this.setTitle("Textual PokÃ©mon game");
+		this.setSize(500, 700);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
+		this.music = new Sound("res/audio/menu.wav");
+		this.music.playLoop();
 	}
 	
-	private void setJl(JLabel jl)
+	private void setJl(JTextArea jl)
 	{
 		this.jl = jl;
+		this.jl.setLineWrap(true);
+		this.jl.setWrapStyleWord(true);
+		this.jl.setEditable(false);
 	}
 	
 	public void setJl(String s)
@@ -45,5 +55,14 @@ public class Window extends JFrame
 	public void clear()
 	{
 		this.setJl("");
+	}
+	
+	public void logTrace(String s)
+	{
+		if (s != null)
+		{
+			this.jl.setText(this.jl.getText()+s+"\n");
+			this.jl.setCaretPosition(this.jl.getDocument().getLength());
+		}
 	}
 }

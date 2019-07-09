@@ -1,11 +1,11 @@
 package com.pkmn;
 /* 
- * This class contains any attacks that will be used by Pokemons. It consists of a name with a description, an Id (useful to find the attack in the game data),
+ * This class contains any attacks that will be used by pokémons. It consists of a name with a description, an Id (useful to find the attack in the game data),
  * the power of the attack (used to calculate damages), the number of PP, a type, if it can trigger a status (paralysis, sleep...) with which accuracy 
  * and its accuracy to hit.
  * 
- * Causes = causes to foe
- * Applies = applies to your pok�mon.
+ * Causes = causes to opponent
+ * Applies = applies to the pokémon that used the move
  * 
  * Status 0 : Normal (no status)
  * Status 1 : Paralysis
@@ -46,10 +46,10 @@ package com.pkmn;
  * Status 36 : Causes double special drop
  * Status 37 : Applies double special boost
  * Status 38 : Applies double special drop
- * Status 39 : Causes accuracy boost (shouldn't be used since no attack does increase the foes accuracy as far as I know)
+ * Status 39 : Causes accuracy boost
  * Status 40 : Causes accuracy drop (hi sand attack)
- * Status 41 : Applies accuracy boost (shouldn't be used since no attack does increase your accuracy as far as I know)
- * Status 42 : Applies accuracy drop
+ * Status 41 : Applies evasion boost
+ * Status 42 : Applies evasion drop
  * Status 43 : Flinch
  * Status 44 : Steal HP
  * Status 45 : Heal HP/status
@@ -62,9 +62,6 @@ package com.pkmn;
  * Status 52 : Walls
  * Status 53 : Fixed damage
  * Status 54 : Special attacks with unique mechanic
- * Status 55 : Trapped
- * 
- * Drops and boost will be 10% of the current stat.
  */
 public class Attack 
 {
@@ -74,10 +71,34 @@ public class Attack
 	int power;
 	int pp;
 	boolean phy;//physical = true, special = false
+	boolean self = false;//applies to user = true, to opponent = false. Usefull especially for stats alteration
 	Type type;
 	int status;
 	int accu_status;
 	int accuracy;
+	boolean enabled = true;
+	
+	public Attack()
+	{
+		
+	}
+	
+	public Attack (String name, String description, int id, int power, int pp, boolean phy, Type type, int status, int accu_status, int accuracy)
+	{
+		this.setName(name.toUpperCase());
+		this.setDescription(description);
+		this.setId(id);
+		this.setPower(power);
+		this.setPp(pp);
+		this.setPhy(phy);
+		this.setType(type);
+		this.setStatus(status);
+		this.setAccu_status(accu_status);
+		this.setAccuracy(accuracy);
+		//If the attack "applies" something, puts self at true
+		if (status == 9 || status == 10 || status == 13 || status == 14 || status == 17 || status == 18 || status == 21 || status == 22 || status == 25 || status == 26 || status == 29 || status == 30 || status == 33 || status == 34 || status == 37 || status == 38 || status == 41 || status == 42 || id == 132)
+			this.setSelf(true);
+	}
 	
 	public String getName() 
 	{
@@ -140,7 +161,17 @@ public class Attack
 	{
 		this.phy = phy;
 	}
+
+	public boolean getSelf() 
+	{
+		return self;
+	}
 	
+	public void setSelf(boolean self) 
+	{
+		this.self = self;
+	}
+
 	public Type getType() 
 	{
 		return type;
@@ -188,18 +219,14 @@ public class Attack
 			accu_status = 0;
 		this.accu_status = accu_status;
 	}
-	
-	public Attack (String name, String description, int id, int power, int pp, boolean phy, Type type, int status, int accu_status, int accuracy)
+
+	public boolean getEnabled() 
 	{
-		this.setName(name);
-		this.setDescription(description);
-		this.setId(id);
-		this.setPower(power);
-		this.setPp(pp);
-		this.setPhy(phy);
-		this.setType(type);
-		this.setStatus(status);
-		this.setAccu_status(accu_status);
-		this.setAccuracy(accuracy);
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) 
+	{
+		this.enabled = enabled;
 	}
 }
