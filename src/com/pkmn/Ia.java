@@ -87,27 +87,27 @@ public class Ia extends Player
 		
 		/*
 		 * IA is "smart" and will really try to win.
-		 * - First : Will try to use a wall : OK
-		 * - Second : Will try to use Leech Seed : OK
-		 * - Third : Will try to put the player in a status if possible : OK
-		 * - Fourth : Will check stats and try to be quicker than the player : OK
-		 * - Fifth : Will choose the attack that inflicts the most damage : OK
-		 * - 6th : Will heal if possible (if HP are below 30%) : OK
-		 * - 7th : Will explode/self-destructs if HP are below 30% : OK
+		 * Will try to use a wall : OK
+		 * Will try to use Leech Seed : OK
+		 * Will try to put the player in a status if possible : OK
+		 * Will check stats and try to be quicker than the player : OK
+		 * Will choose the attack that inflicts the most damage : OK
+		 * Will heal if possible (if HP are below 30%) : OK
+		 * Will explode/self-destructs if HP are below 30% : OK
 		*/
 		else if (level == 2)
 		{
 			int wtc = 0;
 			if (this.getWall()==0)
-				wtc = 7;
-			else if (!this.getSeeded())
-				wtc = 6;
-			else if (def.getCurrentPkmn().getStatus() == 0)
 				wtc = 5;
-			else if (def.getCurrentPkmn().getSpeed("current") < this.getCurrentPkmn().getSpeed("current"))
+			else if (!this.getSeeded())
 				wtc = 4;
-			else if (def.getCurrentPkmn().getCurrentHp() <= def.getCurrentPkmn().getBaseHp()*0.33)
+			else if (def.getCurrentPkmn().getStatus() == 0)
 				wtc = 3;
+			else if (def.getCurrentPkmn().getSpeed("current") < this.getCurrentPkmn().getSpeed("current"))
+				wtc = 2;
+			else if (def.getCurrentPkmn().getCurrentHp() <= def.getCurrentPkmn().getBaseHp()*0.33)
+				wtc = 1;
 			for (int i = 0; i < this.getCurrentPkmn().getAttacks().size(); i++)
 			{
 				if (this.getCurrentPkmn().checkDisabledAttack() != i)
@@ -121,31 +121,33 @@ public class Ia extends Player
 								rdatt = i;
 								break;
 							}
-						case 7 :
+						case 5 :
 							if (this.getWall()==0 && this.getCurrentPkmn().getAttacks().get(i).getStatus() == 52)
 							{
 								rdatt = i;
 								break;
 							}
-						case 6 :
+						case 4 :
 							if (!this.getSeeded() && this.getCurrentPkmn().getAttacks().get(i).getId() == 67)
 							{
 								rdatt = i;
 								break;
 							}
-						case 5 :
-							if (def.getCurrentPkmn().getStatus() == 0 && this.getCurrentPkmn().getAttacks().get(i).getStatus() <= 5 && this.getCurrentPkmn().getAttacks().get(i).getStatus() != 0)
+						case 3 :
+							if (def.getCurrentPkmn().getStatus() == 0 && this.getCurrentPkmn().getAttacks().get(i).getStatus() <= 5
+							&& this.getCurrentPkmn().getAttacks().get(i).getStatus() != 0
+							&& this.checkStrWeak(1, this.getCurrentPkmn().getAttacks().get(i), def.getCurrentPkmn()) >=1)
 							{
 								rdatt = i;
 								break;
 							}
-						case 4 : 
+						case 2 : 
 							if ((this.getCurrentPkmn().getAttacks().get(i).getStatus() >= 23 && this.getCurrentPkmn().getAttacks().get(i).getStatus() <= 30) && def.getCurrentPkmn().getSpeed("current") < this.getCurrentPkmn().getSpeed("current"))
 							{
 								rdatt = i;
 								break;
 							}
-						case 3 :
+						case 1 :
 							if (this.getCurrentPkmn().getAttacks().get(i).getStatus() == 44 || this.getCurrentPkmn().getAttacks().get(i).getStatus() == 45 || this.getCurrentPkmn().getAttacks().get(i).getStatus() == 50)
 							{
 								rdatt = i;
