@@ -41,6 +41,7 @@ public class Pokemon implements Cloneable
 	int countBide = 0;
 	int countDisable = 0;
 	int countThrash = 0;
+	int countToxic = 0;
 	int totalBideDmg = 0;
 	boolean canAttack = true;
 	boolean prio = false;
@@ -399,6 +400,14 @@ public class Pokemon implements Cloneable
 		this.countDisable = countDisable;
 	}
 	
+	public int getCountToxic() 
+	{
+		return countToxic;
+	}
+	public void setCountToxic(int countToxic) 
+	{
+		this.countToxic = countToxic;
+	}
 	public boolean getCanAttack() 
 	{
 		return this.canAttack;
@@ -484,6 +493,7 @@ public class Pokemon implements Cloneable
 		this.getSpeed().setStage(0);
 		this.getAccuracy().setStage(0);
 		this.getEvasion().setStage(0);
+		this.setCountToxic(0);
 		setSeeded(false);
 		if (status)
 			setStatus(0);
