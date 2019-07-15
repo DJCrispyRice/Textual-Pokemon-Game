@@ -30,7 +30,7 @@ public class Window extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
-		this.music = new Sound("res/audio/menu.wav");
+		this.music = new Sound(this.getClass().getResource("/res/audio/menu.wav"));
 		this.music.playLoop();
 	}
 	

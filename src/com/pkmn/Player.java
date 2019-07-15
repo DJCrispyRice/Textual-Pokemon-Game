@@ -96,7 +96,7 @@ public class Player
 		else
 		{
 			win.music.stop();
-			win.se = new Sound("res/cries/"+gd.allPkmn[Integer.parseInt(choice)].getId()+".wav");
+			win.se = new Sound(this.getClass().getResource("/res/cries/"+gd.allPkmn[Integer.parseInt(choice)].getId()+".wav"));
 			win.se.play();
 			setTeam(gd.allPkmn[Integer.parseInt(choice)].clone());
 			win.logTrace("You chose "+gd.allPkmn[Integer.parseInt(choice)].getName()+" !");
@@ -125,7 +125,7 @@ public class Player
 					try 
 					{
 						win.music.stop();
-						win.se = new Sound("res/cries/"+i+".wav");
+						win.se = new Sound(this.getClass().getResource("/res/cries/"+i+".wav"));
 						win.se.play();
 						setTeam(gd.allPkmn[i].clone());
 						win.logTrace("You chose "+gd.allPkmn[i].getName()+" !");
@@ -193,7 +193,7 @@ public class Player
 		if (this.getCurrentPkmn().getStatus()==9)
 		{
 			win.music.stop();
-			win.se = new Sound("res/cries/"+this.getCurrentPkmn().getId()+".wav");
+			win.se = new Sound(this.getClass().getResource("/res/cries/"+this.getCurrentPkmn().getId()+".wav"));
 			win.se.play();
 			try 
 			{

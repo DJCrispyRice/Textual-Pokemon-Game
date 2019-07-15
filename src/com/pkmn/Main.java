@@ -154,7 +154,8 @@ public class Main implements ActionListener, KeyListener
 				win.whatToChoose = "attack";
 				b.p1.currentPkmn = b.p1.getTeam().get(0);
 				b.p2.currentPkmn = b.p2.getTeam().get(0);
-				win.se = new Sound("res/cries/"+b.getpPkmn(b.p1).getId()+".wav");
+				win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !");
+				win.se = new Sound(this.getClass().getResource("/res/cries/"+b.getpPkmn(b.p1).getId()+".wav"));
 				win.se.play();
 				try 
 				{
@@ -163,10 +164,9 @@ public class Main implements ActionListener, KeyListener
 				{
 					e.printStackTrace();
 				}
-				win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !");
 				win.logTrace("Your opponent sent "+b.getpPkmn(b.p2).getName()+ " !");
 				win.logTrace(b.getpPkmn(b.p1).showAttacks());
-				win.music = new Sound("res/audio/battle.wav");
+				win.music = new Sound(this.getClass().getResource("/res/audio/battle.wav"));
 				win.music.playLoop();
 			}
 			else
@@ -327,7 +327,7 @@ public class Main implements ActionListener, KeyListener
 					b.p1.setCurrentPkmn(b.p1.getTeam().get(Integer.parseInt(choice)-1));
 					b.getpPkmn(b.p1).setCurrentStats(false);
 					win.music.stop();
-					win.se = new Sound("res/cries/"+b.getpPkmn(b.p1).getId()+".wav");
+					win.se = new Sound(this.getClass().getResource("/res/cries/"+b.getpPkmn(b.p1).getId()+".wav"));
 					win.se.play();
 					try 
 					{

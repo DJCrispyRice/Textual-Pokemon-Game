@@ -1,6 +1,6 @@
 package com.pkmn;
 
-import java.io.File;
+import java.net.URL;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -10,12 +10,12 @@ import javax.sound.sampled.FloatControl;
 public class Sound 
 {
 	Clip clip;
-	public Sound(String filename)
+	public Sound(URL url)
 	{
 		try
 		{
 			this.clip = AudioSystem.getClip();
-			this.clip.open(AudioSystem.getAudioInputStream(new File(filename)));
+			this.clip.open(AudioSystem.getAudioInputStream(url));
 		}
 		catch (Exception e)
 		{

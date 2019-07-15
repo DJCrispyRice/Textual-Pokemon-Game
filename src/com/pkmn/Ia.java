@@ -206,7 +206,7 @@ public class Ia extends Player
 					this.setCurrentPkmn(this.getTeam().get(ThreadLocalRandom.current().nextInt(0, this.getTeam().size() - 1)));
 				this.getCurrentPkmn().setCurrentStats(false);
 				win.music.stop();
-				win.se = new Sound("res/cries/"+this.getCurrentPkmn().getId()+".wav");
+				win.se = new Sound(this.getClass().getResource("/res/cries/"+this.getCurrentPkmn().getId()+".wav"));
 				win.se.play();
 				win.logTrace("Your opponent sent "+this.getCurrentPkmn().getName()+" !");
 				win.music.playLoop();
