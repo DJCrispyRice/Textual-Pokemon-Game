@@ -172,16 +172,17 @@ public class Battle
 		if (this.getpPkmn(att).getStatus()==3 && iAtt.getId() != 77)
 		{
 			int dmgpn = this.getpPkmn(att).getBaseHp()/16;
-			if (getpPkmn(def).getCountToxic()>0)
-				dmgpn = dmgpn * getpPkmn(def).getCountToxic();
+			System.out.println(getpPkmn(att).getCountToxic());
+			if (getpPkmn(att).getCountToxic() > 0)
+				dmgpn = dmgpn * getpPkmn(att).getCountToxic();
 			this.s = this.s + "\n";
 			if (att.getName().equals("Opponent"))
 				this.s = this.s + "Enemy ";
 			this.s = this.s +this.getpPkmn(att).getName() + " suffers "+Integer.toString(dmgpn) + " HP due to poison.";
 			this.getpPkmn(att).setCurrentHp(-dmgpn);
 			this.s = this.s + att.checkHpLeft();
-			if (getpPkmn(def).getCountToxic()>0)
-				getpPkmn(def).setCountToxic(getpPkmn(def).getCountToxic() + 1);
+			if (getpPkmn(att).getCountToxic()>0)
+				getpPkmn(att).setCountToxic(getpPkmn(att).getCountToxic() + 1);
 		}
 		//If the pokémon is burn, lose 1/16 of its HP.
 		else if (this.getpPkmn(att).getStatus()==4 && iAtt.getId() != 77)
@@ -795,14 +796,17 @@ public class Battle
 				break;
 			//Toxic
 			case 146 :
-				if (getpPkmn(def).getStatus() != 0)
+				if (def.getName().equals("Opponent"))
+					this.s = this.s + "\nEnemy ";
+				if (getpPkmn(def).getStatus() == 0)
 				{
 					getpPkmn(def).setStatus(3);
 					getpPkmn(def).setCountToxic(1);
-					if (def.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
 					this.s = this.s + getpPkmn(def).getName() + " is badly poisoned !";
 				}
+				else
+					this.s = this.s + getpPkmn(att).getName() + " missed !";
+				break;
 			//Transform
 			case 147 :
 				if (att.getName().equals("Opponent"))
