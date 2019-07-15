@@ -544,7 +544,7 @@ public class Pokemon implements Cloneable
 			s = s + "\n***********************";
 		}
 		else
-			s = s + "***********************\nPress enter to proceed to next turn.\n***********************";
+			s = s + "\nPress enter to proceed to next turn.\n***********************";
 		return s;
 	}
 	
@@ -562,7 +562,7 @@ public class Pokemon implements Cloneable
 	public String statusModifier(int status)
 	{
 		String s = new String();
-		if (!this.getSub())
+		if (!this.getSub() && this.getStatus() != 9)
 		{
 			s = s + "\n";
 			switch (status)

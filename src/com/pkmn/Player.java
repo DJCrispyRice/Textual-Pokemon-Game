@@ -96,7 +96,7 @@ public class Player
 		else
 		{
 			win.music.stop();
-			win.se = new Sound("res/cries/"+choice.toString()+".wav");
+			win.se = new Sound("res/cries/"+gd.allPkmn[Integer.parseInt(choice)].getId()+".wav");
 			win.se.play();
 			setTeam(gd.allPkmn[Integer.parseInt(choice)].clone());
 			win.logTrace("You chose "+gd.allPkmn[Integer.parseInt(choice)].getName()+" !");

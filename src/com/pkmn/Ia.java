@@ -197,6 +197,7 @@ public class Ia extends Player
 	{
 		if (this.getCurrentPkmn().getStatus()==9)
 		{
+			
 			if (this.getTeam().size()>0)
 			{
 				if (this.getTeam().size()==1)
@@ -204,7 +205,11 @@ public class Ia extends Player
 				else
 					this.setCurrentPkmn(this.getTeam().get(ThreadLocalRandom.current().nextInt(0, this.getTeam().size() - 1)));
 				this.getCurrentPkmn().setCurrentStats(false);
+				win.music.stop();
+				win.se = new Sound("res/cries/"+this.getCurrentPkmn().getId()+".wav");
+				win.se.play();
 				win.logTrace("Your opponent sent "+this.getCurrentPkmn().getName()+" !");
+				win.music.playLoop();
 				this.getCurrentPkmn().setCanAttack(false);
 			}
 			else
