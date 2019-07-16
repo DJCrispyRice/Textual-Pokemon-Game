@@ -32,6 +32,71 @@ public class Battle
 		return p.getCurrentPkmn().getAttacks().get(i);
 	}
 	
+	public void checkPriority(Player p, Player ia, int rdatt, String choice)
+	{
+		if (getpPkmn(p).getSpeed("current") >= getpPkmn(ia).getSpeed("current"))
+		{
+			if (getpattack(ia, rdatt).getStatus() == 51)
+				getpPkmn(p).setPrio(false);
+			else if (getpPkmn(p).getTwoturnstatus() != 0)
+				getpPkmn(p).setPrio(true);
+			else if (getpattack(p, Integer.parseInt(choice)-1).getId() == 22)
+				getpPkmn(p).setPrio(false);
+			else if (getpattack(p, Integer.parseInt(choice)-1).getId() == 80)
+				getpPkmn(p).setPrio(false);
+			else
+				getpPkmn(p).setPrio(true);
+		}
+		else
+		{
+			if (!choice.equals("") && getpattack(p, Integer.parseInt(choice)-1).getStatus() == 51)
+				getpPkmn(p).setPrio(true);
+			else if (getpattack(ia, rdatt).getId() == 22)
+				getpPkmn(p).setPrio(true);
+			else if (getpattack(ia, rdatt).getId() == 80)
+				getpPkmn(p).setPrio(false);
+			else
+				getpPkmn(p).setPrio(false);
+		}
+	}
+	
+	public void aTurn (Player p1, Player p2, Window win, String a1, String a2, GameData g)
+	{
+		//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
+		if (getpPkmn(p1).getTwoturnstatus() != 0)
+			win.logTrace(useAttack(g.allAtks[getpPkmn(p1).getTwoturnstatus()],p1,p2,0));
+		else
+		{
+			int att1 = Integer.parseInt(a1) - 1;
+			win.logTrace(useAttack(getpPkmn(p1).getAttacks().get(att1),p1,p2,0));
+		}
+		//Checks if the opponent fainted
+		p2.checkDead(win);
+		//If the attack deals to user, checks if it's not dead
+		if (p1.checkDead(win))
+			getpPkmn(p2).setCanAttack(false);
+		if (getpPkmn(p2).getStatus() != 9)
+		{
+			//Checks if the pokémon didn't flinched between turns
+			if (getpPkmn(p2).getCanAttack())
+			{
+				if (getpPkmn(p2).getTwoturnstatus() != 0)
+					win.logTrace(useAttack(g.allAtks[getpPkmn(p2).getTwoturnstatus()],p2,p1,1));
+				else
+				{
+					int att2 = Integer.parseInt(a2) - 1;
+					win.logTrace(useAttack(getpPkmn(p2).getAttacks().get(att2),p2,p1,1));
+				}
+				//Checks if the player fainted
+				p1.checkDead(win);
+				p2.checkDead(win);
+			}
+			//... if it flinched, reset canAttack
+			else
+				getpPkmn(p2).setCanAttack(true);
+		}
+	}
+	
 	//Is used whatever an attack is launched by a pokemon. att is the attacker, def is the defender
 	//i is used to see if it's the first or the second attack in this turn
 	public String useAttack (Attack iAtt, Player att, Player def, int i)

@@ -5,7 +5,7 @@
  * - Better pokémon selection > OK
  * - Better code organisation > OK
  * - Add IA > OK
- * - Sound (cries, music)
+ * - Sound (cries, music) > OK
  * - Graphics (not sure if it suits this project yet)
  */
 
@@ -57,7 +57,6 @@ public class Main implements ActionListener, KeyListener
 		}
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
 		choice = win.jtf.getText().toUpperCase();
@@ -201,99 +200,19 @@ public class Main implements ActionListener, KeyListener
 						throw new AlreadyBoundException();
 					
 					//Checking prioritary using speed and moves used
-					if (b.getpPkmn(b.p1).getSpeed("current") >= b.getpPkmn(b.p2).getSpeed("current"))
-					{
-						if (b.getpattack(b.p2, rdatt).getStatus() == 51)
-							b.getpPkmn(b.p1).setPrio(false);
-						else if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
-							b.getpPkmn(b.p1).setPrio(true);
-						else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 22)
-							b.getpPkmn(b.p1).setPrio(false);
-						else if (b.getpattack(b.p1, Integer.parseInt(choice)-1).getId() == 80)
-							b.getpPkmn(b.p1).setPrio(false);
-						else
-							b.getpPkmn(b.p1).setPrio(true);
-					}
-					else
-					{
-						if (!choice.equals("") && b.getpattack(b.p1, Integer.parseInt(choice)-1).getStatus() == 51)
-							b.getpPkmn(b.p1).setPrio(true);
-						else if (b.getpattack(b.p2, rdatt).getId() == 22)
-							b.getpPkmn(b.p1).setPrio(true);
-						else if (b.getpattack(b.p2, rdatt).getId() == 80)
-							b.getpPkmn(b.p1).setPrio(false);
-						else
-							b.getpPkmn(b.p1).setPrio(false);
-					}
-					/*
-					* Case : player faster
-					*/
-					if (b.getpPkmn(b.p1).getPrio())
-					{
-						//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
-						if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
-							win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p1).getTwoturnstatus()],b.p1,b.p2,0));
-						else
-							win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
-						//Checks if the opponent fainted
-						b.p2.checkDead(win);
-						//If the attack deals to user, checks if it's not dead
-						if (b.p1.checkDead(win))
-							b.getpPkmn(b.p2).setCanAttack(false);
-						if (b.getpPkmn(b.p2).getStatus() != 9)
-						{
-							//Checks if the pokémon didn't flinched between turns
-							if (b.getpPkmn(b.p2).getCanAttack())
-							{
-								if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
-									win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
-								else
-									win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
-								//Checks if the player fainted
-								b.p1.checkDead(win);
-								b.p2.checkDead(win);
-							}
-							//... if it flinched, reset canAttack
-							else
-								b.getpPkmn(b.p2).setCanAttack(true);
-						}
-					}
+					b.checkPriority(b.p1, b.p2, rdatt, choice);
 					
-					/*
-					 * Case : opponent faster
-					 */
+					//Sending strings instead of integers because of the twoturnstatus check in aTurn function.
+					if (b.getpPkmn(b.p1).getPrio())
+						b.aTurn(b.p1,b.p2,win,choice,Integer.toString(rdatt+1),gd);
 					else
-					{
-						if (b.getpPkmn(b.p2).getTwoturnstatus() != 0)
-							win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p2).getTwoturnstatus()],b.p2,b.p1,1));
-						else
-							win.logTrace(b.useAttack(b.getpPkmn(b.p2).getAttacks().get(rdatt),b.p2,b.p1,1));
-						//Checks if the player fainted
-						b.p1.checkDead(win);
-						if (b.p2.checkDead(win))
-							b.getpPkmn(b.p1).setCanAttack(false);
-						if (b.getpPkmn(b.p1).getStatus() != 9)
-						{
-							if (b.getpPkmn(b.p1).getCanAttack())
-							{
-								//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
-								if (b.getpPkmn(b.p1).getTwoturnstatus() != 0)
-									win.logTrace(b.useAttack(gd.allAtks[b.getpPkmn(b.p1).getTwoturnstatus()],b.p1,b.p2,0));
-								else
-									win.logTrace(b.useAttack(b.getpPkmn(b.p1).getAttacks().get(Integer.parseInt(choice) - 1),b.p1,b.p2,0));
-								//Checks if someone fainted
-								b.p2.checkDead(win);
-								b.p1.checkDead(win);
-							}
-							else
-								b.getpPkmn(b.p1).setCanAttack(true);
-						}
-					}
+						b.aTurn(b.p2,b.p1,win,Integer.toString(rdatt+1),choice,gd);
+					
 					//Checks after attacks were used
 					b.endOfTurn(win);
 				}
 			}
-			catch (NullPointerException e1)
+			catch (NumberFormatException e1)
 			{
 				win.logTrace("Woops ! That doesn't look like a valid attack !");
 				choice = null;
