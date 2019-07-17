@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> 
+<root> 
+	<head>
+		<id>0</id>
+		<name>Pallet Town</name>
+	</head>
+	<encounters>
+		<encounter>
+			<id>0</id>
+			<poke>19</poke>
+			<level>3</level>
+		</encounter>
+		<encounter>
+			<id>1</id>
+			<poke>19</poke>
+			<level>2</level>
+		</encounter>
+	</encounters>
+	<texts>
+		<text>
+			<id>0</id>
+			<speech>The wind is blowing in your hairs...</speech>
+			<flag>0</flag>
+		</text>
+		<text>
+			<id>1</id>
+			<speech>You like this fresh air.</speech>
+			<flag>0</flag>
+		</text>
+	</texts>
+	<links>
+		<link>
+			<area>1</area>
+			<way>walk</way>
+		</link>
+		<link>
+			<area>3</area>
+			<way>surf</way>
+		</link>
+	</links>
+</root>
