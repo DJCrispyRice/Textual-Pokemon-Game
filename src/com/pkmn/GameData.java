@@ -1081,7 +1081,7 @@ public final class GameData
 		win.logTrace("Attacks assigned.");
 	}
 	
-	//Handles the random attack choic for convienient reason
+	//Handles the random attack choice for convienient reason
 	public Attack randomAttack(int i)
 	{
 		this.createTypes();

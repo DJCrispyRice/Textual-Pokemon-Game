@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <map> 
 	<head>
-		<id>0</id>
 		<name>Pallet Town</name>
 	</head>
 	<encounters>
 		<encounter>
-			<id>0</id>
 			<poke>19</poke>
 			<level>3</level>
 			<place>grass</place>
 		</encounter>
 		<encounter>
-			<id>1</id>
-			<poke>19</poke>
+			<poke>16</poke>
 			<level>2</level>
 			<place>grass</place>
 		</encounter>
 	</encounters>
 	<texts>
 		<text>
-			<id>0</id>
 			<speech>The wind is blowing in your hairs...</speech>
 			<flag>0</flag>
 		</text>
 		<text>
-			<id>1</id>
 			<speech>You like this fresh air.</speech>
 			<flag>0</flag>
 		</text>
