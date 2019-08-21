@@ -98,7 +98,11 @@ public class Pokemon implements Cloneable
 	{
 		return level;
 	}
-
+	
+	public void setLevel(int level) 
+	{
+		this.level = level;
+	}
 	public Type getType1() 
 	{
 		return type1;

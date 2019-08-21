@@ -5,11 +5,13 @@
 	</head>
 	<encounters>
 		<encounter>
+			<id>0</id>
 			<poke>16</poke>
 			<level>3</level>
 			<place>grass</place>
 		</encounter>
 		<encounter>
+			<id>1</id>
 			<poke>19</poke>
 			<level>3</level>
 			<place>grass</place>
@@ -42,10 +44,12 @@
 	</shop>
 	<links>
 		<link>
+			<id>0</id>
 			<area>0</area>
 			<way>walk</way>
 		</link>
 		<link>
+			<id>1</id>
 			<area>6</area>
 			<way>surf</way>
 		</link>

@@ -14,8 +14,8 @@ public class Map
 	String name;
 	int id;
 	ArrayList <Pokemon> encounters;
-	ArrayList <String> texts;
-	ArrayList <Map> links;
+	ArrayList <String[][]> texts; // First dimension : text. Second dimension : Flag
+	ArrayList <String[][]> links; // First dimension : id of the map. Second dimension : how the map is accessible (walk, surf...)
 	public Map (int i, GameData gd)
 	{
 		this.setId(i);
@@ -29,20 +29,8 @@ public class Map
 		catch (Exception e) {}
 		racine = doc.getRootElement();
 		this.name = racine.getChildren("head").get(0).getChildText("name");
-		List<Element> listEnc = racine.getChildren("encounters");
-		Iterator<Element> ite = listEnc.iterator();
-		while (ite.hasNext())
-		{
-			this.encounters = new ArrayList<Pokemon>();
-			Element courant = (Element)ite.next();
-			List<Element> listEnc2 = courant.getChildren("encounter");
-			Iterator<Element> ite2 = listEnc2.iterator();
-			while (ite2.hasNext())
-			{
-				Element courant2 = (Element)ite2.next();
-				this.encounters.add(gd.allPkmn[Integer.parseInt(courant2.getChildText("poke"))]);
-			}
-		}
+		this.loadEncounters(gd, racine);
+		this.loadLinks(racine);
 	}
 	
 	public int getId() 
@@ -75,24 +63,64 @@ public class Map
 		this.encounters = encounters;
 	}
 	
-	public ArrayList<String> getTexts() 
+	public ArrayList<String[][]> getTexts() 
 	{
 		return texts;
 	}
 	
-	public void setTexts(ArrayList<String> texts) 
+	public void setTexts(ArrayList<String[][]> texts) 
 	{
 		this.texts = texts;
 	}
 	
-	public ArrayList<Map> getLinks() 
+	public ArrayList<String[][]> getLinks() 
 	{
 		return links;
 	}
 	
-	public void setLinks(ArrayList<Map> links) 
+	public void setLinks(ArrayList<String[][]> links) 
 	{
 		this.links = links;
+	}
+	
+	public void loadEncounters(GameData gd, Element racine)
+	{
+		List<Element> listEnc = racine.getChildren("encounters");
+		Iterator<Element> ite = listEnc.iterator();
+		while (ite.hasNext())
+		{
+			this.encounters = new ArrayList<Pokemon>();
+			Element courant = (Element)ite.next();
+			List<Element> listEnc2 = courant.getChildren("encounter");
+			Iterator<Element> ite2 = listEnc2.iterator();
+			while (ite2.hasNext())
+			{
+				Element courant2 = (Element)ite2.next();
+				this.encounters.add(gd.allPkmn[Integer.parseInt(courant2.getChildText("poke"))]);
+				this.encounters.get(Integer.parseInt(courant2.getChildText("id"))).setLevel(Integer.parseInt(courant2.getChildText("level")));
+			}
+		}
+	}
+	
+	public void loadLinks(Element racine)
+	{
+		List<Element> listLink = racine.getChildren("links");
+		Iterator<Element> ite = listLink.iterator();
+		while (ite.hasNext())
+		{
+			this.links = new ArrayList<String[][]>();
+			Element courant = (Element)ite.next();
+			List<Element> listLink2 = courant.getChildren("link");
+			Iterator<Element> ite2 = listLink2.iterator();
+			while (ite2.hasNext())
+			{
+				Element courant2 = (Element)ite2.next();
+				String[][] link = new String[1][2];
+				link[0][0] = courant2.getChildText("area");
+				link[0][1] = courant2.getChildText("way");
+				this.links.add(link);
+			}
+		}
 	}
 
 }

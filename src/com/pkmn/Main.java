@@ -60,9 +60,6 @@ public class Main implements ActionListener, KeyListener
 	{
 		choice = win.jtf.getText().toUpperCase();
 		win.jtf.setText("");
-		Map map = new Map(0,this.gd);
-		System.out.println(map.getName());
-		System.out.println(map.getEncounters().get(1).getName());
 	}
 
 	@Override

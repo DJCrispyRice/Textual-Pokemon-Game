@@ -1,4 +1,7 @@
 package com.pkmn;
+
+import java.util.ArrayList;
+
 /* 
  * This class regroups every game data. It is created at the opening of the game and contains all assets such as the 151 Pokémons, all attacks and all types.
  * It will be instantiated under the name "gd" and should be accessed from everywhere. Everything is contained in its array and will get an Id
@@ -11,6 +14,7 @@ public final class GameData
 	Pokemon[] allPkmn;
 	Attack[] allAtks;
 	Type[] allTypes;
+	ArrayList <Map> allMaps;
 	
 	public GameData()
 	{
@@ -22,6 +26,7 @@ public final class GameData
 		this.createTypes();
 		this.createAttacks();
 		this.createPkmn(win);
+		this.createMaps();
 	}
 	
 	private void createTypes()
@@ -1079,6 +1084,22 @@ public final class GameData
 		
 		//Tracing that loading is OK
 		win.logTrace("Attacks assigned.");
+	}
+	
+	//Creating maps by reading XML files
+	public void createMaps()
+	{
+		this.allMaps = new ArrayList<Map>();
+		int i = 0;
+		try
+		{
+			while (true)
+			{
+				this.allMaps.add(new Map(i,this));
+				i++;
+			}
+		}
+		catch (Exception e) {}
 	}
 	
 	//Handles the random attack choice for convienient reason
