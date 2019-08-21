@@ -30,7 +30,7 @@ public class Ia extends Player
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		win.logTrace("Your opponent chose his team, now let's the battle begin !");
+		win.logTrace("Your opponent chose his team, now let the battle begin !");
 	}
 	
 	public int chooseAttack(Player def)
