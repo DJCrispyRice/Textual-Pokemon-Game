@@ -192,7 +192,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Dizzy Punch","May confuse opponent.",28,70,10,true,this.allTypes[0],6,20,100); i++;
 		this.allAtks[i] = new Attack ("Double Kick","Hits twice in one turn.",29,30,30,true,this.allTypes[1],46,0,100); i++;
 		this.allAtks[i] = new Attack ("Double Slap","Hits 2-5 times in one turn.",30,15,10,true,this.allTypes[0],46,0,85); i++;
-		this.allAtks[i] = new Attack ("Double Team","Raises user's Evasiveness.",31,0,15,false,this.allTypes[0],41,0,100); i++;
+		this.allAtks[i] = new Attack ("Double Team","Raises user's Evasiveness.",31,0,15,false,this.allTypes[0],41,100,100); i++;
 		this.allAtks[i] = new Attack ("Double-Edge","User receives recoil damage.",32,100,15,true,this.allTypes[0],49,0,100); i++;
 		this.allAtks[i] = new Attack ("Dragon Rage","Always inflicts 40 HP.",33,40,10,false,this.allTypes[14],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Dream Eater","User recovers half the HP inflicted on a sleeping opponent.",34,100,15,false,this.allTypes[12],54,0,100); i++; // OK
@@ -252,7 +252,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Poison Sting","May poison the opponent.",88,15,35,true,this.allTypes[3],3,30,100); i++;
 		this.allAtks[i] = new Attack ("Pound","Standard attack",89,40,35,true,this.allTypes[0],0,0,100); i++;
 		this.allAtks[i] = new Attack ("Psybeam","May confuse opponent.",90,65,20,false,this.allTypes[12],6,10,100); i++;
-		this.allAtks[i] = new Attack ("Psychic","May lower opponent's Special.",91,90,10,false,this.allTypes[12],32,10,100); i++;
+		this.allAtks[i] = new Attack ("Psychic","May lower opponent's Special.",91,90,10,false,this.allTypes[12],32,100,100); i++;
 		this.allAtks[i] = new Attack ("Psywave","Inflicts damage 50-150% of user's level.",92,0,15,false,this.allTypes[12],54,0,80); i++;
 		this.allAtks[i] = new Attack ("Quick Attack","User attacks first.",93,40,30,true,this.allTypes[0],51,0,100); i++;
 		this.allAtks[i] = new Attack ("Rage","Raises user's Attack when hit.",94,20,20,true,this.allTypes[0],9,100,100); i++;

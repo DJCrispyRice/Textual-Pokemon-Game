@@ -308,12 +308,20 @@ public class Main implements ActionListener, KeyListener
 				if (choice.equals("1"))
 				{
 					win.logTrace("Okay, let's play again. Good luck !");
+					win.music.stop();
 					Thread.sleep(1000);
 					win.clear();
-					win.logTrace("A new battle will begin ! Please choose your team.");
-					win.logTrace("To do so, type the number of your Pokémon and Enter. You can refer to the Pokédex if needed.");
-					win.whatToChoose = "team";
+					win.logTrace("Please choose your difficulty.");
+					win.logTrace("0. Easy");
+					win.logTrace("1. Medium");
+					win.logTrace("2. Hard");
+					win.logTrace("Type the number next to the difficulty you want (or the difficulty directly)");
+					win.logTrace("For help, type HELP.");
+					win.whatToChoose = "level";
 					b = new Battle(gd);
+					this.choice = null;
+					win.music = new Sound(this.getClass().getResource("/res/audio/menu.wav"));
+					win.music.playLoop();
 				}
 				else
 				{

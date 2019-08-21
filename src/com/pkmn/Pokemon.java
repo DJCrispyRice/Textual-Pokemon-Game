@@ -638,115 +638,121 @@ public class Pokemon implements Cloneable
 	//Applies stats alteration and prints the result
 	public String statModifier(Player p, String stat, int modifier)
 	{
-		String s = new String();
-		boolean min = false;
-		boolean max = false;
-		switch (stat)
+		//To avoid the "drop status" message if the Pokemon is already dead
+		if (this.getStatus() != 9)
 		{
-			case "attack" :
-				if (this.getAttack("stage") >= 6)
-				{
-					max = true;
+			String s = new String();
+			boolean min = false;
+			boolean max = false;
+			switch (stat)
+			{
+				case "attack" :
+					if (this.getAttack("stage") >= 6)
+					{
+						max = true;
+						break;
+					}
+					else if (this.getAttack("stage") <= -6)
+					{
+						min = true;
+						break;
+					}
+					this.getAttack().setStage(this.getAttack("stage") + modifier);
 					break;
-				}
-				else if (this.getAttack("stage") <= -6)
-				{
-					min = true;
+				case "defense" :
+					if (this.getDefense("stage")>=6)
+					{
+						max = true;
+						break;
+					}
+					else if (this.getDefense("stage")<=-6)
+					{
+						min = true;
+						break;
+					}
+					this.getDefense().setStage(this.getDefense("stage") + modifier);
 					break;
-				}
-				this.getAttack().setStage(this.getAttack("stage") + modifier);
-				break;
-			case "defense" :
-				if (this.getDefense("stage")>=6)
-				{
-					max = true;
+				case "speed" :
+					if (this.getSpeed("stage")>=6)
+					{
+						max = true;
+						break;
+					}
+					else if (this.getSpeed("stage")<=-6)
+					{
+						min = true;
+						break;
+					}
+					this.getSpeed().setStage(this.getSpeed("stage") + modifier);
 					break;
-				}
-				else if (this.getDefense("stage")<=-6)
-				{
-					min = true;
+				case "special" :
+					if (this.getSpecial("stage")>=6)
+					{
+						max = true;
+						break;
+					}
+					else if (this.getSpecial("stage")<=-6)
+					{
+						min = true;
+						break;
+					}
+					this.getSpecial().setStage(this.getSpecial("current") + modifier);
 					break;
-				}
-				this.getDefense().setStage(this.getDefense("stage") + modifier);
-				break;
-			case "speed" :
-				if (this.getSpeed("stage")>=6)
-				{
-					max = true;
+				case "accuracy" :
+					if (this.getAccuracy("stage")>=6)
+					{
+						max = true;
+						break;
+					}
+					else if (this.getAccuracy("stage")<=-6)
+					{
+						min = true;
+						break;
+					}
+					this.getAccuracy().setStage(this.getAccuracy("stage") + modifier);
 					break;
-				}
-				else if (this.getSpeed("stage")<=-6)
-				{
-					min = true;
+				case "evasion" :
+					if (this.getEvasion("stage")>=6)
+					{
+						max = true;
+						break;
+					}
+					else if (this.getEvasion("stage")<=-6)
+					{
+						min = true;
+						break;
+					}
+					this.getEvasion().setStage(this.getEvasion("stage") + modifier);
 					break;
-				}
-				this.getSpeed().setStage(this.getSpeed("stage") + modifier);
-				break;
-			case "special" :
-				if (this.getSpecial("stage")>=6)
-				{
-					max = true;
-					break;
-				}
-				else if (this.getSpecial("stage")<=-6)
-				{
-					min = true;
-					break;
-				}
-				this.getSpecial().setStage(this.getSpecial("current") + modifier);
-				break;
-			case "accuracy" :
-				if (this.getAccuracy("stage")>=6)
-				{
-					max = true;
-					break;
-				}
-				else if (this.getAccuracy("stage")<=-6)
-				{
-					min = true;
-					break;
-				}
-				this.getAccuracy().setStage(this.getAccuracy("stage") + modifier);
-				break;
-			case "evasion" :
-				if (this.getEvasion("stage")>=6)
-				{
-					max = true;
-					break;
-				}
-				else if (this.getEvasion("stage")<=-6)
-				{
-					min = true;
-					break;
-				}
-				this.getEvasion().setStage(this.getEvasion("stage") + modifier);
-				break;
-			case "wall" :
-				p.setWall(modifier);
-				p.setCountWall(5);
+				case "wall" :
+					p.setWall(modifier);
+					p.setCountWall(5);
+			}
+			if (p.getName().equals("Opponent"))
+				s = s + "Enemy ";
+			if (!stat.equals("wall"))
+				s = s + this.getName()+"'s " + stat;
+			if (max)
+				s = s + " won't go higher !";
+			else if (min)
+				s = s + " won't go lower !";
+			else
+			{
+				//Should not occur if a wall was used
+				if (modifier > 0 && !stat.equals("wall"))
+					s = s + " rose !";
+				else if (modifier < 0 && !stat.equals("wall"))
+					s = s + " fell !";
+				//If a wall was used - light screen
+				else if (modifier == 70)
+					s = s + this.getName() + "'s protected against special attacks !";
+				//If a wall was used - reflect
+				else if (modifier == 98)
+					s = s + this.getName() + " gained armor !";
+			}
+			return s;
 		}
-		if (p.getName().equals("Opponent"))
-			s = s + "Enemy ";
-		if (!stat.equals("wall"))
-			s = s + this.getName()+"'s " + stat;
-		if (max)
-			s = s + " won't go higher !";
-		else if (min)
-			s = s + " won't go lower !";
 		else
-		{
-			//Should not occur if a wall was used
-			if (modifier > 0 && !stat.equals("wall"))
-				s = s + " rose !";
-			else if (modifier < 0 && !stat.equals("wall"))
-				s = s + " fell !";
-			//If a wall was used - light screen
-			else if (modifier == 70)
-				s = s + this.getName() + "'s protected against special attacks !";
-			//If a wall was used - reflect
-			else if (modifier == 98)
-				s = s + this.getName() + " gained armor !";
-		}
-		return s;
+			return "";
 	}
 }
