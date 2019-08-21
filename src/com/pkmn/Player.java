@@ -194,7 +194,6 @@ public class Player
 		{
 			win.music.stop();
 			win.se = new Sound(this.getClass().getResource("/res/cries/"+this.getCurrentPkmn().getId()+".wav"));
-			win.se.play();
 			try 
 			{
 				Thread.sleep(500);
@@ -202,6 +201,7 @@ public class Player
 			{
 				e.printStackTrace();
 			}
+			win.se.play();
 			win.music.playLoop();
 			if (this.getTeam().size()>0)
 			{

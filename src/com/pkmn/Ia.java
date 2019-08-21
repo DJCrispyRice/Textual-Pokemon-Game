@@ -207,7 +207,15 @@ public class Ia extends Player
 				this.getCurrentPkmn().setCurrentStats(false);
 				win.music.stop();
 				win.se = new Sound(this.getClass().getResource("/res/cries/"+this.getCurrentPkmn().getId()+".wav"));
-				win.se.play();
+				try 
+				{
+					win.se.play();
+					Thread.sleep(500);
+				} catch (InterruptedException e) 
+				{
+					e.printStackTrace();
+				}
+				//win.se.play();
 				win.logTrace("Your opponent sent "+this.getCurrentPkmn().getName()+" !");
 				win.music.playLoop();
 				this.getCurrentPkmn().setCanAttack(false);
