@@ -14,6 +14,7 @@ public final class GameData
 	Pokemon[] allPkmn;
 	Attack[] allAtks;
 	Type[] allTypes;
+	ArrayList <Item> allItems;
 	ArrayList <Map> allMaps;
 	
 	public GameData()
@@ -26,6 +27,7 @@ public final class GameData
 		this.createTypes();
 		this.createAttacks();
 		this.createPkmn(win);
+		this.createItems();
 		this.createMaps();
 	}
 	
@@ -1084,6 +1086,12 @@ public final class GameData
 		
 		//Tracing that loading is OK
 		win.logTrace("Attacks assigned.");
+	}
+	
+	//Creating items
+	public void createItems()
+	{
+		
 	}
 	
 	//Creating maps by reading XML files

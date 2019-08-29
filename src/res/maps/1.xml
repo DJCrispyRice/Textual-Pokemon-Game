@@ -38,11 +38,7 @@
 		<text>1</text>
 		<text>2</text>
 		<items>
-			<item>
-				<name>Potion</name>
-				<description>Use it to heal your Pokémon.</description>
-				<price>300</price>
-			</item>
+			<item>2</item>
 		</items>
 	</shop>
 	<links>

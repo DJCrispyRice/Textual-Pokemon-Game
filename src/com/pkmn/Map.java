@@ -33,6 +33,7 @@ public class Map
 		this.loadEncounters(gd, racine);
 		this.loadLinks(racine);
 		this.loadTexts(racine);
+		this.loadShop(gd, racine);
 	}
 	
 	public int getId() 
@@ -146,7 +147,7 @@ public class Map
 		}
 	}
 	
-	public void loadShop(Element racine)
+	public void loadShop(GameData gd, Element racine)
 	{
 		List<Element> listShop = racine.getChildren("shop");
 		if (listShop!=null)

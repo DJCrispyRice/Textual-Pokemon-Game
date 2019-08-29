@@ -13,6 +13,8 @@ public class Player
 	Pokemon currentPkmn;
 	int wall = 0;
 	int countWall = 0;
+	int currentArea;
+	ArrayList <Item> inventory;
 	boolean seeded = false;
 	
 	public Player(String name)
