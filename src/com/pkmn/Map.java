@@ -16,7 +16,8 @@ public class Map
 	ArrayList <Pokemon> encounters;
 	ArrayList <String[][]> texts; // First dimension : text. Second dimension : Flag
 	ArrayList <String[][]> links; // First dimension : id of the map. Second dimension : how the map is accessible (walk, surf...)
-	public Map (int i, GameData gd)
+	Shop shop;
+	public Map (int i, GameData gd) throws NumberFormatException, CloneNotSupportedException
 	{
 		this.setId(i);
 		Document doc = null;
@@ -31,6 +32,7 @@ public class Map
 		this.name = racine.getChildren("head").get(0).getChildText("name");
 		this.loadEncounters(gd, racine);
 		this.loadLinks(racine);
+		this.loadTexts(racine);
 	}
 	
 	public int getId() 
@@ -83,7 +85,7 @@ public class Map
 		this.links = links;
 	}
 	
-	public void loadEncounters(GameData gd, Element racine)
+	public void loadEncounters(GameData gd, Element racine) throws NumberFormatException, CloneNotSupportedException
 	{
 		List<Element> listEnc = racine.getChildren("encounters");
 		Iterator<Element> ite = listEnc.iterator();
@@ -96,7 +98,7 @@ public class Map
 			while (ite2.hasNext())
 			{
 				Element courant2 = (Element)ite2.next();
-				this.encounters.add(gd.allPkmn[Integer.parseInt(courant2.getChildText("poke"))]);
+				this.encounters.add(gd.allPkmn[Integer.parseInt(courant2.getChildText("poke"))].clone());
 				this.encounters.get(Integer.parseInt(courant2.getChildText("id"))).setLevel(Integer.parseInt(courant2.getChildText("level")));
 			}
 		}
@@ -121,6 +123,42 @@ public class Map
 				this.links.add(link);
 			}
 		}
+	}
+	
+	public void loadTexts(Element racine)
+	{
+		List<Element> listTexts = racine.getChildren("texts");
+		Iterator<Element> ite = listTexts.iterator();
+		while (ite.hasNext())
+		{
+			this.texts = new ArrayList<String[][]>();
+			Element courant = (Element)ite.next();
+			List<Element> listTexts2 = courant.getChildren("text");
+			Iterator<Element> ite2 = listTexts2.iterator();
+			while (ite2.hasNext())
+			{
+				Element courant2 = (Element)ite2.next();
+				String[][] text = new String[1][2];
+				text[0][0] = courant2.getChildText("speech");
+				text[0][1] = courant2.getChildText("flag");
+				this.texts.add(text);
+			}
+		}
+	}
+	
+	public void loadShop(Element racine)
+	{
+		List<Element> listShop = racine.getChildren("shop");
+		if (listShop!=null)
+		{
+			Iterator<Element> ite = listShop.iterator();
+			while (ite.hasNext())
+			{
+				
+			}
+		}
+		else
+			this.shop = null;
 	}
 
 }

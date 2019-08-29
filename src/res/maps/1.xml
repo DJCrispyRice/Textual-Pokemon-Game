@@ -19,14 +19,17 @@
 	</encounters>
 	<texts>
 		<text>
+			<id>0</id>
 			<speech>It seems you have a package to collect.</speech>
 			<flag>0</flag>
 		</text>
 		<text>
+			<id>1</id>
 			<speech>Hello ! There is a package for you.</speech>
 			<flag>1</flag>
 		</text>
 		<text>
+			<id>2</id>
 			<speech>Welcome to shop.</speech>
 			<flag>0</flag>
 		</text>
