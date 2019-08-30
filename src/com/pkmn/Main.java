@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.regex.Pattern;
 
 public class Main implements ActionListener, KeyListener
 {
@@ -22,7 +23,7 @@ public class Main implements ActionListener, KeyListener
 	GameData gd;
 	String choice;
 	Battle b = new Battle(this.gd);
-	public Main() throws InterruptedException
+	public Main() throws InterruptedException, NumberFormatException, CloneNotSupportedException
 	{
 		win = new Window();
 		gd = new GameData(win);
@@ -33,7 +34,7 @@ public class Main implements ActionListener, KeyListener
 		win.logTrace("Welcome in the Pokémon Textual Battle Game !\nPress Enter to start.");
 	}
 	
-	public static void main(String[] args) throws InterruptedException
+	public static void main(String[] args) throws InterruptedException, NumberFormatException, CloneNotSupportedException
 	{
 		@SuppressWarnings("unused")
 		Main m = new Main();
@@ -60,6 +61,12 @@ public class Main implements ActionListener, KeyListener
 	{
 		choice = win.jtf.getText().toUpperCase();
 		win.jtf.setText("");
+		if (Pattern.matches("WALK\\s.*",choice))
+		{
+			System.out.println("Coucou");
+			String[] spt = choice.split("\\s+");
+			Command.walk(new Player ("yo"), gd, spt[1]);
+		}
 	}
 
 	@Override

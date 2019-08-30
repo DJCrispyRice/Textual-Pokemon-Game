@@ -1,6 +1,10 @@
 package com.pkmn;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 /* 
  * This class regroups every game data. It is created at the opening of the game and contains all assets such as the 151 Pokémons, all attacks and all types.
@@ -22,7 +26,7 @@ public final class GameData
 		
 	}
 	
-	public GameData(Window win)
+	public GameData(Window win) throws NumberFormatException, CloneNotSupportedException
 	{
 		this.createTypes();
 		this.createAttacks();
@@ -1095,19 +1099,21 @@ public final class GameData
 	}
 	
 	//Creating maps by reading XML files
-	public void createMaps()
+	public void createMaps() throws NumberFormatException, CloneNotSupportedException
 	{
 		this.allMaps = new ArrayList<Map>();
-		int i = 0;
+		long count = 0;
 		try
 		{
-			while (true)
-			{
-				this.allMaps.add(new Map(i,this));
-				i++;
-			}
+			Stream<Path> files = Files.list(Paths.get("src/res/maps/"));
+		    count = files.count();
+		    files.close();
 		}
 		catch (Exception e) {}
+		for (int i = 0; i < count; i++)
+		{
+			this.allMaps.add(new Map(i,this));
+		}
 	}
 	
 	//Handles the random attack choice for convienient reason

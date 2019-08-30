@@ -150,13 +150,13 @@ public class Map
 	public void loadShop(GameData gd, Element racine)
 	{
 		List<Element> listShop = racine.getChildren("shop");
-		if (listShop!=null)
+		if (!listShop.isEmpty())
 		{
-			Iterator<Element> ite = listShop.iterator();
+			/*Iterator<Element> ite = listShop.iterator();
 			while (ite.hasNext())
 			{
 				
-			}
+			}*/
 		}
 		else
 			this.shop = null;
