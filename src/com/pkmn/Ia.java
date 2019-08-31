@@ -217,6 +217,7 @@ public class Ia extends Player
 				}
 				//win.se.play();
 				win.logTrace("Your opponent sent "+this.getCurrentPkmn().getName()+" !");
+				win.drawIaSprite(this.getCurrentPkmn().getId());
 				win.music.playLoop();
 				this.getCurrentPkmn().setCanAttack(false);
 			}
