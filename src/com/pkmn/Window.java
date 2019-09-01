@@ -23,6 +23,8 @@ public class Window extends JFrame
 	public HpBar playerBar = new HpBar();
 	public HpBar iaBar = new HpBar();
 	public JLabel hpCounter = new JLabel("");
+	public JLabel playerStatus = new JLabel("");
+	public JLabel iaStatus = new JLabel("");
 	String whatToChoose = "level";
 	public Window() throws IOException
 	{
@@ -40,6 +42,8 @@ public class Window extends JFrame
 		this.hpCounter.setBounds(545,520,100,100);
 		this.add(hpCounter);
 		this.add(playerBar);
+		this.add(playerStatus);
+		this.add(iaStatus);
 		this.setTitle("Textual Pokémon game");
 		this.setSize(700, 700);
 		this.setLocationRelativeTo(null);
@@ -146,6 +150,30 @@ public class Window extends JFrame
 			this.playerBar.changeColor(Color.orange);
 		this.playerBar.setBounds(535,530,(int)hpLeft,25);
 		this.add(playerBar);
+		if (p.getStatus()!=0)
+		{
+			this.remove(playerStatus);
+			switch (p.getStatus())
+			{
+				case 1 : 
+					this.playerStatus = new JLabel("PAR");
+					break;
+				case 2 : 
+					this.playerStatus = new JLabel("SLP");
+					break;
+				case 3 : 
+					this.playerStatus = new JLabel("PSN");
+					break;
+				case 4 : 
+					this.playerStatus = new JLabel("BRN");
+					break;
+				case 5 : 
+					this.playerStatus = new JLabel("FRN");
+					break;
+			}
+			this.playerStatus.setBounds(575,493,50,50);
+			this.add(playerStatus);
+		}
 		this.repaint();
 	}
 		
@@ -153,7 +181,7 @@ public class Window extends JFrame
 	{
 		this.remove(iaBar);
 		this.iaContainer = new HpContainer();
-		this.iaContainer.setBounds(535,230,110,30);
+		this.iaContainer.setBounds(535,240,110,30);
 		this.add(iaContainer);
 		this.iaBar = new HpBar();
 		float hpLeft = ((float) p.getCurrentHp()/p.getBaseHp()) * 100;
@@ -161,8 +189,32 @@ public class Window extends JFrame
 			this.iaBar.changeColor(Color.red);
 		else if (hpLeft <= 50)
 			this.iaBar.changeColor(Color.orange);
-		this.iaBar.setBounds(535,230,(int)hpLeft,25);
+		this.iaBar.setBounds(535,240,(int)hpLeft,25);
 		this.add(iaBar);
+		if (p.getStatus()!=0)
+		{
+			this.remove(iaStatus);
+			switch (p.getStatus())
+			{
+				case 1 : 
+					this.iaStatus = new JLabel("PAR");
+					break;
+				case 2 : 
+					this.iaStatus = new JLabel("SLP");
+					break;
+				case 3 : 
+					this.iaStatus = new JLabel("PSN");
+					break;
+				case 4 : 
+					this.iaStatus = new JLabel("BRN");
+					break;
+				case 5 : 
+					this.iaStatus = new JLabel("FRN");
+					break;
+			}
+			this.iaStatus.setBounds(575,203,50,50);
+			this.add(iaStatus);
+		}
 		this.repaint();
 	}
 }
