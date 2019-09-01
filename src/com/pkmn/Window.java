@@ -150,9 +150,9 @@ public class Window extends JFrame
 			this.playerBar.changeColor(Color.orange);
 		this.playerBar.setBounds(535,530,(int)hpLeft,25);
 		this.add(playerBar);
+		this.remove(playerStatus);
 		if (p.getStatus()!=0)
 		{
-			this.remove(playerStatus);
 			switch (p.getStatus())
 			{
 				case 1 : 
@@ -174,6 +174,11 @@ public class Window extends JFrame
 			this.playerStatus.setBounds(575,493,50,50);
 			this.add(playerStatus);
 		}
+		else
+		{
+			this.playerStatus = new JLabel ("");
+			this.add(playerStatus);
+		}
 		this.repaint();
 	}
 		
@@ -191,9 +196,9 @@ public class Window extends JFrame
 			this.iaBar.changeColor(Color.orange);
 		this.iaBar.setBounds(535,240,(int)hpLeft,25);
 		this.add(iaBar);
+		this.remove(iaStatus);
 		if (p.getStatus()!=0)
 		{
-			this.remove(iaStatus);
 			switch (p.getStatus())
 			{
 				case 1 : 
@@ -213,6 +218,11 @@ public class Window extends JFrame
 					break;
 			}
 			this.iaStatus.setBounds(575,203,50,50);
+			this.add(iaStatus);
+		}
+		else
+		{
+			this.iaStatus = new JLabel ("");
 			this.add(iaStatus);
 		}
 		this.repaint();
