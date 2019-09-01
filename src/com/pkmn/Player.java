@@ -91,7 +91,7 @@ public class Player
 	
 	public void chooseByNumber(String choice,GameData gd, Window win) throws NumberFormatException, CloneNotSupportedException
 	{
-		if (choice.equals("0") || Integer.parseInt(choice) == 0)
+		if (choice.equals("0") || Integer.parseInt(choice) == 0 || Integer.parseInt(choice) >= 152)
 			throw  new NullPointerException();
 		else
 		{
@@ -192,6 +192,7 @@ public class Player
 	
 	public boolean checkDead(Window win)
 	{
+		win.drawPlayerHp(this.getCurrentPkmn());
 		if (this.getCurrentPkmn().getStatus()==9)
 		{
 			win.removePlayerSprite();

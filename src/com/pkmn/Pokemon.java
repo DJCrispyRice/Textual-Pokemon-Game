@@ -363,7 +363,7 @@ public class Pokemon implements Cloneable
 	
 	public int getCountBide() 
 	{
-		return countBide;
+		return this.countBide;
 	}
 	
 	public void setCountBide(int countBide) 

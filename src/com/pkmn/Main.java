@@ -33,8 +33,6 @@ public class Main implements ActionListener, KeyListener
 		win.jtf.addKeyListener(this);
 		win.jtf.setFocusTraversalKeysEnabled(false);
 		win.logTrace("Welcome in the Pokémon Textual Battle Game !\nPress Enter to start.");
-		win.drawPlayerContainer();
-		win.drawIaContainer();
 	}
 	
 	public static void main(String[] args) throws InterruptedException, IOException
@@ -156,6 +154,8 @@ public class Main implements ActionListener, KeyListener
 				win.whatToChoose = "attack";
 				b.p1.currentPkmn = b.p1.getTeam().get(0);
 				b.p2.currentPkmn = b.p2.getTeam().get(0);
+				win.drawPlayerHp(b.getpPkmn(b.p1));
+				win.drawIaHp(b.getpPkmn(b.p2));
 				win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !");
 				win.drawBackPlayerSprite(b.getpPkmn(b.p1).getId());
 				win.se = new Sound(this.getClass().getResource("/res/cries/"+b.getpPkmn(b.p1).getId()+".wav"));
@@ -262,6 +262,7 @@ public class Main implements ActionListener, KeyListener
 					}
 					win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+" !");
 					win.drawBackPlayerSprite(b.getpPkmn(b.p1).getId());
+					win.drawPlayerHp(b.getpPkmn(b.p1));
 					win.music.playLoop();
 					//If it's a switch (requested swap), the enemy will attack like normal
 					if (win.whatToChoose.equals("switch"))

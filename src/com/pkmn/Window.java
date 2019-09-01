@@ -17,8 +17,12 @@ public class Window extends JFrame
 	public Sound se;
 	public JLabel player = new JLabel(new ImageIcon());
 	public JLabel ia = new JLabel(new ImageIcon());
-	public JLabel pika;
+	public JLabel pika = new JLabel(new ImageIcon());
 	public HpContainer playerContainer;
+	public HpContainer iaContainer;
+	public HpBar playerBar = new HpBar();
+	public HpBar iaBar = new HpBar();
+	public JLabel hpCounter = new JLabel("");
 	String whatToChoose = "level";
 	public Window() throws IOException
 	{
@@ -33,6 +37,9 @@ public class Window extends JFrame
 		this.pika = new JLabel(new ImageIcon("src/res/sprites/front/25.png"));
 		this.pika.setBounds(650,645,56,56);
 		this.add(pika);
+		this.hpCounter.setBounds(545,520,100,100);
+		this.add(hpCounter);
+		this.add(playerBar);
 		this.setTitle("Textual Pokémon game");
 		this.setSize(700, 700);
 		this.setLocationRelativeTo(null);
@@ -124,29 +131,38 @@ public class Window extends JFrame
 		this.ia.setIcon(null);
 	}
 	
-	public void drawPlayerContainer()
+	public void drawPlayerHp(Pokemon p)
 	{
+		this.remove(playerBar);
 		this.playerContainer = new HpContainer();
 		this.playerContainer.setBounds(535,530,110,30);
 		this.add(playerContainer);
+		this.hpCounter.setText("HP : "+p.getCurrentHp()+"/"+p.getBaseHp());
+		this.playerBar = new HpBar();
+		float hpLeft = ((float) p.getCurrentHp()/p.getBaseHp()) * 100;
+		if (hpLeft <= 20)
+			this.playerBar.changeColor(Color.red);
+		else if (hpLeft <= 50)
+			this.playerBar.changeColor(Color.orange);
+		this.playerBar.setBounds(535,530,(int)hpLeft,25);
+		this.add(playerBar);
 		this.repaint();
 	}
-	
-	public void drawPlayerHp(Pokemon p)
-	{
 		
-	}
-	
-	public void drawIaContainer()
-	{
-		this.playerContainer = new HpContainer();
-		this.playerContainer.setBounds(535,230,110,30);
-		this.add(playerContainer);
-		this.repaint();
-	}
-	
 	public void drawIaHp(Pokemon p)
 	{
-		
+		this.remove(iaBar);
+		this.iaContainer = new HpContainer();
+		this.iaContainer.setBounds(535,230,110,30);
+		this.add(iaContainer);
+		this.iaBar = new HpBar();
+		float hpLeft = ((float) p.getCurrentHp()/p.getBaseHp()) * 100;
+		if (hpLeft <= 20)
+			this.iaBar.changeColor(Color.red);
+		else if (hpLeft <= 50)
+			this.iaBar.changeColor(Color.orange);
+		this.iaBar.setBounds(535,230,(int)hpLeft,25);
+		this.add(iaBar);
+		this.repaint();
 	}
 }

@@ -237,7 +237,6 @@ public class Battle
 		if (this.getpPkmn(att).getStatus()==3 && iAtt.getId() != 77)
 		{
 			int dmgpn = this.getpPkmn(att).getBaseHp()/16;
-			System.out.println(getpPkmn(att).getCountToxic());
 			if (getpPkmn(att).getCountToxic() > 0)
 				dmgpn = dmgpn * getpPkmn(att).getCountToxic();
 			this.s = this.s + "\n";
@@ -327,6 +326,7 @@ public class Battle
 					break;
 				case 112 :
 					this.s = this.s + " is glowing !";
+					break;
 				case 120 : 
 					this.s = this.s + " is shining !";
 					break;
@@ -484,10 +484,13 @@ public class Battle
 					//Should occur only if the attack was faster or attacked first
 					if (i==0)
 					{
-						if (att.getName().equals("Opponent"))
-							this.s = this.s + "Enemy ";
-						this.s = this.s + this.getpPkmn(def).getName() + " flinched !";
-						def.getCurrentPkmn().setCanAttack(false);
+						if (def.getCurrentPkmn().getStatus()!=9)
+						{
+							if (att.getName().equals("Opponent"))
+								this.s = this.s + "Enemy ";
+							this.s = this.s + this.getpPkmn(def).getName() + " flinched !";
+							def.getCurrentPkmn().setCanAttack(false);
+						}
 					}
 					break;
 				//Healing mechanic
