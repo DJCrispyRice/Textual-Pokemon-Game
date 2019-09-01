@@ -223,6 +223,7 @@ public class Ia extends Player
 			}
 			else
 			{
+				win.removeIaSprite();
 				win.logTrace("You won ! :-D");
 				win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
 				win.whatToChoose = "continue";

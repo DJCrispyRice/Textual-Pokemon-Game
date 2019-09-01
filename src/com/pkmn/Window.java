@@ -1,5 +1,5 @@
 package com.pkmn;
-import java.awt.Image;
+import java.awt.*;
 import java.io.IOException;
 import javax.swing.*;
 
@@ -15,9 +15,10 @@ public class Window extends JFrame
 	public JScrollPane sp;
 	public Sound music;
 	public Sound se;
-	public JLabel player;
-	public JLabel ia;
+	public JLabel player = new JLabel(new ImageIcon());
+	public JLabel ia = new JLabel(new ImageIcon());
 	public JLabel pika;
+	public HpContainer playerContainer;
 	String whatToChoose = "level";
 	public Window() throws IOException
 	{
@@ -74,8 +75,9 @@ public class Window extends JFrame
 		}
 	}
 	
-	public void drawPlayerSprite(int number)
+	public void drawFrontPlayerSprite(int number)
 	{
+		this.removePlayerSprite();
 		ImageIcon poke = new ImageIcon("src/res/sprites/front/"+number+".png");
 		Image image = poke.getImage();
 		Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
@@ -83,18 +85,68 @@ public class Window extends JFrame
 		this.player = new JLabel(poke);
 		this.player.setBounds(525,400,120,120);
 		this.add(this.player);
-		SwingUtilities.updateComponentTreeUI(this);
+		this.repaint();
+	}
+	
+	public void drawBackPlayerSprite(int number)
+	{
+		this.removePlayerSprite();
+		ImageIcon poke = new ImageIcon("src/res/sprites/back/"+number+".png");
+		Image image = poke.getImage();
+		Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
+		poke = new ImageIcon(newimg);
+		this.player = new JLabel(poke);
+		this.player.setBounds(525,400,120,120);
+		this.add(this.player);
+		this.repaint();
+	}
+	
+	public void removePlayerSprite()
+	{
+		this.player.setIcon(null);
 	}
 	
 	public void drawIaSprite(int number)
 	{
+		this.removeIaSprite();
 		ImageIcon poke = new ImageIcon("src/res/sprites/front/"+number+".png");
 		Image image = poke.getImage();
 		Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
 		poke = new ImageIcon(newimg);
 		this.ia = new JLabel(poke);
-		this.ia.setBounds(525,200,120,120);
+		this.ia.setBounds(525,100,120,120);
 		this.add(this.ia);
-		SwingUtilities.updateComponentTreeUI(this);
+		this.repaint();
+	}
+	
+	public void removeIaSprite()
+	{
+		this.ia.setIcon(null);
+	}
+	
+	public void drawPlayerContainer()
+	{
+		this.playerContainer = new HpContainer();
+		this.playerContainer.setBounds(535,530,110,30);
+		this.add(playerContainer);
+		this.repaint();
+	}
+	
+	public void drawPlayerHp(Pokemon p)
+	{
+		
+	}
+	
+	public void drawIaContainer()
+	{
+		this.playerContainer = new HpContainer();
+		this.playerContainer.setBounds(535,230,110,30);
+		this.add(playerContainer);
+		this.repaint();
+	}
+	
+	public void drawIaHp(Pokemon p)
+	{
+		
 	}
 }

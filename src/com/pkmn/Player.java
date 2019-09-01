@@ -95,7 +95,7 @@ public class Player
 			throw  new NullPointerException();
 		else
 		{
-			win.drawPlayerSprite(Integer.parseInt(choice));
+			win.drawFrontPlayerSprite(Integer.parseInt(choice));
 			win.music.stop();
 			win.se = new Sound(this.getClass().getResource("/res/cries/"+gd.allPkmn[Integer.parseInt(choice)].getId()+".wav"));
 			win.se.play();
@@ -125,7 +125,7 @@ public class Player
 				{
 					try 
 					{
-						win.drawPlayerSprite(i);
+						win.drawFrontPlayerSprite(i);
 						win.music.stop();
 						win.se = new Sound(this.getClass().getResource("/res/cries/"+i+".wav"));
 						win.se.play();
@@ -194,6 +194,7 @@ public class Player
 	{
 		if (this.getCurrentPkmn().getStatus()==9)
 		{
+			win.removePlayerSprite();
 			win.music.stop();
 			win.se = new Sound(this.getClass().getResource("/res/cries/"+this.getCurrentPkmn().getId()+".wav"));
 			try 
