@@ -1238,7 +1238,7 @@ public class Battle
 				seed = getpPkmn(def).getBaseHp()/8;
 				getpPkmn(def).setCurrentHp(-seed);
 				getpPkmn(att).setCurrentHp(seed/2);
-				this.s = this.s + "\n" + getpPkmn(def).getName() + " lost " + seed + " HP from LEECH SIDE.\n";
+				this.s = getpPkmn(def).getName() + " lost " + seed + " HP from LEECH SIDE.\n";
 				this.s = this.s + getpPkmn(att).getName() + " was healed " + seed/2 + " HP from LEECH SIDE.";
 				this.s = this.s + def.checkHpLeft();
 				this.s = this.s + att.checkHpLeft();

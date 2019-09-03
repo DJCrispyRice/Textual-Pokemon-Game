@@ -270,7 +270,7 @@ public final class GameData
 		this.allAtks[i] = new Attack ("Screech","Sharply lowers opponent's Defense.",106,0,40,false,this.allTypes[0],20,100,85); i++;
 		this.allAtks[i] = new Attack ("Seismic Toss","Inflicts damage equal to user's level.",107,50,20,true,this.allTypes[1],53,0,100); i++;
 		this.allAtks[i] = new Attack ("Self-Destruct","User faints.",108,200,5,true,this.allTypes[0],50,0,100); i++;
-		this.allAtks[i] = new Attack ("Sharpen","Raises user's Attack.",109,0,30,false,this.allTypes[0],9,0,100); i++;
+		this.allAtks[i] = new Attack ("Sharpen","Raises user's Attack.",109,0,30,false,this.allTypes[0],9,100,100); i++;
 		this.allAtks[i] = new Attack ("Sing","Puts opponent to sleep.",110,0,15,false,this.allTypes[0],2,100,55); i++;
 		this.allAtks[i] = new Attack ("Skull Bash","Charges on first turn, attacks on second.",111,130,10,true,this.allTypes[0],48,0,100); i++;
 		this.allAtks[i] = new Attack ("Sky Attack","Charges on first turn, attacks on second. May cause flinching.",112,140,5,true,this.allTypes[2],48,100,90); i++; // OK
