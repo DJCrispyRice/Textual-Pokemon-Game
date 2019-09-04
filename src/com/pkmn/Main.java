@@ -157,7 +157,7 @@ public class Main implements ActionListener, KeyListener
 				win.drawPlayerHp(b.getpPkmn(b.p1));
 				win.drawIaHp(b.getpPkmn(b.p2));
 				win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+ " !");
-				win.drawBackPlayerSprite(b.getpPkmn(b.p1).getId());
+				win.drawPlayerSprite("src/res/sprites/back/"+b.getpPkmn(b.p1).getId()+".png");
 				win.se = new Sound(this.getClass().getResource("/res/cries/"+b.getpPkmn(b.p1).getId()+".wav"));
 				win.se.play();
 				try 
@@ -261,7 +261,7 @@ public class Main implements ActionListener, KeyListener
 						e.printStackTrace();
 					}
 					win.logTrace("You sent "+b.getpPkmn(b.p1).getName()+" !");
-					win.drawBackPlayerSprite(b.getpPkmn(b.p1).getId());
+					win.drawPlayerSprite("src/res/sprites/back/"+b.getpPkmn(b.p1).getId()+".png");
 					win.drawPlayerHp(b.getpPkmn(b.p1));
 					win.music.playLoop();
 					//If it's a switch (requested swap), the enemy will attack like normal
