@@ -5,9 +5,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /* 
  * This class contains our favorite little monsters. They have a name, an Id (basically number in Pokédex), at least one type (the second may be null), attacks
- * (at least 1, max 4). Every stat is covered by "base" and "current" since attacks may occur that alter stats. Accuracy is 100 by default but can be lowered
+ * (at least 1, max 4). Every stat is covered by "base" and "current" since it can drop or be buffed. Accuracy is 100 by default but can be lowered
  * by sand attack for example. 
- * Status 0 : Normal (no status) - simply deals damages
+ * Status 0 : Normal (no status)
  * Status 1 : Paralysis
  * Status 2 : Sleep
  * Status 3 : Poison
@@ -64,7 +64,7 @@ public class Pokemon implements Cloneable
 		setId(id);
 		setType1(type1);
 		setType2(type2);
-		this.attacks = new ArrayList<Attack>(); // We will add attacks after the Pokémon is created
+		this.attacks = new ArrayList<Attack>(); // We will add attacks when the Pokémon is created
 		setBaseHp(baseHp);
 		setCurrentHp(baseHp);
 		setAttack(new Stat("Attack",baseAtk));
@@ -483,7 +483,7 @@ public class Pokemon implements Cloneable
 		return s;
 	}
 	
-	//stat is used because haze should not reset status.
+	//status is used because haze should not reset status.
 	public void setCurrentStats(boolean status)
 	{
 		setCurrentHp(this.getCurrentHp());

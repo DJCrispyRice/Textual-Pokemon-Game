@@ -58,6 +58,7 @@ public class Main implements ActionListener, KeyListener
 		}
 	}
 
+	//When Enter is pushed
 	public void actionPerformed(ActionEvent arg0) 
 	{
 		choice = win.jtf.getText().toUpperCase();
@@ -67,6 +68,7 @@ public class Main implements ActionListener, KeyListener
 		{
 			try
 			{
+				//Shows the "HELP" menu
 				if (choice.equals("HELP"))
 				{
 					win.clear();
@@ -108,6 +110,7 @@ public class Main implements ActionListener, KeyListener
 					win.logTrace("For help, type HELP.");
 				}
 			}
+			//If the user typed something wrongs, re-print the difficulty choosing screen
 			catch (Exception eee)
 			{
 				win.logTrace("Please choose your difficulty.");
@@ -151,6 +154,7 @@ public class Main implements ActionListener, KeyListener
 				}
 				//Randomly choosing 6 pokémons for the opponent.
 				b.p2.createTeam(gd, win);
+				//Now that the teams are created, the game switchs to "battle mode".
 				win.whatToChoose = "attack";
 				b.p1.currentPkmn = b.p1.getTeam().get(0);
 				b.p2.currentPkmn = b.p2.getTeam().get(0);

@@ -34,16 +34,20 @@ public class Battle
 	
 	public void checkPriority(Player p, Player ia, int rdatt, String choice)
 	{
+		//Speed checking first
 		if (getpPkmn(p).getSpeed("current") >= getpPkmn(ia).getSpeed("current"))
 		{
+			//Checks if the chosen attack is a prioritary move
 			if (getpattack(ia, rdatt).getStatus() == 51)
 				getpPkmn(p).setPrio(false);
 			else if (getpPkmn(p).getTwoturnstatus() != 0)
 				getpPkmn(p).setPrio(true);
+			// ID 22 and 80 attacks are non-prioritary moves
 			else if (getpattack(p, Integer.parseInt(choice)-1).getId() == 22)
 				getpPkmn(p).setPrio(false);
 			else if (getpattack(p, Integer.parseInt(choice)-1).getId() == 80)
 				getpPkmn(p).setPrio(false);
+			//Standard case if none of the above is true
 			else
 				getpPkmn(p).setPrio(true);
 		}
@@ -60,6 +64,7 @@ public class Battle
 		}
 	}
 	
+	//Here is how a standard turn works
 	public void aTurn (Player p1, Player p2, Window win, String a1, String a2, GameData g)
 	{
 		//Calls the useAttack function for index 0 which is the player. Checks if there is a twoturnstatus going on
@@ -99,7 +104,7 @@ public class Battle
 	
 	//Is used whatever an attack is launched by a pokemon. att is the attacker, def is the defender
 	//i is used to see if it's the first or the second attack in this turn
-	public String useAttack (Attack iAtt, Player att, Player def, int i)
+	protected String useAttack (Attack iAtt, Player att, Player def, int i)
 	{
 		//By default, the attack should occur
 		Boolean atkok = true;
@@ -186,7 +191,7 @@ public class Battle
 						this.s = this.s + "Enemy ";
 					this.s = this.s + this.getpPkmn(att).getName()+" used "+iAtt.getName()+". ";
 				}
-					
+				//Checks if the attack hit the target
 				if (checkHit(iAtt,this.getpPkmn(att),this.getpPkmn(def)))
 				{
 					if (iAtt.getStatus() == 54 && iAtt.getId() != 55 && iAtt.getId() != 63)
