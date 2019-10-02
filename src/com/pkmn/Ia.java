@@ -27,7 +27,6 @@ public class Ia extends Player
 		}
 		catch (CloneNotSupportedException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		win.logTrace("Your opponent chose his team, now let the battle begin !");
@@ -38,7 +37,7 @@ public class Ia extends Player
 		int rdatt = -1;
 		int dmg = 0;
 		/*
-		 * IA is "dumb" and will only choose randomly
+		 * IA is "dumb" and will only choose randomly an attack
 		 */
 		if (level == 0)
 		{
