@@ -1,6 +1,9 @@
 package com.pkmn;
 import java.awt.*;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.*;
@@ -27,6 +30,7 @@ public class Window extends JFrame
 	public JLabel hpCounter = new JLabel("");
 	public JLabel playerStatus = new JLabel("");
 	public JLabel iaStatus = new JLabel("");
+	public JLabel date = new JLabel("Coucou");
 	String whatToChoose = "level";
 	public Window() throws IOException
 	{
@@ -45,12 +49,29 @@ public class Window extends JFrame
 		this.add(hpCounter);
 		this.add(playerStatus);
 		this.add(iaStatus);
+		this.date.setBounds(500,600,100,100);
+		this.add(date);
 		this.setTitle("Textual Pokémon game");
 		this.setSize(700, 700);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
+		SwingWorker tDate = new SwingWorker()
+		{
+			protected Object doInBackground() throws Exception 
+			{
+				while (true)
+				{
+					Date d = new Date();
+					DateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
+					String t = dateFormat2.format(d);
+					date.setText("It is : "+t);
+					Thread.sleep(1000);
+				}
+			}
+		};
+		tDate.execute();
 		this.music = new Sound(this.getClass().getResource("/res/audio/menu.wav"));
 		this.music.playLoop();
 	}
@@ -170,6 +191,7 @@ public class Window extends JFrame
 						playerBar.setBounds(535, 530, playerBar.getWidth() - 1, 25);
 					else
 						playerBar.setBounds(535, 530, playerBar.getWidth() + 1, 25);
+					
 					Thread.sleep(100);
 				}
 				if (hpLeft == 0)
