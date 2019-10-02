@@ -1,6 +1,8 @@
 package com.pkmn;
 import java.awt.*;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 import javax.swing.*;
 
 /* 
@@ -20,7 +22,7 @@ public class Window extends JFrame
 	public JLabel pika = new JLabel(new ImageIcon());
 	public HpContainer playerContainer;
 	public HpContainer iaContainer;
-	public HpBar playerBar = new HpBar();
+	public HpBar playerBar;
 	public HpBar iaBar = new HpBar();
 	public JLabel hpCounter = new JLabel("");
 	public JLabel playerStatus = new JLabel("");
@@ -41,7 +43,6 @@ public class Window extends JFrame
 		this.add(pika);
 		this.hpCounter.setBounds(545,520,100,100);
 		this.add(hpCounter);
-		this.add(playerBar);
 		this.add(playerStatus);
 		this.add(iaStatus);
 		this.setTitle("Textual Pokémon game");
@@ -137,48 +138,71 @@ public class Window extends JFrame
 	
 	public void drawPlayerHp(Pokemon p)
 	{
-		this.remove(playerBar);
-		this.playerContainer = new HpContainer();
-		this.playerContainer.setBounds(535,530,110,30);
-		this.add(playerContainer);
-		this.hpCounter.setText("HP : "+p.getCurrentHp()+"/"+p.getBaseHp());
-		this.playerBar = new HpBar();
 		float hpLeft = ((float) p.getCurrentHp()/p.getBaseHp()) * 100;
+		if (playerBar == null)
+		{
+			this.playerBar = new HpBar();
+			this.playerContainer = new HpContainer();
+			this.playerContainer.setBounds(535,530,110,30);
+			this.playerBar.setBounds(535,530,100,25);
+			this.add(playerContainer);
+			this.add(playerBar);
+			this.playerStatus = new JLabel ("");
+			this.add(playerStatus);
+			this.playerStatus.setBounds(575,493,50,50);
+		}
+		this.hpCounter.setText("HP : "+p.getCurrentHp()+"/"+p.getBaseHp());
 		if (hpLeft <= 20)
 			this.playerBar.changeColor(Color.red);
 		else if (hpLeft <= 50)
 			this.playerBar.changeColor(Color.orange);
-		this.playerBar.setBounds(535,530,(int)hpLeft,25);
-		this.add(playerBar);
-		this.remove(playerStatus);
+		else
+			this.playerBar.changeColor(Color.green);
+		@SuppressWarnings("rawtypes")
+		SwingWorker sw = new SwingWorker()
+		{
+			protected Object doInBackground() throws Exception 
+			{
+				while (playerBar.getWidth() != (int) hpLeft)
+				{
+					System.out.println("Coucou");
+					if (playerBar.getWidth() > hpLeft)
+						playerBar.setBounds(535, 530, playerBar.getWidth() - 1, 25);
+					else
+						playerBar.setBounds(535, 530, playerBar.getWidth() + 1, 25);
+					Thread.sleep(100);
+				}
+				if (hpLeft == 0)
+					playerBar = null;
+				return null;
+			}
+			
+			public void done() {}
+		};
+		sw.execute();
 		if (p.getStatus()!=0)
 		{
 			switch (p.getStatus())
 			{
 				case 1 : 
-					this.playerStatus = new JLabel("PAR");
+					this.playerStatus.setText("PAR");
 					break;
 				case 2 : 
-					this.playerStatus = new JLabel("SLP");
+					this.playerStatus.setText("SLP");
 					break;
 				case 3 : 
-					this.playerStatus = new JLabel("PSN");
+					this.playerStatus.setText("PSN");
 					break;
 				case 4 : 
-					this.playerStatus = new JLabel("BRN");
+					this.playerStatus.setText("BRN");
 					break;
 				case 5 : 
-					this.playerStatus = new JLabel("FRN");
+					this.playerStatus.setText("FRN");
 					break;
 			}
-			this.playerStatus.setBounds(575,493,50,50);
-			this.add(playerStatus);
 		}
 		else
-		{
-			this.playerStatus = new JLabel ("");
-			this.add(playerStatus);
-		}
+			this.playerStatus.setText("");
 		this.repaint();
 	}
 		

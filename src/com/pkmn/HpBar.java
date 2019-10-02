@@ -13,7 +13,6 @@ public class HpBar extends JLabel
         g.setColor(c);
         g.fillRect(0, 0, (int) 100, (int) 20);
     }
-	
 	public void changeColor(Color c)
 	{
 		this.c = c;

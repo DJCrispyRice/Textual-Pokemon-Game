@@ -158,7 +158,7 @@ public class Player
 			win.logTrace("0 - Cancel");
 		for (int i = 0; i < this.getTeam().size(); i++)
 		{
-			win.logTrace(Integer.toString(i+1)+" - " + this.getTeam().get(i).getName());
+			win.logTrace(Integer.toString(i+1)+" - " + this.getTeam().get(i).getName()+ " - HP :"+ this.getTeam().get(i).getCurrentHp()+"/"+this.getTeam().get(i).getBaseHp());
 		}
 		win.logTrace("*********************** ");
 	}
