@@ -460,7 +460,7 @@ public class Battle
 				case 36:
 					this.s = this.s + getpPkmn(def).statModifier(def,"special",-2);
 					break;
-				//Double special drop for user
+				//Double special boost for user
 				case 37:
 					this.s = this.s + getpPkmn(att).statModifier(att,"special",2);
 					break;

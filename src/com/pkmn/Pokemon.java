@@ -696,7 +696,7 @@ public class Pokemon implements Cloneable
 						min = true;
 						break;
 					}
-					this.getSpecial().setStage(this.getSpecial("current") + modifier);
+					this.getSpecial().setStage(this.getSpecial("stage") + modifier);
 					break;
 				case "accuracy" :
 					if (this.getAccuracy("stage")>=6)

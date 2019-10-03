@@ -108,23 +108,10 @@ public class Window extends JFrame
 		}
 	}
 	
-	public void drawFrontPlayerSprite(int number)
+	public void drawPlayerSprite(String path)
 	{
 		this.removePlayerSprite();
-		ImageIcon poke = new ImageIcon("src/res/sprites/front/"+number+".png");
-		Image image = poke.getImage();
-		Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
-		poke = new ImageIcon(newimg);
-		this.player = new JLabel(poke);
-		this.player.setBounds(525,400,120,120);
-		this.add(this.player);
-		this.repaint();
-	}
-	
-	public void drawBackPlayerSprite(int number)
-	{
-		this.removePlayerSprite();
-		ImageIcon poke = new ImageIcon("src/res/sprites/back/"+number+".png");
+		ImageIcon poke = new ImageIcon(path);
 		Image image = poke.getImage();
 		Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
 		poke = new ImageIcon(newimg);

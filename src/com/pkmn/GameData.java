@@ -160,7 +160,7 @@ public final class GameData
 	{
 		this.allAtks = new Attack[158];
 		int i = 0;
-		//Name - Description - Id - Power - PP - Physical/Special - Type - ID - Status (refer to attack class) - accuracy for status change, accuracy
+		//Name - Description - Id - Power - PP - Physical/Special - Type - Status (refer to attack class) - accuracy for status change, accuracy
 		this.allAtks[i] = new Attack("Absorb", "User recovers half the HP inflicted on opponent.", 0, 20, 25, false, this.allTypes[10],44,100,100); i++;
 		this.allAtks[i] = new Attack("Acid", "May lower opponent's Special.", 1, 40, 30, false, this.allTypes[3],32,10,100); i++;
 		this.allAtks[i] = new Attack("Acid Armor", "Sharply raises user's Defense.", 2, 0, 20, false, this.allTypes[3],21,100,100); i++;
