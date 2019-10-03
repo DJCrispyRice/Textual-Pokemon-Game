@@ -16,7 +16,6 @@ public final class GameData
 	{
 		
 	}
-	
 	public GameData(Window win)
 	{
 		this.createTypes();

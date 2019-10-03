@@ -172,7 +172,7 @@ public class Window extends JFrame
 					else
 						width = width + 1;
 					playerBar.setBounds(535, 530, width, 25);
-					Thread.sleep(50);
+					Thread.sleep(10);
 				}
 				if (hpLeft == 0)
 					playerBar = null;
@@ -181,14 +181,6 @@ public class Window extends JFrame
 			public void done() {}
 		};
 		sw.execute();
-		try 
-		{
-			sw.get();
-		} 
-		catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		if (p.getStatus()!=0)
 		{
 			switch (p.getStatus())
