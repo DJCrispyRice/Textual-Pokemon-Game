@@ -154,8 +154,8 @@ public class Battle
 			if (this.getpPkmn(att).getCountConfusion()>0)
 			{
 				if (att.getName().equals("Opponent"))
-					this.s = this.s + "Enemy ";
-				this.s = this.s + this.getpPkmn(att).getName() + " is confused...\n";
+					this.s += "Enemy ";
+				this.s += this.getpPkmn(att).getName() + " is confused...\n";
 				int ckcon = ThreadLocalRandom.current().nextInt(0,100);
 				if (ckcon > 50)
 				{
@@ -163,18 +163,18 @@ public class Battle
 					damage = damage * (this.getpPkmn(att).getAttack("current")/this.getpPkmn(att).getDefense("current"));
 					damage = damage/50 + 2;
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "Enemy ";
-					this.s = this.s + this.getpPkmn(att).getName() + " hurts himself in confusion and lost "+damage+" HP.";
+						this.s += "Enemy ";
+					this.s += this.getpPkmn(att).getName() + " hurts himself in confusion and lost "+damage+" HP.";
 					this.getpPkmn(att).setCurrentHp(-damage);
-					this.s = this.s + att.checkHpLeft();
+					this.s += att.checkHpLeft();
 					atkok = false;
 				}
 			}
 			else
 			{
 				if (att.getName().equals("Opponent"))
-					this.s = this.s + "Enemy ";
-				this.s = this.s + this.getpPkmn(att).getName() + " snapped out of confusion !\n";
+					this.s += "Enemy ";
+				this.s += this.getpPkmn(att).getName() + " snapped out of confusion !\n";
 			}
 		}
 		//If the attack can occur (no status avoiding it to happen), it does...
@@ -188,8 +188,8 @@ public class Battle
 				if (getpPkmn(att).getCountThrash() == 0)
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "Enemy ";
-					this.s = this.s + this.getpPkmn(att).getName()+" used "+iAtt.getName()+". ";
+						this.s += "Enemy ";
+					this.s += this.getpPkmn(att).getName()+" used "+iAtt.getName()+". ";
 				}
 				//Checks if the attack hit the target
 				if (checkHit(iAtt,this.getpPkmn(att),this.getpPkmn(def)))
@@ -202,22 +202,22 @@ public class Battle
 				else
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "Enemy ";
+						this.s += "Enemy ";
 					//Handle crashing attacks
 					if (iAtt.getId() == 55 || iAtt.getId() == 63)
 					{
 						int damage = getpPkmn(att).getBaseHp()/8;
-						this.s = this.s + getpPkmn(att).getName() + " crashed and lost " + damage + " HP.";
+						this.s += getpPkmn(att).getName() + " crashed and lost " + damage + " HP.";
 						getpPkmn(att).setCurrentHp(-damage);
-						this.s = this.s + att.checkHpLeft();
+						this.s += att.checkHpLeft();
 					}
 					else
 					{
-						this.s = this.s + this.getpPkmn(att).getName() + " missed !";
+						this.s += this.getpPkmn(att).getName() + " missed !";
 						if (iAtt.getStatus() == 50)
 						{
 							getpPkmn(att).setCurrentHp(getpPkmn(att).getBaseHp());
-							this.s = this.s + att.checkHpLeft();
+							this.s += att.checkHpLeft();
 						}
 					}
 				}
@@ -229,7 +229,7 @@ public class Battle
 				if (this.getpPkmn(att).getCountDisable()==1)
 				{
 					this.getpPkmn(att).getAttacks().get(getpPkmn(att).checkDisabledAttack()).setEnabled(true);
-					this.s = this.s + "\nThe effect of DISABLE whore off !";
+					this.s += "\nThe effect of DISABLE whore off !";
 				}
 				this.getpPkmn(att).setCountDisable(this.getpPkmn(att).getCountDisable() - 1);
 			}
@@ -244,24 +244,24 @@ public class Battle
 			int dmgpn = this.getpPkmn(att).getBaseHp()/16;
 			if (getpPkmn(att).getCountToxic() > 0)
 				dmgpn = dmgpn * getpPkmn(att).getCountToxic();
-			this.s = this.s + "\n";
+			this.s += "\n";
 			if (att.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
+				this.s += "Enemy ";
 			this.s = this.s +this.getpPkmn(att).getName() + " suffers "+Integer.toString(dmgpn) + " HP due to poison.";
 			this.getpPkmn(att).setCurrentHp(-dmgpn);
-			this.s = this.s + att.checkHpLeft();
+			this.s += att.checkHpLeft();
 			if (getpPkmn(att).getCountToxic()>0)
 				getpPkmn(att).setCountToxic(getpPkmn(att).getCountToxic() + 1);
 		}
 		//If the pokémon is burn, lose 1/16 of its HP.
 		else if (this.getpPkmn(att).getStatus()==4 && iAtt.getId() != 77)
 		{
-			this.s = this.s + "\n";
+			this.s += "\n";
 			if (att.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
-			this.s = this.s + this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to burn.";
+				this.s += "Enemy ";
+			this.s += this.getpPkmn(att).getName() + " suffers "+Integer.toString(this.getpPkmn(att).getBaseHp()/16) + " HP due to burn.";
 			this.getpPkmn(att).setCurrentHp(-this.getpPkmn(att).getBaseHp()/16);
-			this.s = this.s + att.checkHpLeft();
+			this.s += att.checkHpLeft();
 		}
 		//To avoid *** being shown multiple times when Metronome is used
 		if (iAtt.getId() != 77)
@@ -288,12 +288,12 @@ public class Battle
 			{
 				nb++;
 				deal(att,def,iAtt);
-				this.s = this.s + "\n";
+				this.s += "\n";
 				if (getpPkmn(def).getCurrentHp()==0)
 					break;
 			}
 			if (getpPkmn(def).getCurrentHp()>0)
-				this.s = this.s + "Hit " + getpPkmn(def).getName() + " " + nb + " times.";
+				this.s += "Hit " + getpPkmn(def).getName() + " " + nb + " times.";
 		}
 		//Checks if it's the second part of a two-turn attack situation. If so, do the damages and sets the variable to 0
 		else if (getpPkmn(att).getTwoturnstatus() != 0)
@@ -304,8 +304,8 @@ public class Battle
 				if (i==0)
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "Enemy ";
-					this.s = this.s + this.getpPkmn(def).getName() + " flinched !";
+						this.s += "Enemy ";
+					this.s += this.getpPkmn(def).getName() + " flinched !";
 					def.getCurrentPkmn().setCanAttack(false);
 				}
 			}
@@ -315,25 +315,25 @@ public class Battle
 		else if (iAtt.getStatus()==48)
 		{
 			if (att.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
-			this.s = this.s + getpPkmn(att).getName();
+				this.s += "Enemy ";
+			this.s += getpPkmn(att).getName();
 			//Switch to trace the attack
 			switch (iAtt.getId())
 			{
 				case 26 :
-					this.s = this.s + " dug a hole !";
+					this.s += " dug a hole !";
 					break;
 				case 45 : 
-					this.s = this.s + " flew up high !";
+					this.s += " flew up high !";
 					break;
 				case 111 :
-					this.s = this.s + " lowered its head !";
+					this.s += " lowered its head !";
 					break;
 				case 112 :
-					this.s = this.s + " is glowing !";
+					this.s += " is glowing !";
 					break;
 				case 120 : 
-					this.s = this.s + " is shining !";
+					this.s += " is shining !";
 					break;
 			}
 			getpPkmn(att).setTwoturnstatus(iAtt.getId());
@@ -350,139 +350,139 @@ public class Battle
 			{
 				//Attack drop for opponent
 				case 8 : 
-					this.s = this.s + getpPkmn(def).statModifier(def,"attack",-1);
+					this.s += getpPkmn(def).statModifier(def,"attack",-1);
 					break;
 				//Attack boost for user
 				case 9 :
-					this.s = this.s + getpPkmn(att).statModifier(att,"attack",1);
+					this.s += getpPkmn(att).statModifier(att,"attack",1);
 					break;
 				//Attack drop for user
 				case 10 :
-					this.s = this.s + getpPkmn(def).statModifier(def,"attack",-1);
+					this.s += getpPkmn(def).statModifier(def,"attack",-1);
 					break;
 				//Double attack boost for opponent
 				case 11 :
-					this.s = this.s + getpPkmn(def).statModifier(def,"attack",2);
+					this.s += getpPkmn(def).statModifier(def,"attack",2);
 					break;
 				//Double attack drop for opponent
 				case 12 :
-					this.s = this.s + getpPkmn(def).statModifier(def,"attack",-2);
+					this.s += getpPkmn(def).statModifier(def,"attack",-2);
 					break;
 				//Double attack boost for user
 				case 13 :
-					this.s = this.s + getpPkmn(att).statModifier(att,"attack",2);
+					this.s += getpPkmn(att).statModifier(att,"attack",2);
 					break;
 				//Defense boost for opponent
 				case 15:
-					this.s = this.s + getpPkmn(def).statModifier(def,"defense",1);
+					this.s += getpPkmn(def).statModifier(def,"defense",1);
 					break;
 				//Defense drop for opponent
 				case 16:
-					this.s = this.s + getpPkmn(def).statModifier(def,"defense",-1);
+					this.s += getpPkmn(def).statModifier(def,"defense",-1);
 					break;
 				//Defense boost for user
 				case 17:
-					this.s = this.s + getpPkmn(att).statModifier(att,"defense",1);
+					this.s += getpPkmn(att).statModifier(att,"defense",1);
 					break;
 				//Defense drop for user
 				case 18:
-					this.s = this.s + getpPkmn(att).statModifier(att,"defense",-1);
+					this.s += getpPkmn(att).statModifier(att,"defense",-1);
 					break;
 				//Double defense boost for opponent
 				case 19:
-					this.s = this.s + getpPkmn(def).statModifier(def,"defense",2);
+					this.s += getpPkmn(def).statModifier(def,"defense",2);
 					break;
 				//Double defense drop for opponent
 				case 20:
-					this.s = this.s + getpPkmn(def).statModifier(def,"defense",-2);
+					this.s += getpPkmn(def).statModifier(def,"defense",-2);
 					break;
 				//Double defense drop for user
 				case 21:
-					this.s = this.s + getpPkmn(att).statModifier(att,"defense",2);
+					this.s += getpPkmn(att).statModifier(att,"defense",2);
 					break;
 				//Double defense drop for user
 				case 22:
-					this.s = this.s + getpPkmn(att).statModifier(att,"defense",-2);
+					this.s += getpPkmn(att).statModifier(att,"defense",-2);
 					break;
 				//speed boost for opponent
 				case 23:
-					this.s = this.s + getpPkmn(def).statModifier(def,"speed",1);
+					this.s += getpPkmn(def).statModifier(def,"speed",1);
 					break;
 				//speed drop for opponent
 				case 24:
-					this.s = this.s + getpPkmn(def).statModifier(def,"speed",-1);
+					this.s += getpPkmn(def).statModifier(def,"speed",-1);
 					break;
 				//speed boost for user
 				case 25:
-					this.s = this.s + getpPkmn(att).statModifier(att,"speed",1);
+					this.s += getpPkmn(att).statModifier(att,"speed",1);
 					break;
 				//speed drop for user
 				case 26:
-					this.s = this.s + getpPkmn(att).statModifier(att,"speed",-1);
+					this.s += getpPkmn(att).statModifier(att,"speed",-1);
 					break;
 				//Double speed boost for opponent
 				case 27:
-					this.s = this.s + getpPkmn(def).statModifier(def,"speed",2);
+					this.s += getpPkmn(def).statModifier(def,"speed",2);
 					break;
 				//Double speed drop for opponent
 				case 28:
-					this.s = this.s + getpPkmn(def).statModifier(def,"speed",-2);
+					this.s += getpPkmn(def).statModifier(def,"speed",-2);
 					break;
 				//Double speed drop for user
 				case 29:
-					this.s = this.s + getpPkmn(att).statModifier(att,"speed",2);
+					this.s += getpPkmn(att).statModifier(att,"speed",2);
 					break;
 				//Double speed drop for user
 				case 30:
-					this.s = this.s + getpPkmn(att).statModifier(att,"speed",-2);
+					this.s += getpPkmn(att).statModifier(att,"speed",-2);
 					break;
 					//speed boost for opponent
 				case 31:
-					this.s = this.s + getpPkmn(def).statModifier(def,"special",1);
+					this.s += getpPkmn(def).statModifier(def,"special",1);
 					break;
 				//special drop for opponent
 				case 32:
-					this.s = this.s + getpPkmn(def).statModifier(def,"special",-1);
+					this.s += getpPkmn(def).statModifier(def,"special",-1);
 					break;
 				//special boost for user
 				case 33:
-					this.s = this.s + getpPkmn(att).statModifier(att,"special",1);
+					this.s += getpPkmn(att).statModifier(att,"special",1);
 					break;
 				//special drop for user
 				case 34:
-					this.s = this.s + getpPkmn(att).statModifier(att,"special",-1);
+					this.s += getpPkmn(att).statModifier(att,"special",-1);
 					break;
 				//Double special boost for opponent
 				case 35:
-					this.s = this.s + getpPkmn(def).statModifier(def,"special",2);
+					this.s += getpPkmn(def).statModifier(def,"special",2);
 					break;
 				//Double special drop for opponent
 				case 36:
-					this.s = this.s + getpPkmn(def).statModifier(def,"special",-2);
+					this.s += getpPkmn(def).statModifier(def,"special",-2);
 					break;
 				//Double special boost for user
 				case 37:
-					this.s = this.s + getpPkmn(att).statModifier(att,"special",2);
+					this.s += getpPkmn(att).statModifier(att,"special",2);
 					break;
 				//Double special drop for user
 				case 38:
-					this.s = this.s + getpPkmn(att).statModifier(att,"special",-2);
+					this.s += getpPkmn(att).statModifier(att,"special",-2);
 					break;
 				//Accuracy boost for opponent
 				case 39:
-					this.s = this.s + getpPkmn(def).statModifier(def,"accuracy",1);
+					this.s += getpPkmn(def).statModifier(def,"accuracy",1);
 					break;
 				//Accuracy drop for opponent
 				case 40:
-					this.s = this.s + getpPkmn(def).statModifier(def,"accuracy",-1);
+					this.s += getpPkmn(def).statModifier(def,"accuracy",-1);
 					break;
 				//Evasion boost for user
 				case 41:
-					this.s = this.s + getpPkmn(att).statModifier(att,"evasion",1);
+					this.s += getpPkmn(att).statModifier(att,"evasion",1);
 					break;
 				//Evasion drop for user
 				case 42:
-					this.s = this.s + getpPkmn(att).statModifier(att,"evasion",-1);
+					this.s += getpPkmn(att).statModifier(att,"evasion",-1);
 					break;
 				//Cause flinching
 				case 43:
@@ -492,8 +492,8 @@ public class Battle
 						if (def.getCurrentPkmn().getStatus()!=9)
 						{
 							if (att.getName().equals("Opponent"))
-								this.s = this.s + "Enemy ";
-							this.s = this.s + this.getpPkmn(def).getName() + " flinched !";
+								this.s += "Enemy ";
+							this.s += this.getpPkmn(def).getName() + " flinched !";
 							def.getCurrentPkmn().setCanAttack(false);
 						}
 					}
@@ -505,27 +505,27 @@ public class Battle
 						int heal = att.getCurrentPkmn().getBaseHp() / 2;
 						att.getCurrentPkmn().setCurrentHp(heal);
 						if (att.getName().equals("Opponent"))
-							this.s = this.s + "\nEnemy ";
+							this.s += "\nEnemy ";
 						else
-							this.s = this.s + "\n";
-						this.s = this.s + this.getpPkmn(att).getName() + " healed "+ heal +" HP and now has "+att.getCurrentPkmn().getCurrentHp() +"/" + att.getCurrentPkmn().getBaseHp()+".";
+							this.s += "\n";
+						this.s += this.getpPkmn(att).getName() + " healed "+ heal +" HP and now has "+att.getCurrentPkmn().getCurrentHp() +"/" + att.getCurrentPkmn().getBaseHp()+".";
 					}
 					else
 					{
 						getpPkmn(att).setCurrentStats(false);
 						getpPkmn(def).setCurrentStats(false);
-						this.s = this.s + "All status changes were eliminated !";
+						this.s += "All status changes were eliminated !";
 					}
 					break;
 				//Walls
 				case 52:
 					if (att.getWall() == 0)
-						this.s = this.s + getpPkmn(att).statModifier(att,"wall",iAtt.getId());
+						this.s += getpPkmn(att).statModifier(att,"wall",iAtt.getId());
 					else
 					{
 						if (att.getName().equals("Opponent"))
-							this.s = this.s + "Enemy ";
-						this.s = this.s + this.getpPkmn(att).getName() + " missed !";
+							this.s += "Enemy ";
+						this.s += this.getpPkmn(att).getName() + " missed !";
 					}
 			}
 		}
@@ -535,14 +535,14 @@ public class Battle
 			//Checks if the status alteration hits using the accu_status.
 			int randomstat2 = ThreadLocalRandom.current().nextInt(0,100);
 			if (randomstat2 >= 100 - iAtt.getAccu_status() && !getpPkmn(def).getSub())
-				this.s = this.s + getpPkmn(def).statusModifier(iAtt.getStatus());
+				this.s += getpPkmn(def).statusModifier(iAtt.getStatus());
 		}
 		//Shows the "avoid attack" message if the purpose of the move is only status alteration. Exception with healing move that does not hit opponent
 		else if (iAtt.getPower()==0 && iAtt.getStatus() <= 6)
 		{
 			if (att.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
-			this.s = this.s + this.getpPkmn(def).getName()+" avoid the attack !";
+				this.s += "Enemy ";
+			this.s += this.getpPkmn(def).getName()+" avoid the attack !";
 		}
 		return s;
 	}
@@ -559,46 +559,46 @@ public class Battle
 				{
 					getpPkmn(att).setCountBide(2);
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "Enemy ";
-					this.s = this.s + getpPkmn(att).getName() + " is storing energy !";
+						this.s += "Enemy ";
+					this.s += getpPkmn(att).getName() + " is storing energy !";
 				}
 				else
 				{
 					getpPkmn(att).setCountBide(getpPkmn(att).getCountBide()-1);
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "Enemy ";
+						this.s += "Enemy ";
 					if (getpPkmn(att).getCountBide() == 0)
 					{
-						this.s = this.s + getpPkmn(att).getName() + " unleashed energy !\n";
+						this.s += getpPkmn(att).getName() + " unleashed energy !\n";
 						//Damage calculation here
 						damage = getpPkmn(att).getTotalBideDmg() * 2;
 						getpPkmn(def).setCurrentHp(-damage);
 						if (def.getName().equals("Opponent"))
-							this.s = this.s + "Enemy ";
-						this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
+							this.s += "Enemy ";
+						this.s += getpPkmn(def).getName() + " lost " + damage + " HP. ";
 						getpPkmn(att).setTotalBideDmg(0);
-						this.s = this.s + def.checkHpLeft();
+						this.s += def.checkHpLeft();
 					}
 					else
-						this.s = this.s + getpPkmn(att).getName() + " is still storing energy !";
+						this.s += getpPkmn(att).getName() + " is still storing energy !";
 				}
 				break;
 			//Clamp
 			case 16 : 
 				deal(att,def,iAtt);
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
-				this.s = this.s + getpPkmn(def).getName() + " was CLAMPED by " + getpPkmn(att).getName() + " !";
+					this.s += "\n";
+				this.s += getpPkmn(def).getName() + " was CLAMPED by " + getpPkmn(att).getName() + " !";
 				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
 				break;
 			//Conversion
 			case 21 : 
-				this.s = this.s + "Converted type to ";
+				this.s += "Converted type to ";
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "Enemy";
-				this.s = this.s + "'s " + getpPkmn(def).getName() + " !";
+					this.s += "Enemy";
+				this.s += "'s " + getpPkmn(def).getName() + " !";
 				getpPkmn(att).setType1(getpPkmn(def).getType1());
 				break;
 			//Counter
@@ -608,17 +608,17 @@ public class Battle
 					damage = getpPkmn(att).getLastdamagesuffered() * 2;
 					getpPkmn(def).setCurrentHp(-damage);
 					if (def.getName().equals("Opponent"))
-						this.s = this.s + "Enemy ";
-					this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
-					this.s = this.s + def.checkHpLeft();
+						this.s += "Enemy ";
+					this.s += getpPkmn(def).getName() + " lost " + damage + " HP. ";
+					this.s += def.checkHpLeft();
 				}
 				else
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " missed !";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " missed !";
 				}
 				break;
 			//Disable	
@@ -626,10 +626,10 @@ public class Battle
 				if (getpPkmn(def).getCountDisable() > 0 || getpPkmn(def).getAttacks().size() == 1)
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " missed !";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " missed !";
 				}
 				else
 				{
@@ -639,35 +639,35 @@ public class Battle
 					getpPkmn(def).getAttacks().get(rdatt).setEnabled(false);
 					getpPkmn(def).setCountDisable(ThreadLocalRandom.current().nextInt(2,8));
 					if (def.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
+						this.s += "\n";
 					this.s = this.s  + getpPkmn(def).getName() + "'s " + getpPkmn(def).getAttacks().get(rdatt).getName() + " was disabled !";
 				}
 				break;
 			//Dream Eater
 			case 34 : 
 				if (att.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
+					this.s += "\n";
 				if (getpPkmn(def).getStatus() == 2)
 				{
 					deal(att,def,iAtt);
 					getpPkmn(att).setCurrentHp(getpPkmn(def).getLastdamagesuffered()/2);
-					this.s = this.s + this.getpPkmn(att).getName() + " healed "+ getpPkmn(def).getLastdamagesuffered()/2 +" HP and now has "+att.getCurrentPkmn().getCurrentHp() +"/" + att.getCurrentPkmn().getBaseHp()+".";
+					this.s += this.getpPkmn(att).getName() + " healed "+ getpPkmn(def).getLastdamagesuffered()/2 +" HP and now has "+att.getCurrentPkmn().getCurrentHp() +"/" + att.getCurrentPkmn().getBaseHp()+".";
 				}
 				else
-					this.s = this.s + getpPkmn(att).getName() + " missed !";
+					this.s += getpPkmn(att).getName() + " missed !";
 				break;
 			//Fire spin
 			case 42 : 
 				deal(att,def,iAtt);
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
-				this.s = this.s + getpPkmn(def).getName() + " was trapped !";
+					this.s += "\n";
+				this.s += getpPkmn(def).getName() + " was trapped !";
 				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
 				break;
 			//Hyper Beam
@@ -675,10 +675,10 @@ public class Battle
 				if (getpPkmn(att).getTwoturnstatus() == 58)
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " must recharge !";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " must recharge !";
 					getpPkmn(att).setTwoturnstatus(0);
 				}
 				else
@@ -690,15 +690,15 @@ public class Battle
 			//Leech Seed
 			case 67 : 
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
+					this.s += "\n";
 				if (getpPkmn(def).getSeeded())
-					this.s = this.s + getpPkmn(def).getName() + " is already seeded !";
+					this.s += getpPkmn(def).getName() + " is already seeded !";
 				else
 				{
 					getpPkmn(def).setSeeded(true);
-					this.s = this.s + getpPkmn(def).getName() + " was seeded !";
+					this.s += getpPkmn(def).getName() + " was seeded !";
 				}
 				break;
 			//Metronome
@@ -713,20 +713,20 @@ public class Battle
 				if (getpPkmn(att).getLastattacksuffered().getName() != null)
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " learned " + getpPkmn(att).getLastattacksuffered().getName() + " !";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " learned " + getpPkmn(att).getLastattacksuffered().getName() + " !";
 					getpPkmn(att).getAttacks().remove(iAtt);
 					getpPkmn(att).getAttacks().add(getpPkmn(att).getLastattacksuffered());
 				}
 				else
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " missed !";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " missed !";
 				}
 				break;
 			//Mirror Move
@@ -738,10 +738,10 @@ public class Battle
 				if (getpPkmn(att).getCountThrash() > 0)
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + "'s thrashing about !\n";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + "'s thrashing about !\n";
 					getpPkmn(att).setCountThrash(getpPkmn(att).getCountThrash() - 1);
 				}
 				else
@@ -755,10 +755,10 @@ public class Battle
 					getpPkmn(att).setTwoturnstatus(0);
 					getpPkmn(att).setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " became confused !";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " became confused !";
 				}
 				break;
 			//Rest
@@ -770,33 +770,33 @@ public class Battle
 					getpPkmn(att).setCountToxic(0);
 					getpPkmn(att).setCurrentHp(getpPkmn(att).getBaseHp());
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " started sleeping and regained health !";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " started sleeping and regained health !";
 				}
 				else
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " missed !";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " missed !";
 				}
 				break;
 			//Roar
 			case 100 :
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
-				this.s = this.s + getpPkmn(def).getName() + " got scared  and ran away.";
+					this.s += "\n";
+				this.s += getpPkmn(def).getName() + " got scared  and ran away.";
 				def.setCurrentPkmn(def.getTeam().get(ThreadLocalRandom.current().nextInt(0,5)));
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "\nYour opponent sent ";
+					this.s += "\nYour opponent sent ";
 				else
-					this.s = this.s + "\n You sent ";
-				this.s = this.s + getpPkmn(def).getName() + " !";
+					this.s += "\n You sent ";
+				this.s += getpPkmn(def).getName() + " !";
 				break;
 			//Struggle
 			case 128 :
@@ -805,49 +805,49 @@ public class Battle
 					deal(att,def,iAtt);
 					getpPkmn(att).setCurrentHp(-(getpPkmn(att).getLastdamagesuffered()/4));
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " lost " + (getpPkmn(att).getLastdamagesuffered()/4) + " HP due to recoil.";
-					this.s = this.s + att.checkHpLeft();
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " lost " + (getpPkmn(att).getLastdamagesuffered()/4) + " HP due to recoil.";
+					this.s += att.checkHpLeft();
 				}
 				break;
 			//Substitute
 			case 131 :
 				if (att.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
+					this.s += "\n";
 				if (getpPkmn(att).getCurrentHp() > (getpPkmn(att).getBaseHp()/4) && !getpPkmn(att).getSub())
 				{
 					damage = getpPkmn(att).getBaseHp()/4;
 					getpPkmn(att).setCurrentHp(-damage);
 					getpPkmn(att).setHpSubstitute(damage + 1);
 					getpPkmn(att).setSub(true);
-					this.s = this.s + getpPkmn(att).getName() + " lost " + damage + " HP to create a substitue !";
-					this.s = this.s + att.checkHpLeft();
+					this.s += getpPkmn(att).getName() + " lost " + damage + " HP to create a substitue !";
+					this.s += att.checkHpLeft();
 				}
 				else
-					this.s = this.s + getpPkmn(att).getName() + " missed !";
+					this.s += getpPkmn(att).getName() + " missed !";
 				break;
 			//Super Fang	
 			case 132 :
 				damage = getpPkmn(def).getCurrentHp()/2;
 				getpPkmn(def).setCurrentHp(-damage );
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "Enemy ";
-				this.s = this.s + getpPkmn(def).getName() + " lost " + damage + " HP. ";
-				this.s = this.s + def.checkHpLeft();
+					this.s += "Enemy ";
+				this.s += getpPkmn(def).getName() + " lost " + damage + " HP. ";
+				this.s += def.checkHpLeft();
 				break;
 			//Thrash
 			case 140 :
 				if (getpPkmn(att).getCountThrash() > 0)
 				{
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + "'s thrashing about !\n";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + "'s thrashing about !\n";
 					getpPkmn(att).setCountThrash(getpPkmn(att).getCountThrash() - 1);
 				}
 				else
@@ -861,32 +861,32 @@ public class Battle
 					getpPkmn(att).setTwoturnstatus(0);
 					getpPkmn(att).setCountConfusion(ThreadLocalRandom.current().nextInt(1,4));
 					if (att.getName().equals("Opponent"))
-						this.s = this.s + "\nEnemy ";
+						this.s += "\nEnemy ";
 					else
-						this.s = this.s + "\n";
-					this.s = this.s + getpPkmn(att).getName() + " became confused !";
+						this.s += "\n";
+					this.s += getpPkmn(att).getName() + " became confused !";
 				}
 				break;
 			//Toxic
 			case 146 :
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				if (getpPkmn(def).getStatus() == 0)
 				{
 					getpPkmn(def).setStatus(3);
 					getpPkmn(def).setCountToxic(1);
-					this.s = this.s + getpPkmn(def).getName() + " is badly poisoned !";
+					this.s += getpPkmn(def).getName() + " is badly poisoned !";
 				}
 				else
-					this.s = this.s + getpPkmn(att).getName() + " missed !";
+					this.s += getpPkmn(att).getName() + " missed !";
 				break;
 			//Transform
 			case 147 :
 				if (att.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
-				this.s = this.s + getpPkmn(att).getName() + " transformed into " + getpPkmn(def).getName() + " !";
+					this.s += "\n";
+				this.s += getpPkmn(att).getName() + " transformed into " + getpPkmn(def).getName() + " !";
 				getpPkmn(att).setName(getpPkmn(def).getName() + " (" + getpPkmn(att).getName() + ")");
 				getpPkmn(att).setAttack(getpPkmn(def).getAttack());
 				getpPkmn(att).setDefense(getpPkmn(def).getDefense());
@@ -908,31 +908,31 @@ public class Battle
 						status = 4;
 					else
 						status = 5;
-					this.s = this.s + getpPkmn(def).statusModifier(status);
+					this.s += getpPkmn(def).statusModifier(status);
 				}
 				break;
 			//Whirlwind
 			case 154 :
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
-				this.s = this.s + getpPkmn(def).getName() + " was blown away.";
+					this.s += "\n";
+				this.s += getpPkmn(def).getName() + " was blown away.";
 				def.setCurrentPkmn(def.getTeam().get(ThreadLocalRandom.current().nextInt(0,5)));
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "\nYour opponent sent ";
+					this.s += "\nYour opponent sent ";
 				else
-					this.s = this.s + "\n You sent ";
-				this.s = this.s + getpPkmn(def).getName() + " !";
+					this.s += "\n You sent ";
+				this.s += getpPkmn(def).getName() + " !";
 				break;
 			//Wrap
 			case 157 : 
 				deal(att,def,iAtt);
 				if (att.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
-				this.s = this.s + getpPkmn(def).getName() + " was WRAPPED by " + getpPkmn(att).getName() + " !";
+					this.s += "\n";
+				this.s += getpPkmn(def).getName() + " was WRAPPED by " + getpPkmn(att).getName() + " !";
 				getpPkmn(def).setCountTrap(ThreadLocalRandom.current().nextInt(3,6));
 				break;
 		}
@@ -1073,13 +1073,13 @@ public class Battle
 		switch (type)
 		{
 			case 1 : 
-				this.s = this.s + "It's super effective !\n";
+				this.s += "It's super effective !\n";
 				break;
 			case 2 : 
-				this.s = this.s + "It's not very effective...\n";
+				this.s += "It's not very effective...\n";
 				break;
 			case 3 :
-				this.s = this.s + "It did nothing at all !\n";
+				this.s += "It did nothing at all !\n";
 				break;
 		}
 		return rt;
@@ -1093,7 +1093,7 @@ public class Battle
 		{
 			if (rdc >= 85)
 			{
-				this.s = this.s + "\nA critical hit ! ";
+				this.s += "\nA critical hit ! ";
 				return true;
 			}
 			else
@@ -1103,7 +1103,7 @@ public class Battle
 		{
 			if (rdc >= 92)
 			{
-				this.s = this.s + "\nA critical hit ! ";
+				this.s += "\nA critical hit ! ";
 				return true;
 			}
 			else
@@ -1174,14 +1174,14 @@ public class Battle
 			if (getpPkmn(def).getHpSubstitute()>0)
 			{
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "Enemy's ";
-				this.s = this.s + "Substitue lost " + Integer.toString(damage)+" HP. ";
+					this.s += "Enemy's ";
+				this.s += "Substitue lost " + Integer.toString(damage)+" HP. ";
 			}
 			else 
 			{	
 				if (def.getName().equals("Opponent"))
-					this.s = this.s + "Enemy ";
-				this.s = this.s + def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
+					this.s += "Enemy ";
+				this.s += def.getCurrentPkmn().getName()+" lost "+Integer.toString(damage)+" HP. ";
 			}
 			//Checking if the attack should steal HP
 			if (iAtt.getStatus()==44)
@@ -1193,16 +1193,16 @@ public class Battle
 					heal = damage/2;
 				atk.getCurrentPkmn().setCurrentHp(heal);
 				if (atk.getName().equals("Opponent"))
-					this.s = this.s + "\nEnemy ";
+					this.s += "\nEnemy ";
 				else
-					this.s = this.s + "\n";
-				this.s = this.s + atk.getCurrentPkmn().getName()+" stole "+heal+" HP and now has "+atk.getCurrentPkmn().getCurrentHp()+"/"+atk.getCurrentPkmn().getBaseHp()+".";
+					this.s += "\n";
+				this.s += atk.getCurrentPkmn().getName()+" stole "+heal+" HP and now has "+atk.getCurrentPkmn().getCurrentHp()+"/"+atk.getCurrentPkmn().getBaseHp()+".";
 			}
 			if (getpPkmn(def).getCountBide() > 0)
 				getpPkmn(def).setTotalBideDmg(getpPkmn(def).getTotalBideDmg() + damage);
 		}
 		def.getCurrentPkmn().setCurrentHp(-damage);
-		this.s = this.s + def.checkHpLeft();
+		this.s += def.checkHpLeft();
 		//Checks if the attack should inflict recoil damages
 		if (iAtt.getStatus() == 49)
 		{
@@ -1210,11 +1210,11 @@ public class Battle
 			if (recoil == 0)
 				recoil = 1;
 			getpPkmn(atk).setCurrentHp(-recoil);
-			this.s = this.s + "\n";
+			this.s += "\n";
 			if (atk.getName().equals("Opponent"))
-				this.s = this.s + "Enemy ";
-			this.s = this.s + getpPkmn(atk).getName() + "'s hit with recoil ! It lost "+ recoil +" HP. ";
-			this.s = this.s + atk.checkHpLeft();
+				this.s += "Enemy ";
+			this.s += getpPkmn(atk).getName() + "'s hit with recoil ! It lost "+ recoil +" HP. ";
+			this.s += atk.checkHpLeft();
 		}
 		//Checks if the attack should kill its user (explosion/self-destruct)
 		else if (iAtt.getStatus() == 50)
@@ -1222,7 +1222,7 @@ public class Battle
 			getpPkmn(atk).setHpSubstitute(0);
 			getpPkmn(atk).setSub(false);
 			getpPkmn(atk).setCurrentHp(-(getpPkmn(atk).getBaseHp()));
-			this.s = this.s + atk.checkHpLeft();
+			this.s += atk.checkHpLeft();
 		}
 		getpPkmn(def).setLastdamagesuffered(damage);
 		return damage;
@@ -1244,10 +1244,10 @@ public class Battle
 				getpPkmn(def).setCurrentHp(-seed);
 				getpPkmn(att).setCurrentHp(seed/2);
 				this.s = getpPkmn(def).getName() + " lost " + seed + " HP from LEECH SIDE.\n";
-				this.s = this.s + getpPkmn(att).getName() + " was healed " + seed/2 + " HP from LEECH SIDE.";
-				this.s = this.s + def.checkHpLeft();
-				this.s = this.s + att.checkHpLeft();
-				this.s = this.s + "\n***********************";
+				this.s += getpPkmn(att).getName() + " was healed " + seed/2 + " HP from LEECH SIDE.";
+				this.s += def.checkHpLeft();
+				this.s += att.checkHpLeft();
+				this.s += "\n***********************";
 				win.logTrace(s);
 				return true;
 			}

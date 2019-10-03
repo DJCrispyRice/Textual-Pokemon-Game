@@ -162,25 +162,33 @@ public class Window extends JFrame
 		@SuppressWarnings("rawtypes")
 		SwingWorker sw = new SwingWorker()
 		{
-			protected Object doInBackground() throws Exception 
+			protected Boolean doInBackground() throws Exception 
 			{
-				while (playerBar.getWidth() != (int) hpLeft)
+				int width = playerBar.getWidth();
+				while (width != (int) hpLeft)
 				{
 					if (playerBar.getWidth() > hpLeft)
-						playerBar.setBounds(535, 530, playerBar.getWidth() - 1, 25);
+						width = width - 1;
 					else
-						playerBar.setBounds(535, 530, playerBar.getWidth() + 1, 25);
-					
-					Thread.sleep(10);
+						width = width + 1;
+					playerBar.setBounds(535, 530, width, 25);
+					Thread.sleep(50);
 				}
 				if (hpLeft == 0)
 					playerBar = null;
 				return null;
 			}
-			
 			public void done() {}
 		};
 		sw.execute();
+		try 
+		{
+			sw.get();
+		} 
+		catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (p.getStatus()!=0)
 		{
 			switch (p.getStatus())
@@ -199,6 +207,9 @@ public class Window extends JFrame
 					break;
 				case 5 : 
 					this.playerStatus.setText("FRN");
+					break;
+				case 9 : 
+					this.playerStatus.setText("");
 					break;
 			}
 		}
