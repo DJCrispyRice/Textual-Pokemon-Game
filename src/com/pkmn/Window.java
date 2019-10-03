@@ -20,8 +20,8 @@ public class Window extends JFrame
 	public JScrollPane sp;
 	public Sound music;
 	public Sound se;
-	public JLabel player = new JLabel(new ImageIcon());
-	public JLabel ia = new JLabel(new ImageIcon());
+	private JLabel player = new JLabel(new ImageIcon());
+	private JLabel ia = new JLabel(new ImageIcon());
 	public JLabel pika = new JLabel(new ImageIcon());
 	public HpContainer playerContainer;
 	public HpContainer iaContainer;
@@ -67,7 +67,7 @@ public class Window extends JFrame
 					DateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
 					String t = dateFormat2.format(d);
 					date.setText("It is : "+t);
-					Thread.sleep(1000);
+					Thread.sleep(100);
 				}
 			}
 		};
@@ -110,38 +110,31 @@ public class Window extends JFrame
 	
 	public void drawPlayerSprite(String path)
 	{
-		this.removePlayerSprite();
+		this.removeSprite(this.player);
 		ImageIcon poke = new ImageIcon(path);
-		Image image = poke.getImage();
-		Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
-		poke = new ImageIcon(newimg);
-		this.player = new JLabel(poke);
+		Image image = poke.getImage().getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
+		poke = new ImageIcon(image);
+		this.player.setIcon(poke);
 		this.player.setBounds(525,400,120,120);
 		this.add(this.player);
 		this.repaint();
 	}
 	
-	public void removePlayerSprite()
-	{
-		this.player.setIcon(null);
-	}
-	
 	public void drawIaSprite(int number)
 	{
-		this.removeIaSprite();
+		this.removeSprite(this.ia);
 		ImageIcon poke = new ImageIcon("src/res/sprites/front/"+number+".png");
-		Image image = poke.getImage();
-		Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
-		poke = new ImageIcon(newimg);
-		this.ia = new JLabel(poke);
+		Image image = poke.getImage().getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
+		poke = new ImageIcon(image);
+		this.ia.setIcon(poke);
 		this.ia.setBounds(525,100,120,120);
 		this.add(this.ia);
 		this.repaint();
 	}
 	
-	public void removeIaSprite()
+	public void removeSprite(JLabel sprite)
 	{
-		this.ia.setIcon(null);
+		sprite.setIcon(null);
 	}
 	
 	public void drawPlayerHp(Pokemon p)
@@ -173,13 +166,12 @@ public class Window extends JFrame
 			{
 				while (playerBar.getWidth() != (int) hpLeft)
 				{
-					System.out.println("Coucou");
 					if (playerBar.getWidth() > hpLeft)
 						playerBar.setBounds(535, 530, playerBar.getWidth() - 1, 25);
 					else
 						playerBar.setBounds(535, 530, playerBar.getWidth() + 1, 25);
 					
-					Thread.sleep(100);
+					Thread.sleep(10);
 				}
 				if (hpLeft == 0)
 					playerBar = null;
@@ -227,6 +219,8 @@ public class Window extends JFrame
 			this.iaBar.changeColor(Color.red);
 		else if (hpLeft <= 50)
 			this.iaBar.changeColor(Color.orange);
+		else
+			this.iaBar.changeColor(Color.green);
 		this.iaBar.setBounds(535,240,(int)hpLeft,25);
 		this.add(iaBar);
 		this.remove(iaStatus);
@@ -259,5 +253,25 @@ public class Window extends JFrame
 			this.add(iaStatus);
 		}
 		this.repaint();
+	}
+
+	public JLabel getPlayer() 
+	{
+		return player;
+	}
+
+	public void setPlayer(JLabel player) 
+	{
+		this.player = player;
+	}
+
+	public JLabel getIa() 
+	{
+		return ia;
+	}
+
+	public void setIa(JLabel ia) 
+	{
+		this.ia = ia;
 	}
 }

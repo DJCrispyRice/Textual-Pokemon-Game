@@ -197,7 +197,7 @@ public class Ia extends Player
 		win.drawIaHp(this.getCurrentPkmn());
 		if (this.getCurrentPkmn().getStatus()==9)
 		{
-			
+			win.removeSprite(win.getIa());
 			if (this.getTeam().size()>0)
 			{
 				if (this.getTeam().size()==1)
@@ -223,7 +223,7 @@ public class Ia extends Player
 			}
 			else
 			{
-				win.removeIaSprite();
+				win.removeSprite(win.getIa());
 				win.logTrace("You won ! :-D");
 				win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
 				win.whatToChoose = "continue";

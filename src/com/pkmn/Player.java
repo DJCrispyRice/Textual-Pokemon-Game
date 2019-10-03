@@ -195,7 +195,7 @@ public class Player
 		win.drawPlayerHp(this.getCurrentPkmn());
 		if (this.getCurrentPkmn().getStatus()==9)
 		{
-			win.removePlayerSprite();
+			win.removeSprite(win.getPlayer());
 			if (this.getTeam().size()>0)
 			{
 				win.logTrace("Please choose another Pokémon from your team.");
@@ -209,6 +209,7 @@ public class Player
 			}
 			else
 			{
+				win.removeSprite(win.getPlayer());
 				win.logTrace("You lost the battle, all of your pokémons fainted. :-(");
 				win.logTrace("Wanna play again ? 1 for YES, 2 for NO");
 				win.whatToChoose = "continue";
