@@ -3,6 +3,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
@@ -139,48 +140,6 @@ public class Window extends JFrame
 	
 	public void drawPlayerHp(Pokemon p)
 	{
-		float hpLeft = ((float) p.getCurrentHp()/p.getBaseHp()) * 100;
-		if (playerBar == null)
-		{
-			this.playerBar = new HpBar();
-			this.playerContainer = new HpContainer();
-			this.playerContainer.setBounds(535,530,110,30);
-			this.playerBar.setBounds(535,530,100,25);
-			this.add(playerContainer);
-			this.add(playerBar);
-			this.playerStatus = new JLabel ("");
-			this.add(playerStatus);
-			this.playerStatus.setBounds(575,493,50,50);
-		}
-		this.hpCounter.setText("HP : "+p.getCurrentHp()+"/"+p.getBaseHp());
-		if (hpLeft <= 20)
-			this.playerBar.changeColor(Color.red);
-		else if (hpLeft <= 50)
-			this.playerBar.changeColor(Color.orange);
-		else
-			this.playerBar.changeColor(Color.green);
-		@SuppressWarnings("rawtypes")
-		SwingWorker sw = new SwingWorker()
-		{
-			protected Boolean doInBackground() throws Exception 
-			{
-				int width = playerBar.getWidth();
-				while (width != (int) hpLeft)
-				{
-					if (playerBar.getWidth() > hpLeft)
-						width = width - 1;
-					else
-						width = width + 1;
-					playerBar.setBounds(535, 530, width, 25);
-					Thread.sleep(10);
-				}
-				if (hpLeft == 0)
-					playerBar = null;
-				return null;
-			}
-			public void done() {}
-		};
-		sw.execute();
 		if (p.getStatus()!=0)
 		{
 			switch (p.getStatus())
@@ -207,7 +166,60 @@ public class Window extends JFrame
 		}
 		else
 			this.playerStatus.setText("");
-		this.repaint();
+		float hpLeft = ((float) p.getCurrentHp()/p.getBaseHp()) * 100;
+		if (playerBar == null)
+		{
+			this.playerBar = new HpBar();
+			this.playerContainer = new HpContainer();
+			this.playerContainer.setBounds(535,530,110,30);
+			this.playerBar.setBounds(535,530,100,25);
+			this.add(playerContainer);
+			this.add(playerBar);
+			this.playerStatus = new JLabel ("");
+			this.add(playerStatus);
+			this.playerStatus.setBounds(575,493,50,50);
+		}
+		this.hpCounter.setText("HP : "+p.getCurrentHp()+"/"+p.getBaseHp());
+		if (hpLeft <= 20)
+			this.playerBar.changeColor(Color.red);
+		else if (hpLeft <= 50)
+			this.playerBar.changeColor(Color.orange);
+		else
+			this.playerBar.changeColor(Color.green);
+		@SuppressWarnings("rawtypes")
+		SwingWorker<Integer,Integer> sw = new SwingWorker<Integer,Integer>()
+		{
+			protected Integer doInBackground() throws Exception 
+			{
+				int width = playerBar.getWidth();
+				while (width != (int) hpLeft)
+				{
+					if (playerBar.getWidth() > hpLeft)
+						width = width - 1;
+					else
+						width = width + 1;
+					publish(width);
+					Thread.sleep(50);
+				}
+				if (hpLeft == 0)
+					playerBar = null;
+				return null;
+			}
+			
+			@Override
+			protected void process(List<Integer> chunks) 
+			{
+				playerBar.setBounds(535, 530, chunks.get(0), 25);
+				repaint();
+			}
+			
+			public void done() 
+			{
+				repaint();
+				run();
+			}
+		};
+		sw.execute();
 	}
 		
 	public void drawIaHp(Pokemon p)
