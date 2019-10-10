@@ -73,6 +73,11 @@ public class Pokemon implements Cloneable
 		setSpecial(new Stat("Special",baseSpe));
 	}
 	
+	public String toString()
+	{
+		return Integer.toString(this.getId()) + " - " + this.getName() + ". Type : " +this.getTypes();
+	}
+	
 	//Getters/Setters
 	public String getName() 
 	{

@@ -1,4 +1,8 @@
 package com.pkmn;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 /* 
  * This class regroups every game data. It is created at the opening of the game and contains all assets such as the 151 Pokémons, all attacks and all types.
  * It will be instantiated under the name "gd" and should be accessed from everywhere. Everything is contained in its array and will get an Id
@@ -1091,7 +1095,7 @@ public final class GameData
 	public void showPokedex(Window win) 
 	{
 		win.logTrace("Here is every Pokédex entry.");
-		for (int i = 1; i < 152; i++)
-			win.logTrace(i +" - " + this.allPkmn[i].getName() + ". Type : " +this.allPkmn[i].getTypes());
+		Stream<Pokemon> sp = Arrays.stream(this.allPkmn);
+		sp.filter(x -> x.getId() > 0).forEach(x -> win.logTrace(x.toString()));
 	}
 }
