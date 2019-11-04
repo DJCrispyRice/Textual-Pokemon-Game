@@ -980,94 +980,73 @@ public class Battle
 	{
 		int rt=dmg;
 		int type=0; // 0 = neutral, 1 = super effective, 2 = not very effective, 3 = useless
-		//Checking Strength first
-		for (int i = 0;i<att.getType().getStrength().size();i++)
+		// Checking Strength first
+		// Type 1
+		if (att.getType().getStrength().contains(pk.getType1()))
 		{
-			if (att.getType().getStrength().get(i).equals(pk.getType1()))
+			type = 1;
+			rt = dmg*2;
+		}
+		// Type 2
+		if (att.getType().getStrength().contains(pk.getType2()))
+		{
+			if (type == 1)
+				rt = dmg*4;
+			else
 			{
 				type = 1;
 				rt = dmg*2;
-				break;
 			}
 		}
-		//Checking Strength for type 2
-		for (int i = 0;i<att.getType().getStrength().size();i++)
+		// Checking weakness then
+		// Type 1
+		if (att.getType().getWeak().contains(pk.getType1()))
 		{
-			if (att.getType().getStrength().get(i).equals(pk.getType2()))
-			{
-				if (type == 1)
-					rt = dmg*4;
-				else
-				{
-					type = 1;
-					rt = dmg*2;
-				}
-				break;
-			}
+			type = 2;
+			rt = dmg/2;
 		}
-		//Checking weakness then
-		for (int i = 0;i<att.getType().getWeak().size();i++)
+		// Type 2
+		if (att.getType().getWeak().contains(pk.getType2()))
 		{
-			if (att.getType().getWeak().get(i).equals(pk.getType1()))
+			if (type == 2)
+				rt = dmg/4;
+			else if (type == 1)
+				rt = dmg;
+			else
 			{
 				type = 2;
 				rt = dmg/2;
-				break;
 			}
 		}
-		//Checking weakness for type 2
-		for (int i = 0;i<att.getType().getWeak().size();i++)
+		// Checking uselessness
+		// Type 1
+		if (att.getType().getUseless().contains(pk.getType1()))
 		{
-			if (att.getType().getWeak().get(i).equals(pk.getType2()))
-			{
-				if (type == 2)
-					rt = dmg/4;
-				else if (type == 1)
-					rt = dmg;
-				else
-				{
-					type = 2;
-					rt = dmg/2;
-				}
-				break;
-			}
+			rt = 0;
+			type = 3;
 		}
-		//Checking uselessness
-		for (int i = 0;i<att.getType().getUseless().size();i++)
+		// Type 2
+		if (att.getType().getUseless().contains(pk.getType2()))
 		{
-			if (att.getType().getUseless().get(i).equals(pk.getType1()))
+			if (type == 0)
 			{
-				rt = 0;
+				rt = dmg/2;
+				type = 2;
+			}
+			else if (type == 1)
+			{
+				rt = dmg;
+				type = 0;
+			}
+			else if (type == 2)
+			{
+				rt = dmg/4;
+				type = 2;
+			}
+			else
+			{
 				type = 3;
-				break;
-			}
-		}
-		//Checking uselessness for type 2
-		for (int i = 0;i<att.getType().getUseless().size();i++)
-		{
-			if (att.getType().getUseless().get(i).equals(pk.getType2()))
-			{
-				if (type == 0)
-				{
-					rt = dmg/2;
-					type = 2;
-				}
-				else if (type == 1)
-				{
-					rt = dmg;
-					type = 0;
-				}
-				else if (type == 2)
-				{
-					rt = dmg/4;
-					type = 2;
-				}
-				else
-				{
-					type = 3;
-					rt = 0;
-				}
-				break;
+				rt = 0;
 			}
 		}
 		switch (type)
